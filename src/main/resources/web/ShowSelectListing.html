@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listing Details</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+  <link href="css/swiper.css" rel="stylesheet">
+  <link href="css/magnific-popup.css" rel="stylesheet">
+  <link href="css/Farmed.css" rel="stylesheet">
+  <link href="css/FarmedItem.css" rel="stylesheet">
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/fontawesome-all.css" rel="stylesheet">
+  <link href="css/swiper.css" rel="stylesheet">
+  <link href="css/magnific-popup.css" rel="stylesheet">
+
+  <style>
+    .gallery-main-img {
+      max-height: 400px;
+      width: 100%;
+      object-fit: contain;
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+    }
+    .thumbnail-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 0.25rem;
+    }
+    .thumbnail-img:hover {
+      border-color: #0d6efd;
+    }
+    .timer {
+      font-size: 1.25rem;
+      color: #0dcaf0;
+      font-weight: bold;
+    }
+    .description-container {
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .stock-badge {
+      font-size: 1rem;
+    }
+
+    .container {
+      background-color: #f1f4f9;
+      box-shadow: none !important;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+      color: rgb(255 255 255);
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+    }
+    .fixed-top {
+      position: fixed;
+      top: 0;
+      right: -162px;
+      left: 0;
+      z-index: 1030;
+    }
+    .nav-item input.form-control {
+      width: 250px; /* Adjust width as needed */
+      padding: 8px 12px;
+      border: 2px solid #fff; /* White border */
+      border-radius: 25px; /* Rounded edges */
+      background-color: transparent;
+      color: white; /* White text */
+      transition: all 0.3s ease-in-out;
+      position: static;
+      left: 70px;
+
+    }
+
+    /* Change placeholder color */
+    .nav-item input.form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7); /* Light white */
+    }
+
+    /* Style input field on focus */
+    .nav-item input.form-control:focus {
+      background-color: white;
+      color: black; /* Change text color */
+      border-color: #f8f9fa; /* Light border */
+      outline: none;
+    }
+
+    /* Style the search button */
+    .nav-item .btn-outline-light {
+      border-radius: 25px;
+      padding: 8px 16px;
+      font-weight: bold;
+      border: 2px solid white; /* White border */
+      transition: all 0.3s ease-in-out;
+      margin-top: auto;
+    }
+    .mt-5, .my-5 {
+      margin-top: 5rem !important;
+    }
+
+    /* Button hover effect */
+    .nav-item .btn-outline-light:hover {
+      background-color: white;
+      color: black;
+      border-color: white;
+    }
+  </style>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+
+  <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+    <!-- Text Logo - Use this if you don't have a graphic logo -->
+    <!-- <a class="navbar-brand logo-text page-scroll" href="SingUpRegister.html">Aria</a> -->
+
+    <!-- Image Logo -->
+    <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-awesome fas fa-bars"></span>
+      <span class="navbar-toggler-awesome fas fa-times"></span>
+    </button>
+    <!-- end of mobile menu toggle button -->
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
+        </li>
+
+
+        <li class="nav-item">
+          <a id="userGreeting" style="color: black; font-size: 16px; font-weight:600; display: none;"
+             class="nav-link page-scroll" href="#">Hi, User</a>
+        </li>
+
+
+        <li class="nav-item">
+          <a style="color: black; font-size: 16px; font-weight:600"  class="nav-link page-scroll" href="SingUpRegister.html">SIGNUP</a>
+        </li>
+        <li  class="nav-item">
+          <a id="Register" style="color: black; font-size: 16px; font-weight:bold" class="nav-link page-scroll" href="SingUpRegister.html">REGISTER</a>
+        </li>
+
+        <li class="nav-item">
+          <div class="d-flex">
+            <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <!--<button class="btn btn-outline-light">Search</button>-->
+          </div>
+          <ul id="searchResults" class="list-group mt-2"></ul>
+        </li>
+
+
+      </ul>
+
+    </div>
+
+  </nav> <!-- end of navbar -->
+
+
+  <div class="row">
+    <div class="col-12">
+      <div id="listing-container" class="bg-white p-4 rounded shadow-sm">
+        <!-- Content will load here -->
+        <div class="text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading listing details...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="js/AllListing.js"></script>
+
+<script>
+  $(document).ready(function() {
+
+
+    loadListingDetails()
+
+    function loadListingDetails() {
+      const itemId = getListingId();
+
+      if (!itemId) {
+        showError("No listing selected");
+        return;
+      }
+
+      $.ajax({
+        url: `http://localhost:8080/api/listings/getById/${itemId}`,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+          console.log("API Response:", response);
+          if (true) {
+            renderListing(response.data);
+          } else {
+            showError(response.message || "Listing not found");
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("AJAX Error:", xhr.status, xhr.responseText);
+          showError(`Failed to load listing. Error: ${xhr.status} - ${xhr.responseText}`);
+        }
+      });
+    }
+  });
+
+
+  function getListingId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let itemId = urlParams.get('id');
+
+    if (!itemId) {
+      itemId = sessionStorage.getItem('selectedItemId');
+    }
+
+    return itemId;
+  }
+
+  function renderListing(listing) {
+    const endTime = calculateEndTime(listing.bidStartedDate, listing.bidDuration);
+
+    const html = `
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <img id="mainImage" src="/static/uploads/${listing.mainImage}"
+                 class="gallery-main-img mb-3"
+                 alt="${listing.title}"
+                 onerror="this.src='https://via.placeholder.com/400'">
+            <div class="d-flex flex-wrap gap-2">
+              <img src="/static/uploads/${listing.mainImage}"
+                   class="thumbnail-img"
+                   onclick="document.getElementById('mainImage').src = this.src"
+                   onerror="this.src='https://via.placeholder.com/100'">
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <h1 class="mb-3">${listing.title}</h1>
+
+            <div class="d-flex align-items-center mb-3">
+              <h3 class="text-danger mb-0">${listing.price} LKR</h3>
+              <span class="ms-3 badge ${listing.status === 'Active' ? 'bg-success' : 'bg-danger'} stock-badge">
+                ${listing.status === 'Active' ? 'In Stock' : 'Out of Stock'}
+              </span>
+            </div>
+
+            <p class="lead mb-4">${listing.miniDescription || 'No description available'}</p>
+
+            ${getActionButtons(listing, endTime)}
+
+            <div class="card mb-4">
+              <div class="card-body">
+                <h5 class="card-title">Seller Information</h5>
+                <p class="card-text"><strong>Category:</strong> ${listing.category || 'N/A'}</p>
+                <p class="card-text"><strong>Quantity:</strong> ${listing.qty || 'N/A'}</p>
+                ${listing.bidDuration ? `<p class="card-text"><strong>Auction Duration:</strong> ${listing.bidDuration} days</p>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-12">
+            <h3>Product Description</h3>
+            <div class="description-container">
+              ${listing.detailedDescription || '<p>No detailed description provided</p>'}
+            </div>
+          </div>
+        </div>
+      `;
+
+    $('#listing-container').html(html);
+    startTimer(endTime);
+  }
+
+  function getActionButtons(listing, endTime) {
+    if (listing.sellType === 'bidding') {
+      return `
+          <div class="mb-4">
+            ${endTime ? `<p class="timer mb-2" data-end="${endTime}">00:00:00</p>` : ''}
+            <button class="btn btn-primary btn-lg bid-now" data-id="${listing.id}">
+              Bid Now
+            </button>
+          </div>
+        `;
+    } else if (listing.sellType === 'fixed') {
+      return `
+          <div class="mb-4">
+            <button class="btn btn-success btn-lg buy-now" data-id="${listing.id}">
+              Buy Now
+            </button>
+          </div>
+        `;
+    } else if (listing.sellType === 'both') {
+      return `
+          <div class="mb-4">
+            ${endTime ? `<p class="timer mb-2" data-end="${endTime}">00:00:00</p>` : ''}
+            <button class="btn btn-primary me-2 bid-now" data-id="${listing.id}">
+              Bid Now
+            </button>
+            <button class="btn btn-success buy-now" data-id="${listing.id}">
+              Buy Now
+            </button>
+          </div>
+        `;
+    }
+    return '';
+  }
+
+  function calculateEndTime(startDate, durationDays) {
+    if (!startDate || !durationDays) return null;
+    try {
+      const start = new Date(startDate);
+      return new Date(start.getTime() + durationDays * 86400000).toISOString();
+    } catch (e) {
+      console.error("Error calculating end time:", e);
+      return null;
+    }
+  }
+
+  function startTimer(endTime) {
+    if (!endTime) return;
+    const timerElement = $(".timer");
+
+    const updateTimer = () => {
+      const now = new Date();
+      const end = new Date(endTime);
+      const timeLeft = end - now;
+
+      if (timeLeft <= 0) {
+        timerElement.text("Auction Ended").addClass('text-danger');
+        return;
+      }
+
+      timerElement.text(new Date(timeLeft).toISOString().substr(11, 8));
+    };
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  function showError(message) {
+    $('#listing-container').html(`<div class="alert alert-danger">${message}</div>`);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Listing - Auction Site</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/fontawesome-all.css" rel="stylesheet">
+    <link href="css/swiper.css" rel="stylesheet">
+    <link href="css/magnific-popup.css" rel="stylesheet">
+    <link href="css/Farmed.css" rel="stylesheet">
+    <link href="css/FarmedItem.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container mt-5">
+    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+        <!-- Image Logo -->
+        <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-awesome fas fa-bars"></span>
+            <span class="navbar-toggler-awesome fas fa-times"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#header">HOME</a>
+                </li>
+
+                <li class="nav-item">
+                    <a id="userGreeting" class="nav-link page-scroll" href="#" style="color: black; font-size: 17px; font-weight:600; display: none;">Hi, User</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="SingUpRegister.html" style="color: black; font-size: 16px; font-weight:600">SIGNUP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="SingUpRegister.html" style="color: black; font-size: 16px; font-weight:bold">REGISTER</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+            <form>
+                <h2 class="text-center">Land Auction Listing</h2>
+
+                <!-- Land Name -->
+                <div class="mb-3">
+                    <label for="landName" class="form-label">Land Name</label>
+                    <input type="text" class="form-control" id="landName" name="landName" required placeholder="Enter the name of the land" />
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" required placeholder="Enter the location of the land" />
+                </div>
+
+                <!-- Size of the Land -->
+                <div class="mb-3">
+                    <label for="size" class="form-label">Size (in acres or square meters)</label>
+                    <input type="number" class="form-control" id="size" name="size" required placeholder="Enter the size of the land" />
+                </div>
+
+                <div class="mb-4">
+                    <label for="mainImage" class="form-label">Main Image</label>
+                    <input type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" required>
+                    <div id="mainImagePreview" class="mt-3"></div> <!-- Preview container for main image -->
+                </div>
+
+                <!-- Other Images -->
+                <div class="mb-4">
+                    <label for="otherImages" class="form-label">Other Images (Max 5)</label>
+                    <input type="file" id="otherImages" name="otherImages" class="form-control" accept="image/*" multiple>
+                    <div id="otherImagesPreview" class="mt-3 d-flex flex-wrap gap-2"></div> <!-- Preview container for other images -->
+                </div>
+
+                <!-- Current Use -->
+                <div class="mb-3">
+                    <label for="currentUse" class="form-label">Current Use</label>
+                    <input type="text" class="form-control" id="currentUse" name="currentUse" required placeholder="Describe the current use of the land" />
+                </div>
+
+                <!-- Topography -->
+                <div class="mb-3">
+                    <label for="topography" class="form-label">Topography</label>
+                    <input type="text" class="form-control" id="topography" name="topography" required placeholder="Enter the topography of the land" />
+                </div>
+
+                <!-- Water Availability -->
+                <div class="mb-3">
+                    <label for="waterAvailability" class="form-label">Water Availability</label>
+                    <input type="text" class="form-control" id="waterAvailability" name="waterAvailability" required placeholder="Is water available on the land?" />
+                </div>
+
+                <!-- Access -->
+                <div class="mb-3">
+                    <label for="access" class="form-label">Access</label>
+                    <input type="text" class="form-control" id="access" name="access" required placeholder="Describe the access to the land" />
+                </div>
+
+                <!-- Soil Quality -->
+                <div class="mb-3">
+                    <label for="soilQuality" class="form-label">Soil Quality</label>
+                    <input type="text" class="form-control" id="soilQuality" name="soilQuality" required placeholder="Describe the soil quality" />
+                </div>
+
+                <!-- Features -->
+                <div class="mb-3">
+                    <label for="features" class="form-label">Land Features</label>
+                    <textarea style="height: 90px !important;" class="form-control" id="features" name="features" required placeholder="Describe any additional features of the land (e.g., structures, timber)" rows="4"></textarea>
+                </div>
+
+                <!-- Detailed Description -->
+                <div class="mb-4">
+                    <label for="richTextEditor" class="form-label">Detailed Description</label>
+                    <textarea id="richTextEditor" name="richTextEditor" class="form-control"></textarea>
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (in LKR)</label>
+                    <input type="number" class="form-control" id="price" name="price" required placeholder="Enter the price for the land" />
+                </div>
+
+                <!-- Auction Start Price -->
+                <div class="mb-3">
+                    <label for="startPrice" class="form-label">Auction Start Price (in LKR)</label>
+                    <input type="number" class="form-control" id="startPrice" name="startPrice" required placeholder="Enter the auction start price" />
+                </div>
+
+                <!-- Reserve Price -->
+                <div class="mb-3">
+                    <label for="reservePrice" class="form-label">Reserve Price (in LKR)</label>
+                    <input type="number" class="form-control" id="reservePrice" name="reservePrice" required placeholder="Enter the reserve price" />
+                </div>
+
+                <!-- Auction Duration -->
+                <div class="mb-3">
+                    <label for="auctionDuration" class="form-label">Auction Duration (in days)</label>
+                    <input type="number" class="form-control" id="auctionDuration" name="auctionDuration" required placeholder="Enter the auction duration" />
+                </div>
+
+                <!-- Payment Terms -->
+                <div class="mb-3">
+                    <label for="paymentTerms" class="form-label">Payment Terms</label>
+                    <textarea style="height: 90px !important;" class="form-control" id="paymentTerms" name="paymentTerms" required placeholder="Describe the payment terms (e.g., deposit, balance payment)" rows="3"></textarea>
+                </div>
+
+                <!-- Auction Start Date -->
+                <div class="mb-3">
+                    <label for="auctionStartDate" class="form-label">Auction Start Date</label>
+                    <input type="date" class="form-control" id="auctionStartDate" name="auctionStartDate" required />
+                </div>
+
+
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button id="submitListingLands" type="submit" class="btn btn-primary w-100">Submit Listing</button>
+                </div>
+            </form>
+
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/Lands.js"></script>
+
+
+
+<script>
+    function handleSelectionChange() {
+        const selectedOption = document.getElementById("selectOption").value;
+        if (selectedOption === "qty") {
+            document.getElementById("qtySection").style.display = "block";
+            document.getElementById("landSection").style.display = "none";
+            document.getElementById("bidSection").style.display = "none"; // Hide bid section if qty is selected
+        } else if (selectedOption === "land") {
+            document.getElementById("landSection").style.display = "block";
+            document.getElementById("qtySection").style.display = "none";
+            document.getElementById("bidSection").style.display = "none"; // Hide bid section if land is selected
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

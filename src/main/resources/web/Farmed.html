@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600&display=swap&subset=latin-ext" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/fontawesome-all.css" rel="stylesheet">
+    <link href="css/swiper.css" rel="stylesheet">
+    <link href="css/magnific-popup.css" rel="stylesheet">
+    <link href="css/Farmed.css" rel="stylesheet">
+</head>
+<style>
+    .timer {
+        font-size: 18px;
+        font-weight: bold;
+        color: red;
+    }
+</style>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+    <!-- Text Logo - Use this if you don't have a graphic logo -->
+    <!-- <a class="navbar-brand logo-text page-scroll" href="SingUpRegister.html">Aria</a> -->
+
+    <!-- Image Logo -->
+    <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-awesome fas fa-bars"></span>
+        <span class="navbar-toggler-awesome fas fa-times"></span>
+    </button>
+    <!-- end of mobile menu toggle button -->
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link page-scroll" href="#intro">INTRO</a>
+            </li>
+
+            <!--<li class="nav-item">
+                <a class="nav-link page-scroll" href="#callMe">CALL ME</a>
+            </li>-->
+            <li class="nav-item">
+                <a class="nav-link page-scroll" href="#projects">PROJECTS</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link page-scroll" href="#contact">CONTACT</a>
+            </li>
+
+
+
+            <li class="nav-item">
+                <a id="userGreeting" style="color: black; font-size: 16px; font-weight:600; display: none;"
+                   class="nav-link page-scroll" href="#">Hi, User</a>
+            </li>
+
+
+            <li class="nav-item">
+                <a style="color: black; font-size: 16px; font-weight:600"  class="nav-link page-scroll" href="SingUpRegister.html">SIGNUP</a>
+            </li>
+            <li  class="nav-item">
+                <a id="Register" style="color: black; font-size: 16px; font-weight:bold" class="nav-link page-scroll" href="SingUpRegister.html">REGISTER</a>
+            </li>
+
+            <li class="nav-item">
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </li>
+        </ul>
+
+    </div>
+
+</nav> <!-- end of navbar -->
+<!-- end of navbar -->
+
+
+
+
+
+<!-- Header -->
+<header id="header" class="header">
+    <div class="category-menu">
+        <ul>
+            <li><a href="index.html" >HOME</a></li>
+            <li><a href="#" class="active">Farmed</a></li>
+            <li><a href="#">Lands</a></li>
+            <li><a href="vehicleListing.html">Cars</a></li>
+            <li><a href="#">Other</a></li>
+        </ul>
+    </div>
+
+    <div class="header-content">
+        <!-- Slideshow container -->
+        <div class="slideshow-container">
+            <div class="slide">
+                <img src="images/details-2-background.jpg" alt="Slide 1">
+            </div>
+            <div class="slide">
+                <img src="images/details-1-background.jpg" alt="Slide 2">
+            </div>
+            <div class="slide">
+                <img src="images/header-background.jpg" alt="Slide 3">
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-container">
+                        <h1>Buy & Sell Farmed Goods <!--<span id="js-rotating"> FARMED ITEMS, CARS, LANDS </span>--></h1>
+                        <p class="p-heading p-large">
+                            Join auctions for fresh produce and high-quality farm items
+                        </p>
+                        <button class="cta-btn">Explore Auctions</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<br>
+<br>
+<br>
+
+<section class="auctions">
+    <h2>Active Auctions</h2>
+    <div id="active-auctions" class="auction-container"></div>
+</section>
+
+<!-- Upcoming Auctions -->
+<section class="auctions">
+    <h2>Upcoming Auctions</h2>
+    <br>
+    <br>
+    <div id="pending-auctions" class="auction-container"></div>
+</section>
+
+<section class="top-sellers">
+    <h2>Top Rated Sellers</h2>
+    <div class="seller-container">
+        <div class="seller-card">
+            <img src="seller1.jpg" alt="Seller 1">
+            <h3>John's Organic Farm</h3>
+            <p>⭐ 4.9 Rating</p>
+        </div>
+        <div class="seller-card">
+            <img src="images/details-1-background.jpg" alt="Seller 2">
+            <h3>Green Harvest</h3>
+            <p>⭐ 4.8 Rating</p>
+        </div>
+    </div>
+</section>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/Farmed.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+<script src="js/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
+<script src="js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
+<script src="js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
+<script src="js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
+<script src="js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
+<script src="js/morphext.min.js"></script> <!-- Morphtext rotating text in the header -->
+<script src="js/isotope.pkgd.min.js"></script> <!-- Isotope for filter -->
+<script src="js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
+<script src="js/scripts.js"></script> <!-- Custom scripts -->
+<script src="js/new.js"></script> <!-- Custom scripts -->
+</body>
+</html>

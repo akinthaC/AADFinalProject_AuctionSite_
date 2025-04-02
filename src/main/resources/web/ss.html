@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auction Listings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="css/swiper.css" rel="stylesheet">
+  <link href="css/magnific-popup.css" rel="stylesheet">
+  <link href="css/Farmed.css" rel="stylesheet">
+  <link href="css/FarmedItem.css" rel="stylesheet">
+  <link href="css/bootstrap.css" rel="stylesheet">
+  <link href="css/fontawesome-all.css" rel="stylesheet">
+  <link href="css/swiper.css" rel="stylesheet">
+  <link href="css/magnific-popup.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f1f4f9;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+    }
+
+    .auction-container {
+      display: flex;
+      justify-content: center; /* Centers items horizontally */
+      align-items: center; /* Centers items vertically if needed */
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .auction-item {
+      background: white;
+      width: 90%; /* Adjust width */
+      max-width: 700px; /* Set a max width */
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center; /* Center text */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Ensures content inside is centered */
+    }
+
+    .auction-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .details {
+      text-align: center; /* Center text inside details */
+    }
+
+    button {
+      width: 100%; /* Adjust button width */
+      margin-top: 10px;
+    }
+    .auction-item {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .auction-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .auction-item img {
+      border-radius: 12px;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .auction-item .details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auction-item h6 {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .auction-item p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+
+    .verified, .not-verified {
+      font-weight: 600;
+    }
+
+    .verified {
+      color: #4caf50;
+    }
+
+    .not-verified {
+      color: #f44336;
+    }
+
+    .filter-sidebar {
+      background: linear-gradient(135deg, #8e2de2, #4a00e0);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      color: #fff;
+      position: -webkit-sticky; /* For Safari */
+      position: sticky;
+      top: 95px; /* Distance from the top of the page */
+      height: 80vh; /* Full height of the viewport */
+      overflow-y: auto; /* Enable scrolling if content exceeds the height */
+    }
+
+
+    .filter-sidebar h5 {
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+    }
+
+    .filter-sidebar select,
+    .filter-sidebar button {
+      background-color: #fff;
+      color: #333;
+      border-radius: 8px;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      transition: background-color 0.3s ease;
+    }
+
+    .filter-sidebar select:focus,
+    .filter-sidebar button:focus {
+      outline: none;
+      background-color: #4a00e0;
+      color: #fff;
+    }
+
+    .pagination {
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: #4a00e0;
+      border-color: #4a00e0;
+    }
+
+    .btn-secondary {
+      background-color: #4a00e0;
+      color: white;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: #8e2de2;
+    }
+
+    .price-range-slider {
+      width: 100%;
+      height: 8px;
+      background: #ddd;
+      border-radius: 8px;
+    }
+
+    .price-range-slider input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: #4a00e0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .price-range-slider input[type="range"]:focus {
+      outline: none;
+    }
+
+    .price-value {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background-color: #4a00e0;
+    }
+
+    @media (max-width: 768px) {
+      .filter-sidebar {
+        background: linear-gradient(135deg, #8e2de2, #4a00e0);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        color: #fff;
+        position: -webkit-static; /* For Safari */
+        position: static !important;
+        top: 20px; /* Distance from the top of the page */
+        height: 80vh; /* Full height of the viewport */
+        overflow-y: auto; /* Enable scrolling if content exceeds the height */
+      }
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center everything inside */
+      text-align: center;
+    }
+
+    #auction-list {
+      width: 100%;
+      max-width: 800px; /* Adjust max width as needed */
+    }
+
+
+    .timer{
+      font-size: 21px !important;
+      color: rgba(246, 0, 0, 0.9) !important;
+      font-weight: 600;
+    }
+    .mt-5, .my-5 {
+      margin-top: 5rem !important;
+    }
+
+    .container {
+      background-color: #f1f4f9;
+      box-shadow: none !important;
+    }
+      .navbar-dark .navbar-nav .nav-link {
+        color: rgb(255 255 255);
+      }
+    .nav-item {
+      display: flex;
+      align-items: center;
+    }
+    .fixed-top {
+      position: fixed;
+      top: 0;
+      right: -162px;
+      left: 0;
+      z-index: 1030;
+    }
+    .nav-item input.form-control {
+      width: 250px; /* Adjust width as needed */
+      padding: 8px 12px;
+      border: 2px solid #fff; /* White border */
+      border-radius: 25px; /* Rounded edges */
+      background-color: transparent;
+      color: white; /* White text */
+      transition: all 0.3s ease-in-out;
+      position: static;
+      left: 70px;
+
+    }
+
+    /* Change placeholder color */
+    .nav-item input.form-control::placeholder {
+      color: rgba(255, 255, 255, 0.7); /* Light white */
+    }
+
+    /* Style input field on focus */
+    .nav-item input.form-control:focus {
+      background-color: white;
+      color: black; /* Change text color */
+      border-color: #f8f9fa; /* Light border */
+      outline: none;
+    }
+
+    /* Style the search button */
+    .nav-item .btn-outline-light {
+      border-radius: 25px;
+      padding: 8px 16px;
+      font-weight: bold;
+      border: 2px solid white; /* White border */
+      transition: all 0.3s ease-in-out;
+      margin-top: auto;
+    }
+
+    /* Button hover effect */
+    .nav-item .btn-outline-light:hover {
+      background-color: white;
+      color: black;
+      border-color: white;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+
+  <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+    <!-- Text Logo - Use this if you don't have a graphic logo -->
+    <!-- <a class="navbar-brand logo-text page-scroll" href="SingUpRegister.html">Aria</a> -->
+
+    <!-- Image Logo -->
+    <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+
+    <!-- Mobile Menu Toggle Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-awesome fas fa-bars"></span>
+      <span class="navbar-toggler-awesome fas fa-times"></span>
+    </button>
+    <!-- end of mobile menu toggle button -->
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link page-scroll" href="#header">HOME <span class="sr-only">(current)</span></a>
+        </li>
+
+
+        <li class="nav-item">
+          <a id="userGreeting" style="color: black; font-size: 16px; font-weight:600; display: none;"
+             class="nav-link page-scroll" href="#">Hi, User</a>
+        </li>
+
+
+        <li class="nav-item">
+          <a style="color: black; font-size: 16px; font-weight:600"  class="nav-link page-scroll" href="SingUpRegister.html">SIGNUP</a>
+        </li>
+        <li  class="nav-item">
+          <a id="Register" style="color: black; font-size: 16px; font-weight:bold" class="nav-link page-scroll" href="SingUpRegister.html">REGISTER</a>
+        </li>
+
+        <li class="nav-item">
+          <div class="d-flex">
+            <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <!--<button class="btn btn-outline-light">Search</button>-->
+          </div>
+          <ul id="searchResults" class="list-group mt-2"></ul>
+        </li>
+
+
+      </ul>
+
+    </div>
+
+  </nav> <!-- end of navbar -->
+
+
+
+
+  <div class="row">
+    <!-- Filter Sidebar -->
+    <aside class="col-md-3 filter-sidebar">
+      <h5>Filters</h5>
+      <div class="mb-3">
+        <label class="form-label">Price Range</label>
+        <div class="d-flex align-items-center mb-2">
+          <input type="number" id="priceValue" class="form-control me-2 price-value" min="0" max="1000000000000" step="1000" value="0" oninput="updateProgress()">
+          <span class="fw-bold">LKR</span>
+        </div>
+        <input type="range" class="price-range-slider" id="priceRange" min="0" max="10000" step="100" value="0" oninput="updatePriceValue()">
+        <div class="progress mt-2">
+          <div id="priceProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="10000"></div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Auction Type</label>
+        <select id="auction-type" class="form-select">
+          <option value="all">All</option>
+          <option value="bidding">Bid</option>
+          <option value="fixed">Fixed price </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Top Rated</label>
+        <select class="form-select">
+          <option value="items">Top Rated Items</option>
+          <option value="sellers">Top Rated Sellers</option>
+        </select>
+      </div>
+      <button class="btn btn-primary w-100">Apply Filters</button>
+    </aside>
+
+    <!-- Auction Listings -->
+    <main class="col-md-9">
+      <div id="auction-list">
+        <!-- Auction Items Here -->
+      </div>
+
+      <!-- Pagination -->
+      <nav>
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </main>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="js/AllListing.js"></script>
+<script>
+  let userFirstName = null;
+  let userLastName = null;
+
+  $(document).ready(function () {
+    let allItems = [];  // Store all fetched items
+    let filteredItems = [];
+    let currentPage = 1;
+    const pageSize = 5;  // Show 5 items per page
+
+
+
+    function fetchAuctionItems() {
+      $.ajax({
+        url: `http://localhost:8080/api/listings/active`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+          console.log(response);
+
+
+          if (!Array.isArray(response.data)) {
+            console.error("Response does not contain a valid data array:", response);
+            return;
+          }
+
+          allItems = response.data;  // ✅ Extract data array
+          filteredItems = [...allItems];
+          displayPage(currentPage);
+          updatePagination();
+        },
+        error: function (error) {
+          console.error("Error fetching data:", error);
+        }
+      });
+    }
+
+    function displayPage(page) {
+      let itemsList = $('#auction-list');
+      itemsList.empty();
+
+      let start = (page - 1) * pageSize;
+      let end = start + pageSize;
+      let paginatedItems = allItems.slice(start, end);
+
+      paginatedItems.forEach(function (item) {
+        getUserFullName(item.userId, function (fullName) {
+          let itemHtml = `
+          <div class="auction-item">
+              <img src="/static/uploads/${item.mainImage}" alt="${item.title}">
+              <div class="details">
+                  <h6>${item.title}</h6>
+                  <p>Price: ${item.price} LKR</p>
+                  <p>Seller: ${fullName}</p>
+                  <p>Type: ${item.sellType}</p>
+                  <p class="${item.verified ? 'verified' : 'not-verified'}">
+                      ${item.verified ? 'Verified' : 'Not Verified'}
+                  </p>`;
+
+
+          if (item.sellType === 'bidding') {
+            const endTime = new Date(new Date(item.bidStartedDate).getTime() + item.bidDuration * 86400000);
+
+            itemHtml += `
+            <p class="timer" data-endtime="${endTime.toISOString()}">00:00:00</p>
+            <button class="btn btn-primary bid-now" data-item-id="${item.id}">Bid Now</button>
+             `;
+            startTimers();
+          } else if (item.sellType === 'fixed') {
+
+            itemHtml += `<button class="btn btn-success buy-now" data-item-id="${item.id}">Buy Now</button>`;
+
+          } else if (item.sellType === 'both') {
+
+            const endTime = new Date(new Date(item.bidStartedDate).getTime() + item.bidDuration * 86400000);
+
+            itemHtml += `
+            <p class="timer" data-endtime="${endTime.toISOString()}">00:00:00</p>
+            <button class="btn btn-primary bid-now" data-item-id="${item.id}">Bid Now</button>
+            <button class="btn btn-success buy-now" data-item-id="${item.id}">Buy Now</button>
+             `;
+            startTimers();
+
+          }
+
+          itemHtml += `</div></div>`;
+          itemsList.append(itemHtml);
+        });
+      });
+    }
+
+    function startTimers() {
+      setInterval(() => {
+        $(".timer").each(function () {
+          const endTime = new Date($(this).data("endtime"));
+          const now = new Date();
+          let timeLeft = endTime - now;
+
+          if (timeLeft <= 0) {
+            $(this).text("00:00:00"); // Auction ended
+            return;
+          }
+
+          const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, '0');
+          const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, '0');
+
+          $(this).text(`${hours}:${minutes}:${seconds}`);
+        });
+      }, 1000);
+    }
+
+
+
+    function updatePagination() {
+      let totalPages = Math.ceil(allItems.length / pageSize);
+      let paginationContainer = $(".pagination");
+      paginationContainer.empty();
+
+      paginationContainer.append(`
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Previous</a>
+            </li>
+        `);
+
+      for (let i = 1; i <= totalPages; i++) {
+        paginationContainer.append(`
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                </li>
+            `);
+      }
+
+      paginationContainer.append(`
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Next</a>
+            </li>
+        `);
+    }
+
+    window.changePage = function (page) {
+      let totalPages = Math.ceil(allItems.length / pageSize);
+      if (page < 1 || page > totalPages) return;
+
+      currentPage = page;
+      displayPage(currentPage);
+      updatePagination();
+    };
+
+
+
+    $("#searchInput").on("input", function () {
+      let searchText = $(this).val().toLowerCase(); // Get input valu// e
+      console.log(searchText)
+      let filteredItems = allItems.filter(item =>
+              item.title.toLowerCase().includes(searchText)
+      );
+
+      displayItems(filteredItems); // Function to display results
+    });
+
+
+    function applyFilters() {
+      let selectedAuctionType = $('#auction-type').val(); // "bidding", "fixed", or "all"
+      let maxPrice = $('#priceValue').val(); // Maximum price filter
+
+      console.log(selectedAuctionType)
+      console.log(maxPrice)
+
+      let filteredItems = allItems.filter(item => {
+        // Check auction type condition
+        if (selectedAuctionType !== "all" && item.sellType !== selectedAuctionType) {
+          return false;
+        }
+
+        if (item.price > maxPrice) {
+          return false;
+        }
+        return true;
+      });
+
+      console.log("Filtered items:", filteredItems);
+      displayItems(filteredItems);
+    }
+
+    // Function to display filtered items
+    function displayItems(items) {
+      let itemsList = $('#auction-list');
+      itemsList.empty();
+
+      if (items.length === 0) {
+        itemsList.append(`<p>No items match your filter criteria.</p>`);
+        return;
+      }
+
+      items.forEach(function (item) {
+        getUserFullName(item.userId, function (fullName) {
+          let itemHtml = `
+          <div class="auction-item">
+              <img src="/static/uploads/${item.mainImage}" alt="${item.title}">
+              <div class="details">
+                  <h6>${item.title}</h6>
+                  <p>Price: ${item.price} LKR</p>
+                  <p>Seller: ${fullName}</p>
+                  <p>Type: ${item.sellType}</p>
+                  <p class="${item.verified ? 'verified' : 'not-verified'}">
+                      ${item.verified ? 'Verified' : 'Not Verified'}
+                  </p>`;
+
+
+          if (item.sellType === 'bidding') {
+            const endTime = new Date(new Date(item.bidStartedDate).getTime() + item.bidDuration * 86400000);
+
+            itemHtml += `
+            <p class="timer" data-endtime="${endTime.toISOString()}">00:00:00</p>
+            <button class="btn btn-primary bid-now" data-item-id="${item.id}">Bid Now</button>
+             `;
+            startTimers();
+          } else if (item.sellType === 'fixed') {
+
+            itemHtml += `<button class="btn btn-success buy-now" data-item-id="${item.id}">Buy Now</button>`;
+
+          } else if (item.sellType === 'both') {
+
+            const endTime = new Date(new Date(item.bidStartedDate).getTime() + item.bidDuration * 86400000);
+
+            itemHtml += `
+            <p class="timer" data-endtime="${endTime.toISOString()}">00:00:00</p>
+            <button class="btn btn-primary bid-now" data-item-id="${item.id}">Bid Now</button>
+            <button class="btn btn-success buy-now" data-item-id="${item.id}">Buy Now</button>
+             `;
+            startTimers();
+
+          }
+
+          itemHtml += `</div></div>`;
+          itemsList.append(itemHtml);
+
+        });
+      });
+}
+      // Event listener for filter button
+      $(".btn-primary").click(function () {
+        applyFilters();
+      });
+
+
+      // Initial fetch of auction items
+      fetchAuctionItems();
+
+  });
+
+
+  // Handle Bid Now button clicks
+  $(document).on('click', '.bid-now', function() {
+    const itemId = $(this).data('item-id');
+    // Store the item ID in sessionStorage or pass as URL parameter
+    sessionStorage.setItem('selectedItemId', itemId);
+    window.location.href = 'ShowSelectListing.html'; // Redirect to bid page
+  });
+
+  // Handle Buy Now button clicks
+  $(document).on('click', '.buy-now', function() {
+    const itemId = $(this).data('item-id');
+    // Store the item ID in sessionStorage or pass as URL parameter
+    sessionStorage.setItem('selectedItemId', itemId);
+    window.location.href = 'ShowSelectListing.html'; // Redirect to buy page
+  });
+
+
+
+  function getUserFullName(userId, callback) {
+    const token = localStorage.getItem("token");
+
+    $.ajax({
+      url: `http://localhost:8080/api/v1/user/getUserById?userId=${userId}`,  // Correct query parameter syntax
+      method: 'GET',
+      contentType: 'application/json',
+      headers: {
+        'Authorization': 'Bearer ' + token  // Add your JWT token here
+      },
+      success: function (response) {
+        if (response.data) {
+          // Assuming response.data contains user info, and has firstName and lastName properties
+          let fullName = `${response.data.firstName} ${response.data.lastName}`;
+          callback(fullName);
+        } else {
+          alert("User not found.");
+          callback("Unknown User");
+        }
+      },
+      error: function (error) {
+        console.error('Error:', error);
+        alert(error.responseJSON?.message || 'Failed to get user details.');
+        callback("Unknown User");
+      }
+    });
+  }
+
+
+
+</script>
+
+<script>
+  function updatePriceValue() {
+    let range = document.getElementById("priceRange");
+    let value = range.value;
+    let progress = document.getElementById("priceProgress");
+
+    console.log(value)
+
+    // Sync text input with slider
+    document.getElementById("priceValue").value = value;
+
+    // Update progress bar width
+    let percentage = (value / range.max) * 100;
+    progress.style.width = percentage + "%";
+  }
+
+  function updateProgress() {
+    let input = document.getElementById("priceValue");
+    let progress = document.getElementById("priceProgress");
+
+    // Convert input value to number
+    let inputValue = parseFloat(input.value) || 0;
+    let maxValue = 1000000000000;  // 1 Trillion
+
+    // Clamp input value between 0 and maxValue
+    inputValue = Math.min(Math.max(inputValue, 0), maxValue);
+    input.value = inputValue; // Ensure valid input is displayed
+
+    // Calculate percentage for progress bar
+    let percentage = (inputValue / maxValue) * 100;
+    progress.style.width = percentage + "%";
+
+    console.log(`Price: ${inputValue}, Progress: ${percentage.toFixed(2)}%`);
+  }
+
+
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

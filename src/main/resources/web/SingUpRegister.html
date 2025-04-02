@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Sign in & Sign up Form</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+
+          <form class="sign-in-form">
+            <h2 class="title">Sign in</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input id="email_phone" type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input id="login-password" type="password" placeholder="Password" />
+            </div>
+
+            <a href="#"  id="forgot-password-link">Forgot Password?</a>
+
+
+            <button type="button" id="login"  class="btn solid" > Sing in </button>
+            <p class="social-text">Or Sign in with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </form>
+
+
+          <div id="modal1" class="modal ">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h3>Forgot Password</h3>
+
+              <!-- Step 1: Email or Phone Number Input -->
+              <div id="step1">
+                <label for="email-or-phone">Enter your registered Email or Phone Number:</label>
+                <input type="text" id="email-or-phone" placeholder="Email or Phone" required />
+                <button id="check-registered-btn">Check</button>
+                <p id="check-status"></p>
+              </div>
+
+              <!-- Step 2: OTP Input -->
+              <div id="step2" style="display:none;">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" placeholder="Enter OTP" required />
+                <button id="verify-otp-btn">Verify OTP</button>
+                <p id="otp-status"></p>
+              </div>
+            </div>
+          </div>
+
+
+          <form   class="sign-up-form">
+            <h2 class="title">Sign up</h2>
+
+
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div class="progress"></div>
+              </div>
+              <div class="step-indicators">
+                <span class="step-circle active">1</span>
+                <span class="step-circle">2</span>
+                <span class="step-circle">3</span>
+              </div>
+            </div>
+
+
+            <!-- Step 1 -->
+            <div class="step step-1 active  ">
+              <h3>Step 1: Personal Info</h3>
+              <div class="input-field1">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" required class="input-field2" />
+                <label for="username" class="label" > firstName</label>
+              </div>
+
+              <div class="input-field1">
+                <i class="fas fa-user"></i>
+                <input type="text" id="lastname" required class="input-field2" />
+                <label for="lastname" class="label" > lastName</label>
+              </div>
+
+              <div class="input-field1">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email"  required  class="input-field2" />
+                <label for="email" class="label" > email</label>
+              </div>
+
+              <!-- Country Selector -->
+              <div class="input-field1">
+                <i class="fas fa-globe"></i>
+                <select id="country" class="input-field2">
+                <option value="" disabled selected>Choose an option</option>
+                </select>
+              </div>
+
+              <div class="input-field1">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="tel" required class="input-field2" />
+                <label for="tel" class="label">Phone Number</label>
+              </div>
+              <button type="button"  class="btn next-step next1">Next</button>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step step-2 ">
+              <h3>Step 2: Security</h3>
+
+              <!-- Password Fields -->
+              <div class="input-field1">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" class="input-field2" required />
+                <label for="password" class="label">Password</label>
+              </div>
+
+              <div class="input-field1">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="confirmPassword" class="input-field2" required />
+                <label for="confirmPassword" class="label">Confirm Password</label>
+              </div>
+
+              <!-- Buyer/Seller Dropdown -->
+              <h4>Are you a Buyer or Seller?</h4>
+              <div >
+
+                <select id="userType" class="input-field3" required>
+                  <option value="" disabled selected>Choose an option</option>
+                  <option value="buyer">Buyer</option>
+                  <option value="seller">Seller</option>
+
+                </select>
+              </div>
+
+              <!-- Dynamic Text Area (Only One Shows at a Time) -->
+              <div class=" textarea-container" id="dynamicSection">
+                <i id="dynamicIcon" class="fas"></i>
+                <textarea style="height: 60px" id="dynamicTextArea" class="input-field3" rows="10"></textarea>
+              </div>
+
+              <!-- Buttons -->
+              <button type="button" class="btn prev-step next1">Back</button>
+              <button type="button" class="btn next-step next1">Next</button>
+            </div>
+
+            <!-- Step 3 -->
+
+            <div class="step step-3">
+              <h3>Step 3: Profile Details</h3>
+
+              <!-- Mini Map -->
+              <h4>Select Your Location</h4>
+              <div id="map" style="height: 300px; border-radius: 10px;"></div>
+              <p id="location-status"></p>
+
+              <!-- Button to Get Location -->
+              <button type="button" class="btn" onclick="getLocation()">Set My Location</button>
+
+              <!-- Hidden Inputs to Store Coordinates -->
+              <input type="hidden" id="latitude" name="latitude">
+              <input type="hidden" id="longitude" name="longitude">
+
+              <h4>Your Address</h4>
+              <div class="input-field1">
+                <i class="fas fa-lock"></i>
+                <input type="text" id="address1" class="input-field2" required />
+                <label for="address1" class="label">Line 1</label>
+              </div>
+              <div class="input-field1">
+                <i class="fas fa-lock"></i>
+                <input type="text" id="address12" class="input-field2" required />
+                <label for="address12" class="label">Line 2</label>
+              </div>
+
+              <!-- Terms and Conditions Section -->
+              <div class="terms-container">
+                <input type="checkbox" id="termsCheckbox" onchange="toggleRegisterButton()">
+                <label for="termsCheckbox">
+                  I agree to the <a href="#" onclick="openTermsModal()">Terms and Conditions</a>
+                </label>
+              </div>
+
+              <!-- Buttons -->
+              <button type="button" class="btn prev-step next1">Back</button>
+
+              <input type="submit" class="register" value="Register" id="registerBtn" disabled />
+
+              <!-- Terms and Conditions Modal -->
+              <div id="termsModal" class="modal">
+                <div class="modal-content">
+                  <span class="close" onclick="closeTermsModal()">&times;</span>
+                  <h2>Terms and Conditions</h2>
+                  <p>By using our platform, you agree to the following terms:</p>
+                  <ul>
+                    <li>You must provide accurate information.</li>
+                    <li>Personal data is protected under our privacy policy.</li>
+                    <li>Misuse of services may lead to account suspension.</li>
+                  </ul>
+                  <button onclick="acceptTerms()" class="btn accept-btn">Accept</button>
+                </div>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>New here ?</h3>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+              ex ratione. Aliquid!
+            </p>
+            <button class="btn transparent" id="sign-up-btn">
+              Sign up
+            </button>
+          </div>
+          <img src="img/log.svg" class="image" alt="" />
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>One of us ?</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
+              laboriosam ad deleniti.
+            </p>
+            <button class="btn transparent" id="sign-in-btn">
+              Sign in
+            </button>
+          </div>
+          <img src="img/register.svg" class="image" alt="" />
+        </div>
+      </div>
+    </div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="userLoginRegister.js"></script>
+    <script src="app.js"></script>
+
+  </body>
+</html>

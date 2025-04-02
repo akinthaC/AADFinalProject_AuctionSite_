@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Listing - Auction Site</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/fontawesome-all.css" rel="stylesheet">
+    <link href="css/swiper.css" rel="stylesheet">
+    <link href="css/magnific-popup.css" rel="stylesheet">
+    <link href="css/Farmed.css" rel="stylesheet">
+    <link href="css/FarmedItem.css" rel="stylesheet">
+
+
+</head>
+<body>
+<div class="container mt-5">
+    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+        <!-- Image Logo -->
+        <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-awesome fas fa-bars"></span>
+            <span class="navbar-toggler-awesome fas fa-times"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#header">HOME</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a id="userGreeting" class="nav-link page-scroll" href="#" style="color: black; font-size: 17px; font-weight:600; display: none;">Hi, User</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="SingUpRegister.html" style="color: black; font-size: 16px; font-weight:600">SIGNUP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="SingUpRegister.html" style="color: black; font-size: 16px; font-weight:bold">REGISTER</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <form>
+        <h2 id="section-title" class="mb-4 text-center">Add New Listing</h2>
+        <!-- Title -->
+        <div class="mb-4">
+            <label for="title" class="form-label">Title</label>
+            <input id="title" name="title" type="text" class="form-control" placeholder="Enter item title" required>
+        </div>
+
+        <!-- Category -->
+        <div class="mb-4">
+            <label for="category" class="form-label">Category</label>
+            <select id="category" name="category" class="form-select">
+                <option value="">Select Category</option>
+                <option>Farmed Crops</option>
+                <option>Agricultural Lands</option>
+                <option>Daily Foods</option>
+                <option>Herbal Plants</option>
+            </select>
+        </div>
+
+        <!-- Mini Description -->
+        <div class="mb-4">
+            <label for="miniDesc" class="form-label">Mini Description</label>
+            <textarea id="miniDesc" name="miniDesc" class="form-control" rows="3" placeholder="Short description" required></textarea>
+        </div>
+
+        <!-- Main Image -->
+        <div class="mb-4">
+            <label for="mainImage" class="form-label">Main Image</label>
+            <input type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" required>
+            <div id="mainImagePreview" class="mt-3"></div> <!-- Preview container for main image -->
+        </div>
+
+        <!-- Other Images -->
+        <div class="mb-4">
+            <label for="otherImages" class="form-label">Other Images (Max 5)</label>
+            <input type="file" id="otherImages" name="otherImages" class="form-control" accept="image/*" multiple>
+            <div id="otherImagesPreview" class="mt-3 d-flex flex-wrap gap-2"></div> <!-- Preview container for other images -->
+        </div>
+
+        <div class="mb-4">
+            <label for="selectOption" class="form-label">Select Option</label>
+            <select id="selectOption" class="form-control" onchange="handleSelectionChange()">
+                <option value="" disabled selected>Select Quantity or Land</option>
+                <option value="qty">Quantity</option>
+                <option value="land">Land</option>
+            </select>
+        </div>
+
+        <!-- Quantity Section -->
+        <div class="mb-4" id="qtySection" style="display: none;">
+            <label for="qty" class="form-label">Quantity</label>
+            <input id="qty" name="qty" type="number" class="form-control" placeholder="Enter quantity" >
+
+        </div>
+
+        <!-- Land Section -->
+        <div class="mb-4" id="landSection" style="display: none;">
+            <label for="landDescription" class="form-label">Land Description (Give idea what you sell what you have ex-lands of trees or kg)</label>
+            <textarea id="landDescription" name="landDescription" class="form-control" rows="4" >
+
+    </textarea>
+        </div>
+
+        <!-- Detailed Description -->
+        <div class="mb-4">
+            <label for="richTextEditor" class="form-label">Detailed Description</label>
+            <textarea id="richTextEditor" name="richTextEditor" class="form-control"></textarea>
+        </div>
+
+        <!-- Selling Options -->
+        <div class="mb-4">
+            <label for="sellType" class="form-label">Selling Options</label>
+            <select class="form-select" id="sellType" name="sellType">
+                <option value="fixed">Fixed Price</option>
+                <option value="bidding">Bidding</option>
+                <option value="both">Both</option>
+            </select>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-4" id="priceSection">
+            <label for="price" class="form-label">Price</label>
+            <input id="price" name="price" type="number" class="form-control" placeholder="Enter price" required>
+        </div>
+
+        <!-- Bid Duration and Starting Bid -->
+        <div class="mb-4" id="bidSection" style="display: none;">
+            <label for="startingBid" class="form-label">Starting Bid Price</label>
+            <input id="startingBid" name="startingBid" type="number" class="form-control" placeholder="Enter starting bid price">
+            <label for="bidDuration" class="form-label mt-3">Bid Duration (Days)</label>
+            <input type="number" id="bidDuration" name="bidDuration" class="form-control" placeholder="Number of days">
+            <label for="bidStartDate" class="form-label mt-3">Bid Start Date</label>
+            <input type="date" id="bidStartDate" name="bidStartDate" class="form-control">
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="mb-4 form-check custom-checkbox">
+            <input id="termsAccepted" name="termsAccepted" type="checkbox" class="form-check-input" required>
+            <label for="termsAccepted" class="form-check-label">I accept the Terms & Conditions</label>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="submitListning" type="submit" class="btn btn-primary w-100">Submit Listing</button>
+    </form>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/FarmedItem.js"></script>
+
+
+<script>
+    function handleSelectionChange() {
+        const selectedOption = document.getElementById("selectOption").value;
+        if (selectedOption === "qty") {
+            document.getElementById("qtySection").style.display = "block";
+            document.getElementById("landSection").style.display = "none";
+            document.getElementById("bidSection").style.display = "none"; // Hide bid section if qty is selected
+        } else if (selectedOption === "land") {
+            document.getElementById("landSection").style.display = "block";
+            document.getElementById("qtySection").style.display = "none";
+            document.getElementById("bidSection").style.display = "none"; // Hide bid section if land is selected
+            // Optionally, set a mini description about the land
+            document.getElementById("landDescription").value;
+        }
+    }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

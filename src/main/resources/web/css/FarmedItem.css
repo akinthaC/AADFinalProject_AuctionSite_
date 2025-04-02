@@ -1,0 +1,236 @@
+.mt-5, .my-5 {
+    margin-top: 9rem !important;
+}
+.navbar-custom {
+    padding: 1.150rem 15.5rem 1.125rem 2rem!important;
+    background: #113448;
+
+}
+body {
+    background-color: #f4f7fc;
+    font-family: 'Arial', sans-serif;
+}
+.container {
+    max-width: 900px;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.form-label {
+    font-weight: 600;
+}
+.form-control, .form-select {
+    border-radius: 10px;
+    box-shadow: none;
+    border: 1px solid #ddd;
+    padding: 11px;
+    transition: all 0.3s ease;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #0069d9;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+.btn-primary {
+    background-color: #0069d9;
+    border-color: #0069d9;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+.image-preview {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+.image-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.custom-checkbox .form-check-input:checked {
+    background-color: #0069d9;
+    border-color: #0069d9;
+}
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    height: 47px !important;
+    color: rgba(7, 7, 7, 0.87);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.modal-container {
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-glass h2 {
+    font-size: 22px;
+    color: #fff;
+}
+
+.modal-glass p {
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.btn-modern {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    color: white;
+    transition: 0.3s;
+}
+
+.btn-modern:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+
+.dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.3s;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* User Greeting (Dropdown Trigger) */
+.dropdown-trigger {
+    position: relative;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+.user-greeting {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.user-greeting:hover {
+    background-color: #0056b3;
+}
+/* styles.css */
+
+
+
+/* User Greeting Button */
+.greeting-button {
+    padding: 12px 20px;
+    background-color: rgba(0, 123, 255, 0.8); /* Semi-transparent button */
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: inline-block;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for greeting button */
+.greeting-button:hover {
+    background-color: rgba(0, 123, 255, 1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Dropdown Menu */
+.user-dropdown-menu {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 30px; /* Adjusted to align well below the button */
+    right: -80px;
+    background: rgba(7, 7, 7, 0.51); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Glass effect (blurred background) */
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    animation: fadeIn 0.3s ease-out;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* Dropdown Item */
+.user-dropdown-item {
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #fff; /* White text to stand out on glass effect */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+/* Hover effect for dropdown items */
+.user-dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Light hover effect */
+    color: #007bff;
+}
+
+/* Logout option styling */
+.logout-option {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+/* Animation for dropdown fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.profile-icon-container {
+    display: none; /* Initially hidden on smaller screens */
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+}

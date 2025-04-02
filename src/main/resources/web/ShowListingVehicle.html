@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Listings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/FarmedItem.css" rel="stylesheet"><link href="css/fontawesome-all.css" rel="stylesheet">
+    <link href="css/swiper.css" rel="stylesheet">
+    <link href="css/magnific-popup.css" rel="stylesheet">
+    <link href="css/Farmed.css" rel="stylesheet">
+    <link href="css/FarmedItem.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/fontawesome-all.css" rel="stylesheet">
+    <link href="css/swiper.css" rel="stylesheet">
+    <link href="css/magnific-popup.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
+    <style>
+        #editItemIdContainer {
+            display: none;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #ffffff !important;
+            color: #070707;
+            font-size: 14px;
+        }
+        img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .actions button {
+            padding: 7px 12px;
+            margin: 2px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+        .edit-btn {
+            background-color: #28a745;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .search-bar, .filter-bar {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .section-header {
+            font-size: 1.5em;
+            margin-top: 40px;
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgb(255 255 255);
+        }
+        .mt-5, .my-5 {
+            margin-top: 9rem !important;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container mt-5">
+    <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
+        <!-- Image Logo -->
+        <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-awesome fas fa-bars"></span>
+            <span class="navbar-toggler-awesome fas fa-times"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="#header">HOME</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a id="userGreeting" class="nav-link page-scroll" href="#" style="color: black; font-size: 17px; font-weight:600; display: none;">Hi, User</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="SingUpRegister.html" style="color: black; font-size: 16px; font-weight:600">SIGNUP</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link page-scroll" href="SingUpRegister.html" style="color: black; font-size: 16px; font-weight:bold">REGISTER</a>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+
+    <h2>Seller Lands Listings</h2>
+
+    <!-- Active Listings Section -->
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <input type="text" id="searchActive" class="search-bar form-control" placeholder="Search active listings..." onkeyup="searchTable('active')">
+        </div>
+        <div class="col-12 col-md-6">
+            <select id="filterActive" class="filter-bar form-select" onchange="filterTable('active')">
+                <option value="all">All Listings</option>
+                <option value="fixed">Fixed Price</option>
+                <option value="bidding">Bidding</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">Active Seller Listings</div>
+        <table id="activeListings" class="table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Main Image</th>
+                <th>Other Images</th>
+                <th>make & model</th>
+                <th>year</th>
+                <th>mileage</th>
+                <th>Price</th>
+                <th>start Price</th>
+                <th>bid Duration</th>
+                <th>Highest Bid</th>
+                <th>Bid Starting Date</th>
+                <th>Add to cart Count</th>
+                <th>Watch Count</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="activeListingTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Ended Listings Section -->
+    <div class="section">
+        <div class="section-header">Ended Seller Listings</div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <input type="text" id="searchEnded" class="search-bar form-control" placeholder="Search ended listings..." onkeyup="searchTable('ended')">
+            </div>
+            <div class="col-12 col-md-6">
+                <select id="filterEnded" class="filter-bar form-select" onchange="filterTable('ended')">
+                    <option value="all">All Listings</option>
+                    <option value="fixed">Fixed Price</option>
+                    <option value="bidding">Bidding</option>
+                </select>
+            </div>
+        </div>
+        <table id="endedListings" class="table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Main Image</th>
+                <th>Other Images</th>
+                <th>make & model</th>
+                <th>year</th>
+                <th>mileage</th>
+                <th>Price</th>
+                <th>start Price</th>
+                <th>bid Duration</th>
+                <th>Highest Bid</th>
+                <th>Bid Starting Date</th>
+                <th>Add to cart Count</th>
+                <th>Watch Count</th>
+
+
+            <tr>
+            </thead>
+            <tbody id="endedListingTable"></tbody>
+        </table>
+    </div>
+
+    <!-- Pending Listings Section -->
+</div>
+
+<br>
+<br>
+
+<div class="container">
+
+    <div class="section">
+        <div class="section-header">Pending Seller Listings</div>
+        <table id="pendingListings" class="table">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Main Image</th>
+                <th>Other Images</th>
+                <th>make & model</th>
+                <th>year</th>
+                <th>mileage</th>
+                <th>Price</th>
+                <th>start Price</th>
+                <th>bid Duration</th>
+                <th>Highest Bid</th>
+                <th>Bid Starting Date</th>
+                <th>Add to cart Count</th>
+                <th>Watch Count</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="pendingListingTable"></tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="editListingModal" tabindex="-1" aria-labelledby="editListingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editListingModalLabel">Edit Listing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editListingForm">
+
+                    <div class="mb-4 d-none">
+                        <label for="editItemId" class="form-label">ID</label>
+                        <input id="editItemId" name="editItemId" type="text" class="form-control" placeholder="Enter item title" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="vehicleType" class="form-label">Vehicle Type:</label>
+                        <select class="form-select" id="vehicleType" name="vehicleType">
+                            <option value="Car">Car</option>
+                            <option value="Motorbike">Motorbike</option>
+                            <option value="Truck">Truck</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="make" class="form-label">Vehicle Make & Model:</label>
+                        <input type="text" class="form-control" id="make" name="make" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Year of Manufacture:</label>
+                        <input type="number" class="form-control" id="year" name="year" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="miniDesc" class="form-label">Mini Description</label>
+                        <textarea id="miniDesc" name="miniDesc" class="form-control" rows="3" placeholder="Short description" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="mileage" class="form-label">Mileage (km):</label>
+                        <input type="number" class="form-control" id="mileage" name="mileage" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fuel" class="form-label">Fuel Type:</label>
+                        <select class="form-select" id="fuel" name="fuel">
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Electric">Electric</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="transmission" class="form-label">Transmission:</label>
+                        <select class="form-select" id="transmission" name="transmission">
+                            <option value="Automatic">Automatic</option>
+                            <option value="Manual">Manual</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sellType" class="form-label">Selling Option:</label>
+                        <select class="form-select" id="sellType" name="sellType">
+                            <option value="fixed">Fixed Price</option>
+                            <option value="bidding">Bidding</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3" id="priceSection">
+                        <label for="price" class="form-label">Price:</label>
+                        <input id="price" name="price" type="number" class="form-control" placeholder="Enter price" required>
+                    </div>
+
+                    <div class="mb-3" id="bidSection" style="display: none;">
+                        <label for="startingBid" class="form-label">Starting Bid Price:</label>
+                        <input id="startingBid" name="startingBid" type="number" class="form-control" placeholder="Enter starting bid price">
+                        <label for="bidDuration" class="form-label mt-2">Bid Duration (Days):</label>
+                        <input id="bidDuration" name="bidDuration" type="number" class="form-control" placeholder="Number of days">
+                        <label for="bidStartDate" class="form-label mt-3">Bid Start Date</label>
+                        <input type="date" id="bidStartDate" name="bidStartDate" class="form-control">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="mainImage" class="form-label">Main Image</label>
+                        <input type="file" id="mainImage" name="mainImage" class="form-control" accept="image/*" required>
+                        <div id="mainImagePreview" class="mt-3"></div> <!-- Preview container for main image -->
+                    </div>
+
+                    <!-- Other Images -->
+                    <div class="mb-4">
+                        <label for="otherImages" class="form-label">Other Images (Max 5)</label>
+                        <input type="file" id="otherImages" name="otherImages" class="form-control" accept="image/*" multiple>
+                        <div id="otherImagesPreview" class="mt-3 d-flex flex-wrap gap-2"></div> <!-- Preview container for other images -->
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="richTextEditor" class="form-label">Detailed Description</label>
+                        <textarea id="richTextEditor" name="richTextEditor" class="form-control"></textarea>
+                    </div>
+
+
+                    <button id="submitListingVehicle" type="submit" class="btn btn-success w-100">Update Listing</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    let currentUserId = null;
+
+    // Fetch active auction items
+    function fetchActiveItems() {
+        $.ajax({
+            url: 'http://localhost:8080/api/listings/Vehicle/getAll', // Your endpoint
+            method: 'GET',
+            dataType: "json",
+            success: function (data) {
+                console.log("API Response:", data); // Debugging step
+
+                let tableBody = $("#activeListingTable");
+                tableBody.empty(); // Clear previous data
+
+                let rows = '';
+
+                getUsername()
+                const activeItems = data.data.filter(vehicleItem =>  vehicleItem.status === "Active" && vehicleItem.userId === currentUserId);
+
+                activeItems.forEach(vehicleItem => {
+                    // Check if otherImages is an array or a single string
+                    let imagesHtml = '';
+                    if (Array.isArray(vehicleItem.otherImages)) {
+                        vehicleItem.otherImages.forEach(image => {
+                            imagesHtml += `<img src="../static/uploads/${image}" width="50" height="50"> `;
+                        });
+                    } else if (vehicleItem.otherImages) {
+                        imagesHtml = `<img src="../static/uploads/${vehicleItem.otherImages}" width="50" height="50">`;
+                    }
+
+                    // Get the highest bid from the bidAmounts array
+                    let highestBid = 'No bids'; // Default if there are no bids
+                    if (Array.isArray(vehicleItem.bidAmounts) && vehicleItem.bidAmounts.length > 0) {
+                        highestBid = Math.max(...vehicleItem.bidAmounts); // Get the highest bid
+                    }
+
+                    let row = `
+                    <tr>
+                       <td>${vehicleItem.id}</td>
+                        <td><img src="../static/uploads/${vehicleItem.mainImage}" alt="Main image" width="50" height="50"></td>
+                        <td>${imagesHtml}</td>
+                        <td>${vehicleItem.make}</td>
+                        <td>${vehicleItem.yearOfManufacture}</td>
+                        <td>$${vehicleItem.mileage || 'N/A'}</td> <!-- Default value for description -->
+                        <td>$${vehicleItem.price}</td>
+                        <td>$${vehicleItem.startingBidPrice}</td>
+                        <td>${vehicleItem.bidDuration}</td>
+                        <td>$${highestBid}</td>
+                        <td>${vehicleItem.bidStartDate || 'N/A'}</td>
+                        <td>${vehicleItem.toCart || 0}</td>
+                        <td>${vehicleItem.watchedItem || 0}</td>
+
+
+                        <td class="actions">
+                        <button class="edit-btn btn">Edit</button>
+                        <button class="delete-btn btn">Delete</button>
+                        </td>
+                    </tr>
+                    `;
+          rows += row; // Add each row to the rows string
+        });
+
+        // Update the table with all the rows
+        tableBody.html(rows);
+      }
+    });
+  }
+
+
+
+    // Fetch ended auction items
+    function fetchEndedItems() {
+      $.ajax({
+        url: 'http://localhost:8080/api/listings/Vehicle/getAll', // Your endpoint
+        method: 'GET',
+        dataType: "json",
+        success: function (data) {
+          console.log("API Response:", data); // Debugging step
+
+          let tableBody = $("#endedListingTable");
+          tableBody.empty(); // Clear previous data
+
+          let rows = ''; // Initialize an empty string to hold the rows
+
+            getUsername()
+            const activeItems = data.data.filter(vehicleItem =>  vehicleItem.status === "End" && vehicleItem.userId === currentUserId);
+
+            activeItems.forEach(vehicleItem => {
+                // Check if otherImages is an array or a single string
+                let imagesHtml = '';
+                if (Array.isArray(vehicleItem.otherImages)) {
+                    vehicleItem.otherImages.forEach(image => {
+                        imagesHtml += `<img src="../static/uploads/${image}" width="50" height="50"> `;
+                    });
+                } else if (vehicleItem.otherImages) {
+                    imagesHtml = `<img src="../static/uploads/${vehicleItem.otherImages}" width="50" height="50">`;
+                }
+
+                // Get the highest bid from the bidAmounts array
+                let highestBid = 'No bids'; // Default if there are no bids
+                if (Array.isArray(vehicleItem.bidAmounts) && vehicleItem.bidAmounts.length > 0) {
+                    highestBid = Math.max(...vehicleItem.bidAmounts); // Get the highest bid
+                }
+
+                let row = `
+                    <tr>
+                        <td>${vehicleItem.id}</td>
+                        <td><img src="../static/uploads/${vehicleItem.mainImage}" alt="Main image" width="50" height="50"></td>
+                        <td>${imagesHtml}</td>
+                        <td>${vehicleItem.make}</td>
+                        <td>${vehicleItem.yearOfManufacture}</td>
+                        <td>$${vehicleItem.mileage || 'N/A'}</td> <!-- Default value for description -->
+                        <td>$${vehicleItem.price}</td>
+                        <td>$${vehicleItem.startingBidPrice}</td>
+                        <td>${vehicleItem.bidDuration}</td>
+                        <td>$${highestBid}</td>
+                        <td>${vehicleItem.bidStartDate || 'N/A'}</td>
+                        <td>${vehicleItem.toCart || 0}</td>
+                        <td>${vehicleItem.watchedItem || 0}</td>
+
+
+
+                    </tr>
+                    `;
+                rows += row; // Add each row to the rows string
+            });
+
+          // Update the table with all the rows
+          tableBody.html(rows);
+        }
+      });
+    }
+
+    // Fetch pending auction items
+    function fetchPendingItems() {
+      $.ajax({
+        url: 'http://localhost:8080/api/listings/Vehicle/getAll', // Your endpoint
+        method: 'GET',
+        dataType: "json",
+        success: function (data) {
+          console.log("API Response:", data); // Debugging step
+
+          let tableBody = $("#pendingListingTable");
+          tableBody.empty(); // Clear previous data
+
+          let rows = ''; // Initialize an empty string to hold the rows
+
+            getUsername()
+            const activeItems = data.data.filter(vehicleItem =>  vehicleItem.status === "Pending" && vehicleItem.userId === currentUserId);
+
+            activeItems.forEach(vehicleItem => {
+                // Check if otherImages is an array or a single string
+                let imagesHtml = '';
+                if (Array.isArray(vehicleItem.otherImages)) {
+                    vehicleItem.otherImages.forEach(image => {
+                        imagesHtml += `<img src="../static/uploads/${image}" width="50" height="50"> `;
+                    });
+                } else if (vehicleItem.otherImages) {
+                    imagesHtml = `<img src="../static/uploads/${vehicleItem.otherImages}" width="50" height="50">`;
+                }
+
+                // Get the highest bid from the bidAmounts array
+                let highestBid = 'No bids'; // Default if there are no bids
+                if (Array.isArray(vehicleItem.bidAmounts) && vehicleItem.bidAmounts.length > 0) {
+                    highestBid = Math.max(...vehicleItem.bidAmounts); // Get the highest bid
+                }
+
+                let row = `
+                    <tr>
+                        <td>${vehicleItem.id}</td>
+                        <td><img src="../static/uploads/${vehicleItem.mainImage}" alt="Main image" width="50" height="50"></td>
+                        <td>${imagesHtml}</td>
+                        <td>${vehicleItem.make}</td>
+                        <td>${vehicleItem.yearOfManufacture}</td>
+                        <td>$${vehicleItem.mileage || 'N/A'}</td> <!-- Default value for description -->
+                        <td>$${vehicleItem.price}</td>
+                        <td>$${vehicleItem.startingBidPrice}</td>
+                        <td>${vehicleItem.bidDuration}</td>
+                        <td>$${highestBid}</td>
+                        <td>${vehicleItem.bidStartDate || 'N/A'}</td>
+                        <td>${vehicleItem.toCart || 0}</td>
+                        <td>${vehicleItem.watchedItem || 0}</td>
+
+
+                        <td class="actions">
+                        <button class="edit-btn btn">Edit</button>
+                        <button class="delete-btn btn">Delete</button>
+                        </td>
+                    </tr>
+                    `;
+                rows += row; // Add each row to the rows string
+            });
+
+          // Update the table with all the rows
+          tableBody.html(rows);
+        }
+      });
+    }
+
+    // Initialize the page with auction items
+    $(document).ready(function() {
+      getUsername();
+      fetchActiveItems();
+      fetchEndedItems();
+      fetchPendingItems();
+    });
+
+    // Search function for both Active and Ended Listings
+    function searchTable(listingType) {
+      let searchInput = document.getElementById(`search${listingType.charAt(0).toUpperCase() + listingType.slice(1)}`).value.toLowerCase();
+      let tableBody = $(`#${listingType}ListingTable`);
+      let rows = tableBody.find('tr');
+
+      rows.each(function() {
+        let row = $(this);
+        let title = row.find('td:nth-child(3)').text().toLowerCase(); // Searching in the title column
+        let category = row.find('td:nth-child(4)').text().toLowerCase(); // Searching in the category column
+
+        if (title.indexOf(searchInput) !== -1 || category.indexOf(searchInput) !== -1) {
+          row.show();
+        } else {
+          row.hide();
+        }
+      });
+    }
+
+// Filter function for both Active and Ended Listings
+    function filterTable(listingType) {
+      let selectedFilter = document.getElementById(`filter${listingType.charAt(0).toUpperCase() + listingType.slice(1)}`).value;
+      let tableBody = $(`#${listingType}ListingTable`);
+      let rows = tableBody.find('tr');
+
+      rows.each(function() {
+        let row = $(this);
+        let sellType = row.find('td:nth-child(7)').text(); // Column 7 is the sell type
+
+        if (selectedFilter === "all" || sellType.toLowerCase() === selectedFilter.toLowerCase()) {
+          row.show();
+        } else {
+          row.hide();
+        }
+      });
+    }
+
+
+    function getUsername() {
+      const email =localStorage.getItem("email");
+      const token = localStorage.getItem("token");
+
+      $.ajax({
+        url: `http://localhost:8080/api/v1/user/getUserByEmail?email=${encodeURIComponent(email)}`,
+                    method: 'GET',
+                    contentType: 'application/json',
+                    headers: {
+                    'Authorization': 'Bearer ' + token  // Add your JWT token here
+                    },
+                    success: function (response) {
+                    if (response.data) {
+                    currentUserId=response.data.id
+                    } else {
+                    alert("User not found.");
+                    }
+                    },
+                    error: function (error) {
+                    console.error('Error:', error);
+                    alert(error.responseJSON?.message || 'Failed to get user details.');
+                    }
+                    });
+
+            }
+
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    tinymce.init({ selector: '#richTextEditor', height: 300, plugins: 'image lists', toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image' });
+
+
+    $(document).on("click", ".edit-btn", function () {
+        let row = $(this).closest("tr");
+        // Get the item ID from the clicked row
+        let itemId = row.find("td:eq(0)").text().trim(); // Assuming ID is in the first column
+
+        console.log("Fetching Item Data for ID:", itemId);
+
+        // Make an AJAX call to fetch item details by ID
+        $.ajax({
+            url: `http://localhost:8080/api/listings/Vehicle/getById/${itemId}`,
+            type: "GET",
+            data: { id: itemId },
+            dataType: "json",
+            success: function (response) {
+                console.log(response.success)
+                if (response) {
+                    let itemData = response.data;
+                    console.log(response.data)
+
+                    // Populate form fields
+                    $("#editItemId").val(itemData.id);
+                    $("#vehicleType").val(itemData.vehicleType);
+                    $("#make").val(itemData.make);
+                    $("#miniDesc").val(itemData.miniDescription);
+                    $("#price").val(itemData.price);
+                    $("#year").val(itemData.yearOfManufacture);
+                    $("#mileage").val(itemData.mileage);
+                    $("#fuel").val(itemData.fuelType);
+                    $("#transmission").val(itemData.transmission);
+
+                    // Set detailed description
+                    console.log(itemData.detailedDescription)
+
+                    tinymce.get('richTextEditor').setContent(itemData.detailedDescription);
+
+                    // Show main image preview
+                    $("#mainImagePreview").html(`<img src="../static/uploads/${itemData.mainImage}" width="100" height="100">`);
+
+                    // Show other images preview
+                    let otherImagesPreview = "";
+                    itemData.otherImages.forEach(img => {
+                        otherImagesPreview += `<img src="../static/uploads/${img}" width="50" height="50" class="me-2">`;
+                    });
+                    $("#otherImagesPreview").html(otherImagesPreview);
+
+
+                    // Handle Selling Option (Bidding, Fixed, or Both)
+                    if (itemData.sellType === "bidding") {
+                        $("#sellType").val("bidding");
+                        $("#bidSection").show();
+                        $("#priceSection").hide();
+                        $("#startingBid").val(itemData.startingBidPrice);
+                        $("#bidDuration").val(itemData.bidDuration);
+
+                        // Set bid start date (if it exists, format as MM-DD-YYYY)
+                        $("#bidStartDate").val(formatDate(itemData.bidStartDate));
+                    } else if (itemData.sellType === "fixed") {
+                        $("#sellType").val("fixed");
+                        $("#bidSection").hide();
+                        $("#priceSection").show();
+                        $("#price").val(itemData.price);
+                    } else if (itemData.sellType === "both") {
+                        $("#sellType").val("both");
+                        $("#bidSection").show();
+                        $("#priceSection").show();
+                        $("#startingBid").val(itemData.startingBidPrice);
+                        $("#bidDuration").val(itemData.bidDuration);
+
+                        // Set bid start date (if it exists, format as MM-DD-YYYY)
+                        $("#bidStartDate").val(formatDate(itemData.bidStartDate));
+                        $("#price").val(itemData.price);
+                    }
+
+                    // Handle Terms and Conditions checkbox
+                    $("#termsAccepted").prop("checked", itemData.termsAccepted);
+
+                    // Show modal
+                    $("#editListingModal").modal("show");
+                } else {
+                    alert("Item not found!");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching item:", error);
+                alert("Failed to fetch item details!");
+            }
+        });
+    });
+
+    // Function to format date as MM-DD-YYYY
+    function formatDate(date) {
+        if (!date) return ''; // Return empty if no date
+        const d = new Date(date);
+        let month = (d.getMonth() + 1).toString().padStart(2, '0'); // Get month and add leading 0
+        let day = d.getDate().toString().padStart(2, '0'); // Get day and add leading 0
+        let year = d.getFullYear(); // Get full year
+        return `${month}-${day}-${year}`; // Return formatted date MM-DD-YYYY
+    }
+
+</script>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(document).on("click", ".delete-btn", function () {
+        let row = $(this).closest("tr");
+        let itemId = row.find("td:eq(0)").text().trim();
+
+        // SweetAlert2 Confirmation Dialog
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with AJAX delete request
+                $.ajax({
+                    url: `http://localhost:8080/api/listings/Vehicle/Delete/${itemId}`,
+                    type: "DELETE",
+                    success: function (response) {
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "The item has been deleted.",
+                            icon: "success",
+                            timer: 2000, // Auto-close after 2 seconds
+                            showConfirmButton: false
+                        });
+
+                        row.remove(); // Remove row from UI
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Error deleting item: " + xhr.responseText,
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/vehicle.js"></script>
+
+</body>
+</html>
