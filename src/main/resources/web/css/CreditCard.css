@@ -1,0 +1,178 @@
+/* Modal Styles */
+#creditCardModalContainer {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1070;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6); /* Black with transparency */
+}
+
+/* Modal Content */
+#creditCardModalContent {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+/* Close Button */
+#closeCardModalBtn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#closeCardModalBtn:hover,
+#closeCardModalBtn:focus {
+    color: #000;
+}
+
+/* Card UI Section */
+.card-ui-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Card Preview */
+#creditCardPreview {
+    background: linear-gradient(135deg, #1e5799, #2989d8);
+    color: white;
+    border-radius: 16px;
+    padding: 20px 25px;
+    min-height: 200px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+#cardBrandLogo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.card-number {
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin: 15px 0;
+}
+
+.card-holder, .card-expiration {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.card-holder label,
+.card-expiration label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #ccc;
+}
+
+#displayCardHolder,
+#displayCardExpiration {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+/* Form Styles */
+#creditCardForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #2989d8;
+}
+
+#submitCardPaymentBtn {
+    background-color: #2989d8;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#submitCardPaymentBtn:hover {
+    background-color: #1e5799;
+}
+
+/* Button */
+#openCardModalBtn {
+    margin: 40px auto;
+    display: block;
+    padding: 14px 28px;
+    background-color: #444;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#openCardModalBtn:hover {
+    background-color: #222;
+}
+
+/* Animation */
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .card-ui-container {
+        gap: 20px;
+    }
+
+    #creditCardModalContent {
+        padding: 20px;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+}

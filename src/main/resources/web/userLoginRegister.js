@@ -53,12 +53,12 @@ $(document).ready(function () {
 
         checkRole("test1",
             function () {
-                showAdminDashboard();  // If success, user is Admin
+                showMainAdminDashboard();  // If success, user is Admin
             },
             function () {
                 checkRole("test2",
                     function () {
-                        showSellerDashboard();  // If success, user is Seller
+                        showAdminDashboard();// If success, user is Seller
                     },
                     function () {
                         checkRole("test3",
@@ -82,10 +82,13 @@ $(document).ready(function () {
         );
 }
 
-        function showAdminDashboard() {
-        window.location.href = 'admin-dashboard.html';
+    function showAdminDashboard() {
+        window.location.href = './mainadminDashboard.html';
     }
 
+    function showMainAdminDashboard() {
+        window.location.href = 'mainadminDashboard.html';
+    }
 
     function showSellerDashboard() {
         window.location.href = 'index.html';

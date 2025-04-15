@@ -35,6 +35,12 @@ public class FarmedListingDTO {
     private LocalDateTime listingDate;
     private Long userId;
 
+    private int winnerAttemptCount = 0; // 0 = first, 1 = second, 2 = third
+    private Long currentWinningBidId;
+    private LocalDate winnerAssignedDate;
+    private boolean sold;
+
+
     public FarmedListingDTO(String title, String category, String miniDescription, String detailedDescription, String sellType, Double price, Double startingBid, Integer bidDuration, Integer qty, String landDesk, String status, String deletes, String mainImage, List<String> otherImages, boolean termsAccepted, LocalDate bidStartedDate, LocalDateTime listingDate , Long userId) {
         this.title = title;
         this.category = category;

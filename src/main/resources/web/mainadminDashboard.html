@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modern Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 240px;
+            background-color: #1e1e2f;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar .logo-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .logo-container img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .sidebar .logo-container span {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            padding: 12px 10px;
+            margin-bottom: 10px;
+            background: #2a2a40;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li:hover, .sidebar ul li.active {
+            background-color: #4a4aff;
+        }
+
+        .sidebar ul li i {
+            margin-right: 12px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        .main-content h1 {
+            margin-bottom: 20px;
+            font-size: 30px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card .icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            margin-bottom: 5px;
+            color: #888;
+        }
+
+        .card h2 {
+            font-size: 26px;
+        }
+
+        #chartContainer {
+            margin-top: 30px;
+
+        }
+
+        canvas {
+            max-width: 100%;
+            max-height: 420px;
+        }
+
+        /* Container spacing */
+        #dashboardContent {
+            padding: 20px;
+        }
+
+        /* Table styles */
+        table.table {
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table.table th,
+        table.table td {
+            vertical-align: middle;
+        }
+
+        /* Input spacing */
+        #userSearchInput,
+        #roleFilter {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Button styles */
+        .btn-success,
+        .btn-danger {
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-success:hover,
+        .btn-danger:hover {
+            transform: scale(1.05);
+        }
+
+        /* Badge spacing */
+        .badge {
+            font-size: 0.75rem;
+            padding: 6px 10px;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            #userSearchInput,
+            #roleFilter {
+                max-width: 100%;
+            }
+
+            table.table th,
+            table.table td {
+                font-size: 0.85rem;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal {
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 300px;
+            border-radius: 8px;
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .modal-content label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            color: #888;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        @media (max-width: 420px) {
+            .modal-content {
+                width: 90%;
+                max-width: 300px;
+                margin-right: 10px;
+            }
+        }
+
+        /* General task section styling */
+        .task-section {
+            margin-bottom: 30px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Add task form and filter layout */
+        .add-task-form,
+        .task-filter {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        /* Styling for form inputs, selects, and filter input */
+        .add-task-form input,
+        .add-task-form select,
+        .task-filter input {
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        .add-task-form input:focus,
+        .add-task-form select:focus,
+        .task-filter input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+
+        /* Buttons styling */
+        .add-task-form button,
+        .task-filter button {
+            padding: 12px 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Hover effect for buttons */
+        .add-task-form button:hover,
+        .task-filter button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Styling for task table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f1f1f1;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Row hover effect */
+        tr:hover {
+            background-color: #f7f7f7;
+            cursor: pointer;
+        }
+
+        /* Responsive table for mobile */
+        @media (max-width: 768px) {
+            .task-section {
+                padding: 10px;
+            }
+
+            .add-task-form, .task-filter {
+                flex-direction: column;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        /* Styling the task filter date input */
+        .task-filter input[type="date"] {
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+
+        /* Add task form fields with proper spacing */
+        .add-task-form input,
+        .add-task-form select {
+            width: 200px; /* Fixed width for better alignment */
+        }
+
+
+        #settingsForm {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #settingsForm input,
+        #settingsForm button {
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        #settingsForm button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        #settingsForm button:hover {
+            background-color: #0056b3;
+        }
+
+
+        .settings-card {
+            max-width: 713px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f9f9f9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 19px;
+        }
+
+        .settings-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .settings-card input,
+        .settings-card button {
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .settings-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .settings-card button:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Modern Styling for Password Input */
+        .password-container {
+            position: relative;
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        #password {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        #password:focus {
+            border-color: #007bff;
+        }
+
+        /* Password Strength Status */
+        .password-strength-status {
+            margin-top: -2px;
+            padding: 3px;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .low {
+
+            color: #ff6666;
+        }
+
+        .medium {
+
+            color: #ffcc00;
+        }
+
+        .strong {
+
+            color: #66cc66;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-container">
+        <img src="https://via.placeholder.com/40" alt="Logo">
+        <span>Admin Panel</span>
+
+    </div>
+
+    <ul>
+        <a id="userGreeting" class="nav-link page-scroll" href="#" style="color: #ffffff; font-size: 17px; font-weight:600; display: none;">Hi, User</a>
+        <br>
+        <li id="home" class="nav-button active" onclick="updateDashboard('home')"><i class="fas fa-home"></i> Home</li>
+        <li id="admin" class="nav-button" onclick="updateDashboard('admin')"><i class="fas fa-user-shield"></i> Manage Admin</li>
+        <li id="users" class="nav-button" onclick="updateDashboard('users')"><i class="fas fa-users"></i> Manage Users</li>
+        <li id="todo" class="nav-button" onclick="updateDashboard('todo')"><i class="fas fa-tasks"></i> Manage To-Do</li>
+        <li id="settings" class="nav-button" onclick="updateDashboard('settings')"><i class="fas fa-cog"></i> Settings</li>
+        <li id="orders" class="nav-button" onclick="updateDashboard('orders')"><i class="fas fa-box"></i> Manage Orders</li>
+        <li id="listings" class="nav-button" onclick="updateDashboard('listings')"><i class="fas fa-list"></i> Manage Listings</li>
+    </ul>
+
+</div>
+
+<div class="main-content">
+    <h1 id="dashboardTitle">Dashboard Overview</h1>
+    <div class="cards" id="cardContainer">
+        <!-- Cards inserted via JavaScript -->
+    </div>
+
+    <div id="chartContainer">
+
+    </div>
+</div>
+
+<div id="addAdminModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddAdminModal()">&times;</span>
+        <h2>Add New Admin</h2>
+        <form id="addAdminForm">
+            <label for="adminEmail">Admin Email</label>
+            <input type="email" id="adminEmail" required><br>
+
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" required><br>
+
+            <button type="submit">Create Admin</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   /* const cardData = {
+        home: [
+            { icon: 'fas fa-user', label: 'Active Users', count: '1,200' },
+            { icon: 'fas fa-shopping-cart', label: 'Sold Items', count: '3,450' },
+            { icon: 'fas fa-store', label: 'Active Sellers', count: '285' },
+            { icon: 'fas fa-list-alt', label: 'Total Listings', count: '5,000' }
+        ],
+        admin: [
+            { icon: 'fas fa-user-shield', label: 'Admins', count: '10' },
+            { icon: 'fas fa-user-cog', label: 'Roles', count: '3' }
+        ],
+        users: [
+            { icon: 'fas fa-users', label: 'Total Users', count: '4,000' },
+            { icon: 'fas fa-user-plus', label: 'New Users This Month', count: '320' }
+        ],
+        todo: [
+            { icon: 'fas fa-check-circle', label: 'Completed Tasks', count: '150' },
+            { icon: 'fas fa-tasks', label: 'Pending Tasks', count: '30' }
+        ],
+        settings: [
+            { icon: 'fas fa-cogs', label: 'Configurable Settings', count: '12' }
+        ],
+        orders: [
+            { icon: 'fas fa-box-open', label: 'Orders Today', count: '180' },
+            { icon: 'fas fa-box', label: 'Total Orders', count: '9,540' }
+        ],
+        listings: [
+            { icon: 'fas fa-list', label: 'Active Listings', count: '4,300' },
+            { icon: 'fas fa-list-alt', label: 'Expired Listings', count: '700' }
+        ]
+    };*/
+
+    function updateDashboard(type) {
+        const titleMap = {
+            home: 'Dashboard Overview',
+            admin: 'Manage Admin',
+            users: 'Manage Users',
+            todo: 'To-Do Tasks',
+            settings: 'Settings',
+            orders: 'Manage Orders',
+            listings: 'Manage Listings'
+        };
+
+        document.getElementById("dashboardTitle").innerText = titleMap[type] || 'Default Title';
+
+        // Remove active class from all buttons
+        const buttons = document.querySelectorAll('.nav-button');
+        buttons.forEach(button => button.classList.remove('active'));
+
+        const activeButton = document.getElementById(type);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+
+        // Switch case for handling different types
+        switch (type) {
+            case 'home':
+                loadChartData();
+                loadHomeStats();
+                break;
+            case 'admin':
+                loadUsersUIAdmin();
+                loadHomeStatsAdmin();
+
+                break;
+            case 'users':
+                loadUsersUI();
+                loadHomeStatsUser()
+                break;
+            case 'todo':
+                loadHomeStatsAdmin();
+                loadTaskUI();
+                loadAdmins();
+                loadTasks();
+                break;
+            case 'settings':
+                showSettingsForm();
+                loadHomeStatsSetting();
+
+                break;
+            case 'orders':
+                // Logic for 'orders' section
+                break;
+            case 'listings':
+                // Logic for 'listings' section
+                break;
+            default:
+                console.log('Invalid section');
+                break;
+        }
+    }
+
+   function loadChartData() {
+       const content = `<canvas id="ordersChart"></canvas>`;
+       $('#chartContainer').html(content);
+       $('#chartContainer').addClass('fade-in');
+       setTimeout(() => $('#chartContainer').removeClass('fade-in'), 400);
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/Purchase/orders-by-date',
+           method: 'GET',
+           success: function(response) {
+               console.log(response)
+               renderChart(response);
+           },
+           error: function(xhr, status, error) {
+               console.error('Failed to fetch data:', error);
+           }
+       });
+   }
+   function renderChart(data) {
+       const labels = data.map(entry => entry.order_date);
+       const orders = data.map(entry => entry.total_orders);
+
+       const ctx = document.getElementById('ordersChart').getContext('2d');
+       const chart = new Chart(ctx, {
+           type: 'bar',
+           data: {
+               labels: labels,
+               datasets: [{
+                   label: 'Orders by Date',
+                   data: orders,
+                   backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                   borderColor: 'rgba(0, 123, 255, 1)',
+                   borderWidth: 1
+               }]
+           },
+           options: {
+               scales: {
+                   y: {
+                       beginAtZero: true
+                   }
+               }
+           }
+       });
+   }
+   function loadHomeStats() {
+        $.ajax({
+            url: 'http://localhost:8080/api/v1/PlaceOrder/getAll', // Your API endpoint
+            method: 'GET',
+            success: function(data) {
+                const stats = data.data.all;
+                console.log(stats)
+                const container = document.getElementById("cardContainer");
+                container.innerHTML = `
+                    <div class="card">
+                        <i class="icon fas fa-user"></i>
+                        <p>Active Users</p>
+                        <h2>${stats.totalUsers}</h2>
+                    </div>
+                    <div class="card">
+                        <i class="icon fas fa-shopping-cart"></i>
+                        <p>Sold Items</p>
+                        <h2>${stats.totalOrders}</h2>
+                    </div>
+                    <div class="card">
+                        <i class="icon fas fa-store"></i>
+                        <p>Active Sellers</p>
+                        <h2>${stats.totalSellers}</h2>
+                    </div>
+                    <div class="card">
+                        <i class="icon fas fa-list-alt"></i>
+                        <p>Total Listings</p>
+                        <h2>${stats.totalListings}</h2>
+                    </div>
+                `;
+            },
+            error: function(error) {
+                console.error("Error loading stats:", error);
+            }
+        });
+    }
+
+
+
+   function loadHomeStatsAdmin() {
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/PlaceOrder/getAll', // Your API endpoint
+           method: 'GET',
+           success: function(data) {
+               const stats = data.data.all;
+               console.log(stats)
+               const container = document.getElementById("cardContainer");
+               container.innerHTML = `
+                    <div class="card">
+                        <i class="icon fas fa-user"></i>
+                        <p>Active Admins</p>
+                        <h2>${stats.totalAdmins}</h2>
+                    </div>
+
+
+                `;
+           },
+           error: function(error) {
+               console.error("Error loading stats:", error);
+           }
+       });
+   }
+   function loadUsersUIAdmin() {
+       const content = `
+        <div class="mb-3">
+            <input type="text" id="userSearchInput" class="form-control" placeholder="Search users...">
+
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+        </table>
+
+        <button onclick="showAddAdminModal()" class="btn btn-primary">Add New Admin</button>
+    `;
+
+       // Inject into main container
+       $('#chartContainer').html(content);
+       $('#chartContainer').addClass('fade-in');
+       setTimeout(() => $('#chartContainer').removeClass('fade-in'), 400);
+
+
+       // Load data and attach filters
+       loadAdminTable();
+
+       // Filter and search events
+       $('#userSearchInput, #roleFilter').on('input change', function () {
+           loadAdminTable();
+       });
+   }
+   function loadAdminTable() {
+       const token = localStorage.getItem("token");
+       console.log("Sending token:", token); // Debug token
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/user/users-admin',
+           method: 'GET',
+           headers: {
+               'Authorization': 'Bearer ' + token  // Add your JWT token here
+           },
+           contentType: 'application/json',
+           success: function (users) {
+               console.log(users)
+               renderUsers1(users);
+           },
+           error: function (err) {
+               console.error('Error loading users:', err);
+           }
+       });
+   }
+   function renderUsers1(users) {
+       const tbody = $('#userTableBody');
+       const searchTerm = $('#userSearchInput').val().toLowerCase();
+
+       tbody.empty();
+
+       const filteredUsers = users.filter(user => {
+           const matchesSearch = (user.username && user.username.toLowerCase().includes(searchTerm)) ||
+               (user.email && user.email.toLowerCase().includes(searchTerm));
+           return matchesSearch ;
+       });
+
+       filteredUsers.forEach(user => {
+           const row = `
+            <tr>
+                <td>${user.firstName +" "+user.lastName}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>
+                    <span class="badge bg-${user.status === 'active' ? 'success' : 'danger'}">${user.status}</span>
+                </td>
+                <td>
+                    <button class="btn btn-sm ${user.status === 'active' ? 'btn-danger' : 'btn-success'}"
+                            onclick="toggleUserStatus('${user.id}', '${user.status}')">
+                        ${user.status === 'active' ? 'Suspend' : 'Activate'}
+                    </button>
+                </td>
+            </tr>
+        `;
+           tbody.append(row);
+       });
+   }
+   function showAddAdminModal() {
+       document.getElementById('addAdminModal').style.display = 'block';
+   }
+   function closeAddAdminModal() {
+       document.getElementById('addAdminModal').style.display = 'none';
+   }
+
+   document.getElementById('addAdminForm').addEventListener('submit', function(e) {
+       e.preventDefault();
+
+       const email = document.getElementById('adminEmail').value;
+       const password = document.getElementById('adminPassword').value;
+       const token = localStorage.getItem("token");
+
+       const userData = {
+           email: email,
+           password: password,
+           role:"admin"
+
+       };
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/user/register',
+           method: 'POST',
+           contentType: 'application/json',
+           data: JSON.stringify(userData),
+           success: function (response) {
+               closeAddAdminModal();
+               Swal.fire({
+                   icon: 'success',
+                   title: 'Success!',
+                   text: 'User registered successfully!',
+                   confirmButtonColor: '#3085d6'
+               }).then(() => {
+                   loadAdminTable();
+               });
+           },
+           error: function (error) {
+               console.error('Error:', error);
+               Swal.fire({
+                   icon: 'error',
+                   title: 'Registration Failed',
+                   text: error.responseJSON?.message || 'Something went wrong.',
+                   confirmButtonColor: '#d33'
+               });
+           }
+       });
+   });
+
+
+
+   function loadHomeStatsUser() {
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/PlaceOrder/getAll', // Your API endpoint
+           method: 'GET',
+           success: function(data) {
+               const stats = data.data.all;
+               console.log(stats)
+               const container = document.getElementById("cardContainer");
+               container.innerHTML = `
+                    <div class="card">
+                        <i class="icon fas fa-user"></i>
+                        <p>Active Users</p>
+                        <h2>${stats.totalUsers + stats.totalSellers }</h2>
+                    </div>
+
+
+                `;
+           },
+           error: function(error) {
+               console.error("Error loading stats:", error);
+           }
+       });
+   }
+   function loadUsersUI() {
+       const content = `
+        <div class="mb-3">
+            <input type="text" id="userSearchInput" class="form-control" placeholder="Search users...">
+            <select id="roleFilter" class="form-select mt-2">
+                <option value="">All Roles</option>
+                <option value="seller">Seller</option>
+                <option value="buyer">Buyer</option>
+            </select>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+        </table>
+    `;
+
+       // Inject into main container
+       $('#chartContainer').html(content);
+       $('#chartContainer').addClass('fade-in');
+       setTimeout(() => $('#chartContainer').removeClass('fade-in'), 400);
+
+
+       // Load data and attach filters
+       loadUsersTable();
+
+       // Filter and search events
+       $('#userSearchInput, #roleFilter').on('input change', function () {
+           loadUsersTable();
+       });
+   }
+   function loadUsersTable() {
+       const token = localStorage.getItem("token");
+       console.log("Sending token:", token); // Debug token
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/user/users-sellers-buyers',
+           method: 'GET',
+           headers: {
+               'Authorization': 'Bearer ' + token  // Add your JWT token here
+           },
+           contentType: 'application/json',
+           success: function (users) {
+               console.log(users)
+               renderUsers(users);
+           },
+           error: function (err) {
+               console.error('Error loading users:', err);
+           }
+       });
+   }
+   function renderUsers(users) {
+       const tbody = $('#userTableBody');
+       const searchTerm = $('#userSearchInput').val().toLowerCase();
+       const selectedRole = $('#roleFilter').val();
+       tbody.empty();
+
+       const filteredUsers = users.filter(user => {
+           const matchesSearch = (user.username && user.username.toLowerCase().includes(searchTerm)) ||
+               (user.email && user.email.toLowerCase().includes(searchTerm));
+           const matchesRole = selectedRole === '' || user.role === selectedRole;
+           return matchesSearch && matchesRole;
+       });
+
+       filteredUsers.forEach(user => {
+           const row = `
+            <tr>
+                <td>${user.firstName +" "+user.lastName}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>
+                    <span class="badge bg-${user.status === 'active' ? 'success' : 'danger'}">${user.status}</span>
+                </td>
+                <td>
+                    <button class="btn btn-sm ${user.status === 'active' ? 'btn-danger' : 'btn-success'}"
+                            onclick="toggleUserStatus('${user.id}', '${user.status}')">
+                        ${user.status === 'active' ? 'Suspend' : 'Activate'}
+                    </button>
+                </td>
+            </tr>
+        `;
+           tbody.append(row);
+       });
+   }
+   function toggleUserStatus(userId, currentStatus) {
+       const token = localStorage.getItem("token");
+       const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+
+       Swal.fire({
+           title: `Are you sure you want to ${newStatus === 'active' ? 'activate' : 'suspend'} this user?`,
+           icon: 'warning',
+           showCancelButton: true,
+           confirmButtonColor: newStatus === 'active' ? '#28a745' : '#d33',
+           cancelButtonColor: '#6c757d',
+           confirmButtonText: `Yes, ${newStatus === 'active' ? 'activate' : 'suspend'}`
+       }).then((result) => {
+           if (result.isConfirmed) {
+               $.ajax({
+                   url: `http://localhost:8080/api/v1/user/${userId}`,
+                   method: 'PUT',
+                   headers: {
+                       'Authorization': 'Bearer ' + token
+                   },
+                   contentType: 'application/json',
+                   data: JSON.stringify({ status: newStatus }),
+                   success: function () {
+                       Swal.fire({
+                           title: 'Success!',
+                           text: `User has been ${newStatus === 'active' ? 'activated' : 'suspended'} successfully.`,
+                           icon: 'success',
+                           timer: 2000,
+                           showConfirmButton: false
+                       });
+                       loadUsersTable(); // Reload the table
+                       loadAdminTable();
+                   },
+                   error: function (err) {
+                       Swal.fire({
+                           title: 'Error!',
+                           text: 'Failed to update user status.',
+                           icon: 'error',
+                           confirmButtonText: 'OK'
+                       });
+                       console.error('Failed to update user status:', err);
+                   }
+               });
+           }
+       });
+   }
+
+
+   function loadTaskUI() {
+       const content = `
+        <div class="task-section">
+    <div class="add-task-form" id="taskForm">
+      <select id="adminSelect" required>
+        <option value="">Select Admin</option>
+        <!-- Dynamically load admins here -->
+      </select>
+      <input type="text" id="taskTitle" placeholder="Task Title" required />
+      <input type="text" id="taskDesc" placeholder="Task Description" required />
+      <input type="date" id="taskDate" required />
+     <button type="button" onclick="AddTask()">Add Task</button>
+    </div>
+  </div>
+
+  <div class="task-filter">
+    <button onclick="adjustDate(-1)">&#8592;</button>
+    <input type="date" id="filterDate" onchange="loadTasks()" />
+    <button onclick="adjustDate(1)">&#8594;</button>
+    <input type="text" id="searchText" placeholder="Search..." oninput="filterTasks()" />
+  </div>
+
+  <table id="taskTable">
+    <thead>
+      <tr>
+        <th>Admin</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="taskTableBody"></tbody>
+  </table>
+    `;
+
+       // Inject into main container
+       $('#chartContainer').html(content);
+       $('#chartContainer').addClass('fade-in');
+       setTimeout(() => $('#chartContainer').removeClass('fade-in'), 400);
+   }
+   let allTasks = [];
+   let currentDate = new Date();
+   function formatDate(date) {
+           return date.toISOString().split('T')[0];
+       }
+   function adjustDate(days) {
+           currentDate.setDate(currentDate.getDate() + days);
+           $('#filterDate').val(formatDate(currentDate));
+           loadTasks();
+       }
+   function loadAdmins() {
+           const token = localStorage.getItem("token");
+           console.log("Sending token:", token); // Debug token
+
+           $.ajax({
+               url: 'http://localhost:8080/api/v1/user/users-admin',
+               method: 'GET',
+               headers: {
+                   'Authorization': 'Bearer ' + token  // Add your JWT token here
+               },
+               contentType: 'application/json',
+               success: function (admins) {
+                   console.log(admins)
+                   // Filter the admins where status is 'active'
+                   const activeAdmins = admins.filter(admin => admin.status === 'active');
+
+                   // Create options for the select dropdown
+                   let options = activeAdmins.map(a => `<option value="${a.email}">${a.email}</option>`);
+
+                   // Append the options to the select dropdown
+                   $('#adminSelect').append(options);
+               },
+               error: function () {
+                   alert("Failed to load admins.");
+               }
+           });
+       }
+   function loadTasks() {
+           $('#filterDate').val(formatDate(currentDate));
+           const selectedDate = $('#filterDate').val();
+           $.ajax({
+               url: `http://localhost:8080/api/v1/ToDo?date=${selectedDate}`,
+               method: 'GET',
+               success: function (tasks) {
+                   allTasks = tasks;
+                   renderTasks(tasks);
+               },
+               error: function () {
+                   alert("Failed to load tasks.");
+               }
+           });
+       }
+   function renderTasks(tasks) {
+       const search = $('#searchText').val().toLowerCase();
+       const filtered = tasks.filter(task =>
+           task.title.toLowerCase().includes(search) ||
+           task.description.toLowerCase().includes(search) ||
+           task.assignAdminEmail.toLowerCase().includes(search)
+       );
+
+       if (filtered.length === 0) {
+           $('#taskTableBody').html(`
+            <tr>
+                <td colspan="4" style="text-align:center; padding: 20px; color: #888;">
+                    No tasks found.
+                </td>
+            </tr>
+        `);
+           return;
+       }
+
+       const rows = filtered.map(task => `
+        <tr>
+            <td>${task.assignAdminEmail}</td>
+            <td>${task.title}</td>
+            <td>${task.description}</td>
+            <td>${task.date}</td>
+            <td>${task.completed}</td>
+        </tr>
+    `).join('');
+
+       $('#taskTableBody').html(rows);
+   }
+   function filterTasks() {
+           renderTasks(allTasks);
+       }
+   function AddTask() {
+       const assignAdminEmail = $('#adminSelect').val();
+       const title = $('#taskTitle').val().trim();
+       const description = $('#taskDesc').val().trim();
+       const date = $('#taskDate').val();
+
+       // Basic Validation
+       if (!assignAdminEmail || !title || !description || !date) {
+           Swal.fire({
+               icon: 'warning',
+               title: 'All fields are required!',
+               text: 'Please fill in all the fields before submitting.',
+           });
+           return;
+       }
+
+       const task = {
+           assignAdminEmail,
+           title,
+           description,
+           date,
+           completed: 'No'
+       };
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/ToDo',
+           method: 'POST',
+           contentType: 'application/json',
+           data: JSON.stringify(task),
+           success: function () {
+               Swal.fire({
+                   icon: 'success',
+                   title: 'Task Added!',
+                   text: 'Your task has been successfully assigned.',
+                   timer: 2000,
+                   showConfirmButton: false
+               });
+               loadTasks();
+               $('#taskForm')[0].reset();
+               $('#taskDate').val(formatDate(currentDate));
+           },
+           error: function () {
+               Swal.fire({
+                   icon: 'error',
+                   title: 'Failed!',
+                   text: 'Something went wrong while adding the task.',
+               });
+           }
+       });
+   }
+
+   $(document).ready(function () {
+       $('#filterDate').val(formatDate(currentDate));
+       $('#taskDate').val(formatDate(currentDate));
+
+   });
+
+
+   function loadHomeStatsSetting() {
+
+       $.ajax({
+           url: 'http://localhost:8080/api/v1/PlaceOrder/getAll', // Your API endpoint
+           method: 'GET',
+           success: function(data) {
+               const stats = data.data.all;
+               console.log(stats)
+               const container = document.getElementById("cardContainer");
+               container.innerHTML = `
+
+                `;
+           },
+           error: function(error) {
+               console.error("Error loading stats:", error);
+           }
+       });
+   }
+
+   function showSettingsForm() {
+       const token = localStorage.getItem('token');
+       const email = localStorage.getItem('email');
+       console.log("setting")
+
+
+       $.ajax({
+           url: `http://localhost:8080/api/v1/user/getUserByEmail?email=${encodeURIComponent(email)}`,
+           method: 'GET',
+           contentType: 'application/json',
+           headers: {
+               'Authorization': 'Bearer ' + token  // Add your JWT token here
+           },
+           success: function (admin) {
+               const html = `
+                <div class="settings-wrapper">
+                    <div class="settings-card">
+                        <h3>Update Admin Settings</h3>
+                        <input type="text" id="FirstName" placeholder="FirstName" value="${admin.data.firstName || ''}" />
+                        <input type="text" id="LastName" placeholder="LastName" value="${admin.data.lastName || ''}" />
+                        <input type="email" id="email" placeholder="Email" value="${admin.data.email || ''}" />
+                        <input type="text" id="address1" placeholder="AddressLine1" value="${admin.data.addressLine1 || ''}" />
+                        <input type="text" id="address2" placeholder="AddressLine2" value="${admin.data.addressLine2 || ''}" />
+                        <input type="tel" id="phone" placeholder="Phone Number" value="${admin.data.phoneNumber || ''}" />
+                        <div class="password-container">
+                            <input type="password" id="password" placeholder="New Password" onkeyup="checkPasswordStrength()" />
+                            <div id="password-strength-status" class="password-strength-status"></div>
+                        </div>
+
+                        <button id="updateBtn">Update Settings</button>
+                    </div>
+                </div>
+            `;
+
+               $('#chartContainer').html(html);
+
+               $('#updateBtn').on('click', function () {
+                   const updateData = {
+                       firstName: $('#FirstName').val().trim(),
+                       lastName: $('#LastName').val().trim(),
+                       email: $('#email').val().trim(),
+                       addressLine1: $('#address1').val().trim(),
+                       addressLine2: $('#address2').val().trim(),
+                       phoneNumber: $('#phone').val().trim(),
+                       password: $('#password').val().trim()
+                   };
+
+                   if (!updateData.firstName || !updateData.email) {
+                       Swal.fire({
+                           icon: 'warning',
+                           title: 'Validation Error',
+                           text: 'Username and Email are required!'
+                       });
+                       return;
+                   }
+
+                   $.ajax({
+                       url: `http://localhost:8080/api/v1/user/update-profile/${email}`,
+                       method: 'PUT',
+                       headers: {
+                           'Authorization': 'Bearer ' + token
+                       },
+                       contentType: 'application/json',
+                       data: JSON.stringify(updateData),
+                       success: function () {
+                           Swal.fire({
+                               icon: 'success',
+                               title: 'Updated!',
+                               text: 'Profile updated successfully.'
+                           });
+                       },
+                       error: function (xhr) {
+                           Swal.fire({
+                               icon: 'error',
+                               title: 'Update Failed',
+                               text: xhr.responseJSON?.message || 'Something went wrong.'
+                           });
+                       }
+                   });
+               });
+           },
+           error: function () {
+               Swal.fire({
+                   icon: 'error',
+                   title: 'Error',
+                   text: 'Failed to load user info.'
+               });
+           }
+       });
+   }
+
+   function checkPasswordStrength() {
+       const password = document.getElementById("password").value;
+       const strengthStatus = document.getElementById("password-strength-status");
+
+       // Regular expressions to test the password strength
+       const low = /^(?=.*[a-zA-Z]).{1,}$/; // At least 6 characters, letters only
+       const medium = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/; // Letters and digits
+       const strong = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/-]).{8,}$/; // Letters, digits, and symbols
+
+       if (strong.test(password)) {
+           strengthStatus.textContent = "Strong";
+           strengthStatus.className = "password-strength-status strong";
+       } else if (medium.test(password)) {
+           strengthStatus.textContent = "Medium";
+           strengthStatus.className = "password-strength-status medium";
+       } else if (low.test(password)) {
+           strengthStatus.textContent = "Low";
+           strengthStatus.className = "password-strength-status low";
+       } else {
+           strengthStatus.textContent = "";
+           strengthStatus.className = "password-strength-status hidden";
+       }
+   }
+
+
+
+
+
+
+
+
+
+
+   $(document).ready(function() {
+        loadHomeStats();
+    });
+    // Initialize with home
+    updateDashboard("home");
+    handleUserGreeting()
+
+
+
+   function handleUserGreeting() {
+       const username = getFromLocalStorage('firstName')
+       const email = localStorage.getItem('email')
+       const role = getFromLocalStorage('role')// Assuming role is stored
+
+       let userGreeting = document.getElementById("userGreeting");
+
+       console.log("Username:", username);
+       console.log("Email:", email);
+       console.log("Role:", role);
+
+       if (username) {
+           userGreeting.innerHTML = `Hi, ${username} `; // Dropdown arrow
+           userGreeting.style.display = "block";
+           userGreeting.classList.add("dropdown-trigger"); // Add hover effect
+       } else if (email) {
+           showLoginExpiredModal();
+       } else {
+           userGreeting.style.display = "none";
+       }
+   }
+
+   function getFromLocalStorage(key) {
+       const data = localStorage.getItem(key);
+       if (!data) return null;
+
+       const parsedData = JSON.parse(data);
+       const now = new Date().getTime();
+
+       if (now > parsedData.expiry) {
+           localStorage.removeItem(key);
+           return null;
+       }
+       return parsedData.value;
+   }
+   function showLoginExpiredModal() {
+       let modal = document.createElement("div");
+       modal.innerHTML = `
+        <div class="modal-glass">
+            <h2>Session Expired</h2>
+            <p>Your login has expired. Please log in again.</p>
+            <button class="btn-modern" onclick="redirectToLogin()">Login</button>
+        </div>
+    `;
+       modal.classList.add("modal-container");
+       document.body.appendChild(modal);
+   }
+
+   // Redirect to Login Page
+   function redirectToLogin() {
+       localStorage.clear();
+       window.location.href = "../SingUpRegister.html";
+   }
+</script>
+</body>
+</html>

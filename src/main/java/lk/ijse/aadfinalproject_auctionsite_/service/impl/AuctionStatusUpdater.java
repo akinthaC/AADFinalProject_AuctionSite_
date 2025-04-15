@@ -42,7 +42,7 @@ public class AuctionStatusUpdater {
         this.mailSender = mailSender;
     }
 
-    @Scheduled(cron = "0 0 0 * * *") // Runs every day at midnight
+  // Runs every day at midnight
     public void updateAuctionStatus() {
         LocalDate today = LocalDate.now();
         System.out.println(today);
@@ -104,6 +104,7 @@ public class AuctionStatusUpdater {
             // If end date is today, update the status to "End"
             if (endDate.equals(today)) {
                 listing.setStatus("End");
+                listing.setWinnerAssignedDate(today);
 
                 try {
                     // Auction Ended Email
@@ -114,7 +115,7 @@ public class AuctionStatusUpdater {
                                     "<head>" +
                                     "<style>" +
                                     "body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; text-align: center; }" +
-                                    ".container { max-width: 600px; margin: 30px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }" +
+                                     ".container { max-width: 600px; margin: 30px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }" +
                                     ".header { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; }" +
                                     ".content { font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 30px; }" +
                                     ".cta-button { background-color: #e74c3c; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; }" +
@@ -180,6 +181,100 @@ public class AuctionStatusUpdater {
         }
         farmedListingRepository.saveAll(toEnd);
         System.out.println("Ended active auctions: " + toEnd.size());
+
+
+
+        List<FarmedItem> toEnd1 = farmedListingRepository.findByStatusAndSellType("Active", "both");
+
+        for (FarmedItem listing : toEnd1) {
+            System.out.println(listing.getStatus());
+            // Calculate the end date based on bidStartedDate and duration
+            LocalDate bidStartDate = listing.getBidStartedDate();
+            long durationInDays = listing.getBidDuration(); // Assuming 'duration' is in days
+            LocalDate endDate = bidStartDate.plusDays(durationInDays);
+
+            // If end date is today, update the status to "End"
+            if (endDate.equals(today)) {
+                listing.setStatus("End");
+                listing.setWinnerAssignedDate(today);
+
+                try {
+                    // Auction Ended Email
+                    sendEmailWithImage(
+                            "akinthachandinu5@gmail.com",
+                            "Your Auction Has Ended",
+                            "<html>" +
+                                    "<head>" +
+                                    "<style>" +
+                                    "body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; text-align: center; }" +
+                                    ".container { max-width: 600px; margin: 30px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }" +
+                                    ".header { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; }" +
+                                    ".content { font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 30px; }" +
+                                    ".cta-button { background-color: #e74c3c; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; }" +
+                                    ".cta-button:hover { background-color: #c0392b; }" +
+                                    ".image { width: 100%; max-width: 300px; margin-top: 20px; border-radius: 8px; }" +
+                                    "</style>" +
+                                    "</head>" +
+                                    "<body>" +
+                                    "<div class='container'>" +
+                                    "<div class='header'>Your Auction Has Ended</div>" +
+                                    "<div class='content'>" +
+                                    "<p>Hello,</p>" +
+                                    "<p>Your auction <strong>" + listing.getTitle() + "</strong> has successfully ended.</p>" +
+                                    "<p>We appreciate your participation and hope you found the experience valuable. Please check your listing summary below:</p>" +
+                                    "<a href='your_auction_summary_link' class='cta-button'>View Auction Summary</a>" +
+                                    "</div>" +
+                                    "<img src='cid:mainImage' class='image' alt='Auction Image'>" +
+                                    "<p>Best regards,</p>" +
+                                    "<p>The Auction Team</p>" +
+                                    "</div>" +
+                                    "</body>" +
+                                    "</html>",
+                            listing.getMainImage()
+                    );
+
+                    // Auction Summary Email
+                    sendEmailWithImage(
+                            "akinthachandinu5@gmail.com",
+                            "Auction Summary for " + listing.getTitle(),
+                            "<html>" +
+                                    "<head>" +
+                                    "<style>" +
+                                    "body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333; margin: 0; padding: 0; text-align: center; }" +
+                                    ".container { max-width: 600px; margin: 30px auto; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }" +
+                                    ".header { font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; }" +
+                                    ".content { font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 30px; }" +
+                                    ".cta-button { background-color: #3498db; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 4px; font-weight: bold; }" +
+                                    ".cta-button:hover { background-color: #2980b9; }" +
+                                    ".image { width: 100%; max-width: 300px; margin-top: 20px; border-radius: 8px; }" +
+                                    "</style>" +
+                                    "</head>" +
+                                    "<body>" +
+                                    "<div class='container'>" +
+                                    "<div class='header'>Auction Summary for " + listing.getTitle() + "</div>" +
+                                    "<div class='content'>" +
+                                    "<p>Here is the summary of your auction <strong>" + listing.getTitle() + "</strong>.</p>" +
+                                    "<p>Review the details below and get more insights about the outcome:</p>" +
+                                    "<a href='your_auction_details_link' class='cta-button'>View Auction Details</a>" +
+                                    "</div>" +
+                                    "<img src='cid:mainImage' class='image' alt='Auction Image'>" +
+                                    "<p>Thank you for using our auction platform!</p>" +
+                                    "<p>The Auction Team</p>" +
+                                    "</div>" +
+                                    "</body>" +
+                                    "</html>",
+                            listing.getMainImage()
+                    );
+                } catch (MessagingException e) {
+                    System.err.println("Error sending summary email: " + e.getMessage());
+                }
+
+            }
+            farmedListingRepository.saveAll(toEnd1);
+            System.out.println("Ended both active auctions: " + toEnd1.size());
+        }
+
+
     }
 
     @Scheduled(cron = "0 0 0 * * *") // Runs every day at midnight

@@ -13,12 +13,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
@@ -28,6 +33,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -89,7 +95,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                     user.getAddressLine1(),
                     user.getAddressLine2(),
                     user.getLatitude(),
-                    user.getLongitude()
+                    user.getLongitude(),
+                    user.getStatus()
             );
         } else {
             return null; // Handle properly in the controller
@@ -115,13 +122,63 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                     u.getAddressLine1(),
                     u.getAddressLine2(),
                     u.getLatitude(),
-                    u.getLongitude()
+                    u.getLongitude(),
+                    u.getStatus()
             );
         } else {
             return null; // Handle properly in the controller
         }
 
     }
+
+    @Override
+    public List<UserDTO> getUsersByRoles(String role) {
+        // Fetching users with the "seller" role
+        List<User> users = userRepository.findByRole(role);
+
+        // Map the list of User entities to UserDTOs using ModelMapper
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDTO.class)) // Convert User entity to UserDTO
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateUserStatus(Long userId, String newStatus) {
+        User user = userRepository.findById(String.valueOf(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setStatus(newStatus);
+        userRepository.save(user);
+    }
+
+    @Override
+    public boolean updateUserProfile(String email, UserDTO dto) {
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByEmail(email));
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+
+            user.setFirstName(dto.getFirstName());
+            user.setLastName(dto.getLastName());
+            user.setEmail(dto.getEmail());
+            user.setAddressLine1(dto.getAddressLine1());
+            user.setAddressLine2(dto.getAddressLine2());
+            user.setPhoneNumber(dto.getPhoneNumber());
+
+            if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+                PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+                String encodedPassword = passwordEncoder.encode(dto.getPassword());
+                user.setPassword(encodedPassword);
+            }
+
+            userRepository.save(user);
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 
 
 }

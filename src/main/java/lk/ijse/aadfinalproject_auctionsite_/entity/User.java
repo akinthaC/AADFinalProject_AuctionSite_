@@ -1,9 +1,7 @@
 package lk.ijse.aadfinalproject_auctionsite_.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,24 +10,23 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
-@AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+
     private String firstName;
 
-    @Column(nullable = false, length = 50)
+
     private String lastName;
 
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 20)
+
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -38,17 +35,35 @@ public class User implements Serializable {
     @Column(nullable = false, length = 20)
     private String role; // Buyer or Seller
 
-    @Column(length = 255)
+    private String status;
+
+
     private String description; // Dynamic textarea field
 
-    @Column(nullable = false, length = 100)
+
     private String addressLine1;
 
-    @Column(length = 100)
+
     private String addressLine2;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<FarmedItem> farmedItems;
+
+    // Cart - List of items in the user's cart
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<AddToCart> cartItems;
+
+    // Watchlist - List of items in the user's watchlist
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Watchlist> watchlistItems;
+
+    // Purchase history
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Purchase> purchases;
+
+    // Bid history
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<PlaceBid> bids;
 
     private Double latitude;
     private Double longitude;

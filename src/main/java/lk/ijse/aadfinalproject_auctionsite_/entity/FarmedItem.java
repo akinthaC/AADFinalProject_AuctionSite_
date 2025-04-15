@@ -53,8 +53,21 @@ public class FarmedItem {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+
+    private int winnerAttemptCount = 0; // 0 = first, 1 = second, 2 = third
+    private Long currentWinningBidId;
+    private LocalDate winnerAssignedDate;
+    private boolean sold;
+
     @PrePersist
     protected void onCreate() {
         listingDate = LocalDateTime.now(); // Automatically set listing date when saved
     }
+
+    @Transient
+    public Double getHighestBid() {
+        return bidAmounts != null && !bidAmounts.isEmpty() ? bidAmounts.stream().max(Double::compareTo).orElse(startingBid) : startingBid;
+    }
+
 }

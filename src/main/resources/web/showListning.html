@@ -381,7 +381,7 @@
 
                getUsername()
                 const activeItems = data.data.filter(farmedItem =>  farmedItem.status === "Active" && farmedItem.userId === currentUserId);
-
+                console.log(activeItems)
                 activeItems.forEach(farmedItem => {
                     // Check if otherImages is an array or a single string
                     let imagesHtml = '';

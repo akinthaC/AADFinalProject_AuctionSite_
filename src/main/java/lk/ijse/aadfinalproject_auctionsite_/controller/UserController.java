@@ -4,13 +4,16 @@ import jakarta.validation.Valid;
 import lk.ijse.aadfinalproject_auctionsite_.dto.AuthDTO;
 import lk.ijse.aadfinalproject_auctionsite_.dto.ResponseDTO;
 import lk.ijse.aadfinalproject_auctionsite_.dto.UserDTO;
-import lk.ijse.aadfinalproject_auctionsite_.entity.User;
 import lk.ijse.aadfinalproject_auctionsite_.service.UserService;
 import lk.ijse.aadfinalproject_auctionsite_.util.JwtUtil;
 import lk.ijse.aadfinalproject_auctionsite_.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -25,6 +28,7 @@ public class UserController {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
+
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
         try {
@@ -80,7 +84,58 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/users-sellers-buyers")
+    public List<UserDTO> getUsersByRole() {
+        // Fetch users with 'seller' role
+        List<UserDTO> userDTOS = userService.getUsersByRoles("seller");
 
+        // Fetch users with 'buyer' role
+        List<UserDTO> userDTOS2 = userService.getUsersByRoles("buyer");
+
+        // Combine both lists
+        userDTOS.addAll(userDTOS2); // Add users from 'buyer' role to 'seller' users list
+
+        // Return the combined list
+        return userDTOS;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/users-admin")
+    public List<UserDTO> getAdmins() {
+
+        List<UserDTO> userDTOS2 = userService.getUsersByRoles("admin");
+        return userDTOS2;
+
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{userId}")
+    public ResponseEntity<?> updateUserStatus(@PathVariable("userId") Long userId, @RequestBody Map<String, String> statusMap) {
+        try {
+            String newStatus = statusMap.get("status");
+            userService.updateUserStatus(userId, newStatus);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/update-profile/{email}")
+    public ResponseEntity<String> updateAdminProfile(@PathVariable String email, @RequestBody UserDTO updatedUser) {
+        try {
+            boolean updated = userService.updateUserProfile(email, updatedUser);
+            if (updated) {
+                return ResponseEntity.ok("Profile updated successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating profile: " + e.getMessage());
+        }
+    }
 
 
 

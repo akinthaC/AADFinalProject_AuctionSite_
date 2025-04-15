@@ -37,6 +37,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
+            System.out.println(userDTO.getEmail()+userDTO.getPassword());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ResponseDTO(VarList.Unauthorized, "Invalid Credentials", e.getMessage()));

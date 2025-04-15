@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class AdminController {
     @GetMapping("/test1")
-    @PreAuthorize("hasAuthority('mainAdmin')")
+    @PreAuthorize("hasAuthority('mainadmin')")
     public String checkMainAdmin() {
-        return "passed~! MainAdmin";
+        return "passed~! mainadmin";
     }
 
     @GetMapping("/test2")
     @PreAuthorize("hasAuthority('admin')")
     public String checkAdmin() {
-        return "passed~! Admin";
+        return "passed~! admin";
     }
 
     @GetMapping("/test3")

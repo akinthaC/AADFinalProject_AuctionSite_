@@ -15,6 +15,9 @@
   <link href="css/fontawesome-all.css" rel="stylesheet">
   <link href="css/swiper.css" rel="stylesheet">
   <link href="css/magnific-popup.css" rel="stylesheet">
+  <link href="css/CreditCard.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 
   <style>
     .gallery-main-img {
@@ -113,6 +116,650 @@
       color: black;
       border-color: white;
     }
+    #similar-items-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px; /* Space between cards */
+      flex-wrap: wrap; /* Ensure cards wrap on smaller screens */
+    }
+
+    #similar-items-container .card {
+      width: 450px; /* Reduce card width */
+      height: auto;
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+      transition: transform 0.3s ease;
+      text-align: center; /* Center content */
+    }
+
+    #similar-items-container .card:hover {
+      transform: scale(1.05);
+    }
+
+    #similar-items-container img {
+      height: 120px; /* Reduce image height */
+      width: 100%; /* Ensure full width inside the card */
+      object-fit: cover;
+      border-radius: 0.25rem 0.25rem 0 0; /* Rounded corners on top */
+    }
+
+    #similar-items-container .card-body {
+      padding: 5px; /* Reduce padding for a compact look */
+      font-size: 14px; /* Smaller font size */
+    }
+
+    /* Modal Title */
+    .modal-header {
+      background-color: #f8f9fa;
+      border-bottom: none;
+      color: #333;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    /* Modal Body */
+    .modal-body {
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    .listing-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .listing-price {
+      font-size: 1.3rem;
+      color: #007bff;
+    }
+
+    /* Input fields */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .bid-input, .quantity-input {
+      font-size: 1.1rem;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-btn {
+      background-color: #007bff;
+      color: white;
+      font-size: 1.2rem;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .quantity-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .quantity-input {
+      width: 60px;
+      text-align: center;
+      margin: 0 10px;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+      background-color: #f8f9fa;
+      border-top: none;
+    }
+
+    .modal-footer .btn {
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    /* Custom Button Colors */
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+
+    .btn-success:hover {
+      background-color: #218838;
+      border-color: #1e7e34;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+
+    #countMessage {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+
+    #notificationDot {
+      display: none;
+      height: 10px;
+      width: 10px;
+      background-color: red;
+      border-radius: 50%;
+      margin-left: -11px;
+      margin-right: 16px;
+      margin-bottom: 17px;
+    }
+    /* Style the modal background */
+    .cart-modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scrolling if needed */
+      background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    }
+
+    /* Modal Content */
+    .cart-modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+    }
+
+    /* Close button */
+    .cart-close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .cart-close:hover,
+    .cart-close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .cart-item-image {
+      width: 50px;   /* Adjust the size as needed */
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-table th, .cart-table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-table th {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    .cart-item button {
+      padding: 8px 15px;
+      margin: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .cart-item button:hover {
+      background-color: #45a049;
+    }
+
+    #watchlistModal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scrolling if needed */
+      background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    }
+
+    /* Modal inner box */
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 36px;
+      border: 1px solid #888;
+      width: 132%;
+      max-width: 692px;
+      border-radius: 10px;
+    }
+
+    /* Close button */
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+      color: #000;
+      text-decoration: none;
+    }
+
+
+    .watched-item-img img {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .watched-item-details {
+      flex-grow: 1;
+    }
+
+    .watched-item-actions button {
+      margin-right: 10px;
+      padding: 6px 12px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .watched-item-actions button:hover {
+      background-color: #0056b3;
+    }
+    .modal-content {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .btn-modern {
+      background: #6c757d;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 10px;
+      color: #000000d1;
+      transition: 0.3s;
+    }
+
+    .modal-glass p {
+      color: #000000c2;
+      margin-bottom: 15px;
+    }
+    .modal-glass h2 {
+      font-size: 22px;
+      color: #000000cc;
+    }
+
+
+    .modern-modal {
+      display: none;
+      position: fixed;
+      z-index: 1900;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .modern-modal-content {
+      background: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 960px;
+      position: relative;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #modalTabs {
+      margin-top: 10px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      background-color: #eee;
+      margin-right: 5px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .tab-btn.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .modal-tab-content {
+      margin-top: 20px;
+    }
+
+    .item-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .item-price, .item-quantity, .payment-status {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+
+    .item-image-container {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .buyer-item-card {
+      display: flex;
+      align-items: center; /* Align items vertically */
+      gap: 15px; /* Space between image and text */
+    }
+
+    .item-image-container {
+      width: 100px;
+      height: 100px;
+    }
+
+    .item-main-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .btn-purchase{
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      background-color: #34ce47;
+      margin-right: 5px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+
+    }
+    /* Style for Mark as Delivered button */
+    .btn-deliver {
+      background-color: #0f75c7; /* Green */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    .btn-deliver:hover {
+      background-color: #45a049;
+    }
+
+    /* Style for Inquiry button */
+    .btn-inquiry {
+      background-color: #2196F3; /* Blue */
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-inquiry:hover {
+      background-color: #0b7dda;
+    }
+
+    /* Style for Default Action button */
+    .btn-default {
+      background-color: #f1f1f1; /* Light Gray */
+      color: #333;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-default:hover {
+      background-color: #ddd;
+    }
+
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .custom-modal-content {
+      background: #fff;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .custom-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .custom-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .custom-close-btn {
+      background-color: #f44336;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .shipment-modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+    }
+
+    .shipment-modal-content {
+      background: #fff;
+      margin: 15% auto;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .shipment-input {
+      width: 100%;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .shipment-close-btn {
+      background: #ccc;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-right: 8px;
+    }
+
+    .shipment-submit-btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .shipment-modal-actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    #inquiryModal .modal-dialog {
+      max-width: 500px;  /* You can change to 400px, 600px, etc. */
+      margin: 1.75rem auto;
+      z-index: 2080; /* Bootstrap default is 1050, so this brings it to front */
+      position: relative;
+    }
+
+    #inquiryModal .modal-content {
+      border-radius: 20px;
+      padding: 20px;
+      border: none;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      background: #fefefe;
+      transition: all 0.3s ease-in-out;
+    }
+    #inquiryModal .modal-header {
+      border-bottom: none;
+      background-color: #f1f1f1;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding-bottom: 0;
+    }
+
+    #inquiryModal .modal-title {
+      font-weight: bold;
+      color: #333;
+    }
+
+    #inquiryModal .modal-body {
+      padding-top: 0;
+    }
+
+    #inquiryModal input[type="text"],
+    #inquiryModal textarea {
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      box-shadow: none;
+      padding: 10px 12px;
+      font-size: 16px;
+      background: #fafafa;
+    }
+
+    #inquiryModal input[type="text"]:focus,
+    #inquiryModal textarea:focus {
+      outline: none;
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+      background-color: #fff;
+    }
+
+    #inquiryModal button[type="submit"] {
+      background-color: #0d6efd;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    #inquiryModal button[type="submit"]:hover {
+      background-color: #0b5ed7;
+    }
+
+
+
   </style>
 </head>
 <body class="bg-light">
@@ -140,9 +787,14 @@
 
 
         <li class="nav-item">
-          <a id="userGreeting" style="color: black; font-size: 16px; font-weight:600; display: none;"
-             class="nav-link page-scroll" href="#">Hi, User</a>
+
+          <a id="userGreeting" style="color: black; font-size: 16px; font-weight:600; display: none;" class="nav-link page-scroll" href="#">
+            Hi, User ⏷
+          </a>
+          <span id="notificationDot"></span>
         </li>
+
+
 
 
         <li class="nav-item">
@@ -155,7 +807,7 @@
         <li class="nav-item">
           <div class="d-flex">
             <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <!--<button class="btn btn-outline-light">Search</button>-->
+            <button id="searchButton" class="btn btn-outline-light">Search</button>
           </div>
           <ul id="searchResults" class="list-group mt-2"></ul>
         </li>
@@ -183,13 +835,338 @@
   </div>
 </div>
 
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="row mt-5">
+  <div class="col-12 text-center">
+    <h3 class="mb-3">Similar Items</h3>
+  </div>
+</div>
+<div class="row mt-3" id="similar-items-container">
+  <!-- Similar items will be loaded here dynamically -->
+</div>
+
+<div id="watchlistModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" id="closeWatchlistModal">&times;</span>
+    <h2>Watched Items</h2>
+    <div id="watchItemList">
+
+      <!-- Watched items will be loaded here by JavaScript -->
+    </div>
+  </div>
+</div>
+<!-- Add to Cart Modal -->
+<div id="cartModal" class="cart-modal">
+  <div class="cart-modal-content">
+    <span class="cart-close">&times;</span>
+    <h2>Your Cart</h2>
+    <div id="cartItemList">
+      <!-- Cart items will be dynamically inserted here -->
+    </div>
+    <div class="cart-modal-footer">
+      <button id="proceedToCheckout" class="btn btn-primary">Proceed to Checkout</button>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay to dim the background -->
+<div id="cartOverlay" class="cart-overlay"></div>
+
+<!-- Bid Now Modal -->
+<div class="modal fade" id="bidNowModal" tabindex="-1" role="dialog" aria-labelledby="bidNowModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bidNowModalLabel">Place Your Bid</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="bidTitle" class="listing-title"></p>
+        <p>Current Price: $<span id="currentPrice" class="listing-price"></span></p>
+        <div class="form-group">
+          <label for="bidAmount">Bid Amount:</label>
+          <input type="number" class="form-control bid-input" id="bidAmount" placeholder="Enter your bid">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="placeBidBtn">Place Bid</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Buy Now Modal -->
+<div class="modal fade" id="buyNowModal" tabindex="-1" role="dialog" aria-labelledby="buyNowModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="buyNowModalLabel">Place Your Order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p id="buyTitle" class="listing-title">Sample Item</p>
+        <p>Price: $<span id="buyPrice" class="listing-price">10.00</span></p>
+
+        <div class="form-group">
+          <label for="quantity">Quantity:</label>
+          <div class="quantity-control" style="display: flex; gap: 10px;">
+            <button type="button" class="quantity-btn decrease">-</button>
+            <input type="number" class="form-control quantity-input" id="quantity" value="1" min="1" style="width: 80px;">
+            <button type="button" class="quantity-btn increase">+</button>
+          </div>
+        </div>
+
+        <div class="form-group mt-2">
+          <label>Total Price:</label>
+          <p style="font-size: 18px; font-weight: bold;">
+            Total: $<span id="totalPrice">10.00</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="placeOrderBtn" data-listing-type="farmed">Place Order</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modern Modal -->
+<!-- You Buy Modal -->
+<div id="youBuyModal" class="modern-modal">
+  <div class="modern-modal-content">
+    <span class="close-btn" onclick="document.getElementById('youBuyModal').style.display='none'">&times;</span>
+    <h2>Your Purchased & Bid Items</h2>
+
+    <div id="modalTabs">
+      <button class="tab-btn active" onclick="loadBuyerItems('bids')">🏆 Winning Bids</button>
+      <button class="tab-btn" onclick="loadBuyerItems('pending')">⏳ Not Delivered</button>
+      <button class="tab-btn" onclick="loadBuyerItems('delivered')">✅ Delivered</button>
+    </div>
+    <br>
+    <div id="buyerItemsContent">
+      <!-- AJAX content goes here -->
+    </div>
+  </div>
+</div>
+
+<div id="youOrderModal" class="modern-modal">
+  <div class="modern-modal-content">
+    <span class="close-btn" onclick="document.getElementById('youOrderModal').style.display='none'">&times;</span>
+    <h2>Your Purchased & Bid Items</h2>
+
+    <div id="modalTabs1">
+      <button class="tab-btn active" onclick="loadBuyerItems1('paid')"> ⏳ Paid Orders</button>
+      <button class="tab-btn" onclick="loadBuyerItems1('nonPaid')">Non Paid Orders</button>
+      <button class="tab-btn" onclick="loadBuyerItems1('shipped')">✅ Delivered</button>
+    </div>
+    <br>
+    <div id="buyerItemsContentOrder">
+      <!-- AJAX content goes here -->
+    </div>
+  </div>
+</div>
+
+
+
+<div id="creditCardModalContainer">
+  <div id="creditCardModalContent">
+    <span id="closeCardModalBtn">&times;</span>
+    <div class="card-ui-container">
+
+      <!-- Card Preview -->
+      <div id="creditCardPreview">
+        <div id="cardBrandLogo">VISA</div>
+        <div class="card-number" id="displayCardNumber">#### #### #### ####</div>
+        <div class="card-holder">
+          <label>Card Holder</label>
+          <div id="displayCardHolder">YOUR NAME</div>
+        </div>
+        <div class="card-expiration">
+          <label>Expires</label>
+          <div id="displayCardExpiration">MM/YY</div>
+        </div>
+      </div>
+
+      <!-- Card Form -->
+      <form id="creditCardForm">
+        <div class="form-group">
+          <label for="inputCardNumber">Card Number</label>
+          <input type="text" id="inputCardNumber" placeholder="#### #### #### ####">
+        </div>
+        <div class="form-group">
+          <label for="inputCardHolder">Card Holder</label>
+          <input type="text" id="inputCardHolder" placeholder="Your Name">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inputCardMonth">Exp. Month</label>
+            <input type="text" id="inputCardMonth" placeholder="MM">
+          </div>
+          <div class="form-group">
+            <label for="inputCardYear">Exp. Year</label>
+            <input type="text" id="inputCardYear" placeholder="YY">
+          </div>
+        </div>
+        <button type="submit" id="submitCardPaymentBtn">Submit</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<!-- Delivery Details Modal -->
+<div class="modal fade" id="deliveryModal" tabindex="-1" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deliveryModalLabel">Enter Delivery Details</h5>
+        <span class="close-btn" onclick="document.getElementById('deliveryModal').style.display='none'">&times;</span>
+
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="purchaseId" class="form-label">Purchase ID</label>
+          <input type="text" class="form-control" id="purchaseId" placeholder="Enter Purchase ID" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="addressLine1" class="form-label">Address Line 1</label>
+          <input type="text" class="form-control" id="addressLine1" placeholder="Enter Address Line 1" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="addressLine2" class="form-label">Address Line 2</label>
+          <input type="text" class="form-control" id="addressLine2" placeholder="Enter Address Line 2 (Optional)">
+        </div>
+
+        <div class="mb-3">
+          <label for="contactNumber" class="form-label">Contact Number</label>
+          <input type="tel" class="form-control" id="contactNumber" placeholder="Enter Contact Number" pattern="[0-9]{10}" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="postalCode" class="form-label">Postal Code</label>
+          <input type="text" class="form-control" id="postalCode" placeholder="Enter Postal Code" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="submitDeliveryDetails">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deliveryInfoModal" class="custom-modal">
+  <div class="custom-modal-content">
+    <h2>Delivery Details</h2>
+    <form id="deliveryInfoForm">
+      <label>User Name</label>
+      <input type="text" id="infoUserName" class="custom-input" readonly />
+
+      <label>User Mobile</label>
+      <input type="text" id="infoUserPhone" class="custom-input" readonly />
+
+      <label>Address Line 1</label>
+      <input type="text" id="infoAddress1" class="custom-input" readonly />
+
+      <label>Address Line 2</label>
+      <input type="text" id="infoAddress2" class="custom-input" readonly />
+
+      <label>Postal Code</label>
+      <input type="text" id="infoPostalCode" class="custom-input" readonly />
+
+      <div class="custom-modal-actions">
+        <button type="button" class="custom-close-btn" onclick="closeDeliveryInfoModal()">Close</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="shipModal" class="shipment-modal">
+  <div class="shipment-modal-content">
+    <span class="shipment-close-btn" onclick="document.getElementById('shipModal').style.display='none'">&times;</span>
+    <h2>Confirm Shipment</h2>
+
+
+      <label>Tracking Number</label>
+      <input type="text" id="shipTrackingNumber" name="trackingNumber" class="shipment-input" required />
+
+      <label>Estimated Delivery (in Days)</label>
+      <input type="number" id="shipEstDelivery" name="estDeliveryDays" class="shipment-input" required />
+
+      <label>Shipment Proof Image</label>
+      <input type="file" id="shipmentProof" name="shipmentImage" accept="image/*" class="shipment-input" required />
+
+      <div class="shipment-modal-actions">
+        <button type="button" class="shipment-close-btn" onclick="document.getElementById('shipModal').style.display='none'">Cancel</button>
+        <button type="submit" class="shipment-submit-btn" id="submitShipmentDetails">Submit</button>
+      </div>
+
+  </div>
+</div>
+
+<!-- Inquiry Modal -->
+<div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close-btn" onclick="document.getElementById('inquiryModal').style.display='none'">&times;</span>
+
+        <h5 class="modal-title" id="inquiryModalLabel">Send Inquiry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="inquiryForm">
+          <div class="mb-3">
+            <label for="inquiryOrderId" class="form-label">Order ID</label>
+            <input type="text" id="inquiryOrderId" class="form-control" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="inquiryMessage" class="form-label">Message</label>
+            <textarea id="inquiryMessage" class="form-control" rows="3" placeholder="Write a brief message..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script
+>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/AllListing.js"></script>
+<script src="js/CreditCard.js"></script>
+<script src="https://www.payhere.lk/lib/payhere.js"></script>
+<script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+
+
 
 <script>
   $(document).ready(function() {
+
 
 
     loadListingDetails()
@@ -209,7 +1186,9 @@
         success: function (response) {
           console.log("API Response:", response);
           if (true) {
+            console.log(response.data.getHighestBid)
             renderListing(response.data);
+            loadAllActiveItems(response.data)
           } else {
             showError(response.message || "Listing not found");
           }
@@ -238,92 +1217,379 @@
     const endTime = calculateEndTime(listing.bidStartedDate, listing.bidDuration);
 
     const html = `
-        <div class="row">
-          <div class="col-md-6 mb-4">
-            <img id="mainImage" src="/static/uploads/${listing.mainImage}"
-                 class="gallery-main-img mb-3"
-                 alt="${listing.title}"
-                 onerror="this.src='https://via.placeholder.com/400'">
-            <div class="d-flex flex-wrap gap-2">
-              <img src="/static/uploads/${listing.mainImage}"
-                   class="thumbnail-img"
-                   onclick="document.getElementById('mainImage').src = this.src"
-                   onerror="this.src='https://via.placeholder.com/100'">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <img id="mainImage" src="/static/uploads/${listing.mainImage}"
+                         class="img-fluid rounded mb-3"
+                         alt="${listing.title}"
+                         onerror="this.src='https://via.placeholder.com/400'">
+                    <div class="d-flex flex-wrap gap-2">
+                        <img src="/static/uploads/${listing.mainImage}"
+                             class="thumbnail-img rounded"
+                             onclick="document.getElementById('mainImage').src = this.src"
+                             onerror="this.src='https://via.placeholder.com/100'">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h1 class="mb-3">${listing.title}</h1>
+
+                    <div class="d-flex align-items-center mb-3">
+                        <h3 class="text-danger mb-0">${listing.price} LKR</h3>
+                        <span class="ms-3 badge ${listing.status === 'Active' ? 'bg-success' : 'bg-danger'} stock-badge">
+                            ${listing.status === 'Active' ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                    </div>
+
+                    <div id="countSwitcher">
+                        <span id="countMessage" class="badge bg-secondary count-badge">Loading...</span>
+                    </div>
+
+
+
+
+
+                    <p class="lead mb-4">${listing.miniDescription || 'No description available'}</p>
+
+                    ${getActionButtons(listing, endTime)}
+
+                    <!-- Cart & Watchlist -->
+                    <div class="d-flex gap-3 align-items-center">
+                        <button class="btn btn-primary" onclick="addToCart(${listing.id}, 'farmed')">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                        <button class="btn btn-warning" onclick="addToWatchlist(${listing.id}, 'farmed')">
+                            <i class="fas fa-star"></i> Add to Watchlist
+                        </button>
+
+                    </div>
+
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Seller Information</h5>
+                            <p class="card-text"><strong>Category:</strong> ${listing.category || 'N/A'}</p>
+                            <p class="card-text"><strong>Quantity:</strong> ${listing.qty || 'N/A'}</p>
+                            ${listing.bidDuration ? `<p class="card-text"><strong>Auction Duration:</strong> ${listing.bidDuration} days</p>` : ''}
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
 
-          <div class="col-md-6">
-            <h1 class="mb-3">${listing.title}</h1>
-
-            <div class="d-flex align-items-center mb-3">
-              <h3 class="text-danger mb-0">${listing.price} LKR</h3>
-              <span class="ms-3 badge ${listing.status === 'Active' ? 'bg-success' : 'bg-danger'} stock-badge">
-                ${listing.status === 'Active' ? 'In Stock' : 'Out of Stock'}
-              </span>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h3>Product Description</h3>
+                    <div class="description-container">
+                        ${listing.detailedDescription || '<p>No detailed description provided</p>'}
+                    </div>
+                </div>
             </div>
 
-            <p class="lead mb-4">${listing.miniDescription || 'No description available'}</p>
-
-            ${getActionButtons(listing, endTime)}
-
-            <div class="card mb-4">
-              <div class="card-body">
-                <h5 class="card-title">Seller Information</h5>
-                <p class="card-text"><strong>Category:</strong> ${listing.category || 'N/A'}</p>
-                <p class="card-text"><strong>Quantity:</strong> ${listing.qty || 'N/A'}</p>
-                ${listing.bidDuration ? `<p class="card-text"><strong>Auction Duration:</strong> ${listing.bidDuration} days</p>` : ''}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-12">
-            <h3>Product Description</h3>
-            <div class="description-container">
-              ${listing.detailedDescription || '<p>No detailed description provided</p>'}
-            </div>
-          </div>
-        </div>
-      `;
+            ${getBidsModal(listing.id)}
+        `;
 
     $('#listing-container').html(html);
     startTimer(endTime);
+    updateCounts(listing.id,"farmed");
+    fetchHighestBid(listing);
   }
 
   function getActionButtons(listing, endTime) {
-    if (listing.sellType === 'bidding') {
-      return `
-          <div class="mb-4">
-            ${endTime ? `<p class="timer mb-2" data-end="${endTime}">00:00:00</p>` : ''}
-            <button class="btn btn-primary btn-lg bid-now" data-id="${listing.id}">
-              Bid Now
-            </button>
-          </div>
-        `;
-    } else if (listing.sellType === 'fixed') {
-      return `
-          <div class="mb-4">
-            <button class="btn btn-success btn-lg buy-now" data-id="${listing.id}">
-              Buy Now
-            </button>
-          </div>
-        `;
-    } else if (listing.sellType === 'both') {
-      return `
-          <div class="mb-4">
-            ${endTime ? `<p class="timer mb-2" data-end="${endTime}">00:00:00</p>` : ''}
-            <button class="btn btn-primary me-2 bid-now" data-id="${listing.id}">
-              Bid Now
-            </button>
-            <button class="btn btn-success buy-now" data-id="${listing.id}">
-              Buy Now
-            </button>
-          </div>
-        `;
+    let buttons = '';
+
+    if (listing.sellType === 'bidding' || listing.sellType === 'both') {
+      buttons += ` <p id="highestBidTag" class="text-success">
+                <strong>Highest Bid:</strong> <span id="highestBid">Loading...</span> LKR
+                    </p>`;
     }
-    return '';
+
+    if (endTime) {
+      buttons += `<p class="timer mb-2" data-end="${endTime}">00:00:00</p>`;
+    }
+    const encodedListing = encodeURIComponent(JSON.stringify(listing));
+    if (listing.sellType === 'bidding' || listing.sellType === 'both') {
+
+      buttons += `
+                <button class="btn btn-primary btn-lg bid-now"
+                  data-listing="${encodedListing}" data-type= 'farmed'>
+                  Bid Now
+                </button>
+                <button class="btn btn-light view-bids btn-sm" data-id="${listing.id}" onclick="showBidsModal(${listing.id})">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <br>
+                <br>
+            `;
+    }
+
+    if (listing.sellType === 'fixed'|| listing.sellType === 'both' ) {
+      buttons += `
+                <button class="btn btn-success btn-lg buy-now" data-id="${listing.id}" data-title="${listing.title}" data-price="${listing.price} " >
+                    Buy Now
+                </button>
+            `;
+    }
+
+    return `<div class="mb-4">${buttons}</div>`;
   }
+
+
+  // Function to toggle visibility of the "All Bids" section
+  function toggleBidsList(itemId) {
+    const bidsList = document.getElementById(`bidsList-${itemId}`);
+    if (bidsList) {
+      bidsList.classList.toggle('d-none'); // Toggle the display of the bids list
+    }
+  }
+
+
+
+
+
+  function fetchHighestBid(listing) {
+    let highestBid = null; // Default if there are no bids
+    if (Array.isArray(listing.bidAmounts) && listing.bidAmounts.length > 0) {
+      highestBid = Math.max(...listing.bidAmounts); // Get the highest bid
+    }
+    if (highestBid === null) {
+      $('#highestBid').text('No bids yet');
+    } else {
+      $('#highestBid').text(highestBid);
+    }
+  }
+
+  // Show cart modal when clicking "Add to Cart"
+
+
+
+
+
+
+  function addToCart(listingId, listingType) {
+    console.log("Listing ID:", listingId);
+    console.log("Listing Type:", listingType);
+    let email = localStorage.getItem('email');
+
+
+    $.ajax({
+      url: 'http://localhost:8080/api/v1/AddToCart',
+      type: 'POST',
+      data:{
+        listingId: listingId,
+        listingType: listingType,
+        email: email
+      },
+      success: function (response) {
+        showNotificationDot()
+        Swal.fire({
+          title: 'Added to Cart!',
+          text: 'Your item has been successfully added to the cart.',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 2000
+        });
+      },
+      error: function (xhr) {
+        if (xhr.status === 409) {
+          Swal.fire({
+            title: 'Already Added!',
+            text: 'You have already added this item to your cart.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          });
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to add item to cart.',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        }
+      }
+    });
+  }
+
+
+  function showNotificationDot() {
+    const dot = document.getElementById("notificationDot");
+    if (dot) {
+      console.log("Showing notification dot");
+      dot.style.display = "inline-block";  // Ensures the dot becomes visible
+    } else {
+      console.log("Notification dot not found.");
+    }
+  }
+
+
+  function addToWatchlist(listingId, listingType) {
+    let email = localStorage.getItem('email');
+    $.ajax({
+      url: 'http://localhost:8080/api/v1/WatchItem',
+      type: 'POST',
+      data:{
+        listingId: listingId,
+        listingType: listingType,
+        email: email
+      },
+      success: function (response) {
+        showNotificationDot()
+        Swal.fire({
+          title: 'Added to Cart!',
+          text: 'Your item has been successfully added to the WatchList.',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 2000
+        });
+      },
+      error: function (xhr) {
+        if (xhr.status === 409) {
+          Swal.fire({
+            title: 'Already Added!',
+            text: 'You have already added this item to your WatchList.',
+            icon: 'warning',
+            confirmButtonText: 'OK'
+          });
+        } else {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to add item to WatchList.',
+            icon: 'error',
+            confirmButtonText: 'Okay'
+          });
+        }
+      }
+    });
+  }
+
+  let messages = [];
+  let currentIndex = 0;
+
+  function updateCounts(listingId) {
+    $.ajax({
+      url: 'http://localhost:8080/api/v1/AddToCart',
+      type: 'GET',
+      data: { listingId: listingId },
+      success: function (response) {
+        const cartText = response.cartCount !== undefined && response.cartCount !== 0
+                ? `${response.cartCount} added to cart`
+                : 'No one added this';
+
+        const watchText = response.watchlistCount !== undefined && response.watchlistCount !== 0
+                ? `${response.watchlistCount} watching`
+                : 'No one watching';
+
+        messages = [cartText, watchText];
+        currentIndex = 0;
+        startSwitchingMessages(); // start the loop
+      }
+    });
+  }
+
+  function startSwitchingMessages() {
+    const messageEl = $('#countMessage');
+    let paused = false;
+
+    // Pause on hover
+    messageEl.hover(
+            function () { paused = true; },
+            function () { paused = false; }
+    );
+
+    function showNext() {
+      if (paused) {
+        setTimeout(showNext, 500); // check again in 0.5s
+        return;
+      }
+
+      messageEl
+              .stop(true) // prevent animation queue buildup
+              .slideUp(300)
+              .fadeTo(300, 0.1, function () {
+                // Update content and styling
+                const nextMessage = messages[currentIndex];
+
+                messageEl
+                        .text(nextMessage)
+                        .removeClass('bg-secondary bg-info')
+                        .addClass(currentIndex === 0 ? 'bg-secondary' : 'bg-info')
+                        .css({ transform: 'scale(1.2)', boxShadow: '0 0 10px rgba(0,0,0,0.2)' });
+
+                messageEl
+                        .slideDown(300)
+                        .fadeTo(600, 1, function () {
+                          // Add subtle bounce effect after showing
+                          messageEl
+                                  .css({ transform: 'scale(1)' })
+                                  .animate({ opacity: 1 }, { duration: 200 });
+                        });
+
+                currentIndex = (currentIndex + 1) % messages.length;
+
+                setTimeout(showNext, 2500);
+              });
+    }
+
+    showNext();
+  }
+
+
+
+
+
+
+
+  function getBidsModal(listingId) {
+    return `
+        <div class="modal fade" id="bidsModal" tabindex="-1" aria-labelledby="bidsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bidsModalLabel">Bid History</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Bidder</th>
+                                    <th>Bid Amount</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bidsTableBody">
+                                <tr><td colspan="3">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+  }
+
+
+  function calculateEndTime(startDate, duration) {
+    return new Date(new Date(startDate).getTime() + duration * 24 * 60 * 60 * 1000).toISOString();
+  }
+
+  function startTimer(endTime) {
+    console.log('Timer started for:', endTime);
+  }
+
+ /* $(document).ready(function () {
+    renderListing({
+      id: 1,
+      title: "Luxury Watch",
+      mainImage: "watch.jpg",
+      price: "5000",
+      sellType: "both",
+      bidStartedDate: "2025-04-01T12:00:00Z",
+      bidDuration: 3,
+      status: "Active",
+      category: "Watches",
+      qty: 5
+    });
+  });
+*/
 
   function calculateEndTime(startDate, durationDays) {
     if (!startDate || !durationDays) return null;
@@ -349,8 +1615,11 @@
         timerElement.text("Auction Ended").addClass('text-danger');
         return;
       }
+      const hours = String(Math.floor(timeLeft / (1000 * 60 * 60))).padStart(2, '0');
+      const minutes = String(Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      const seconds = String(Math.floor((timeLeft % (1000 * 60)) / 1000)).padStart(2, '0');
 
-      timerElement.text(new Date(timeLeft).toISOString().substr(11, 8));
+      timerElement.text(`${hours}:${minutes}:${seconds}`);
     };
 
     updateTimer();
@@ -360,6 +1629,550 @@
   function showError(message) {
     $('#listing-container').html(`<div class="alert alert-danger">${message}</div>`);
   }
+</script>
+
+<script>
+  loadAllActiveItems();
+  function loadAllActiveItems(item1) {
+    $.ajax({
+      url: 'http://localhost:8080/api/listings/active', // Adjust the URL as per your backend
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        if (true) {
+          const activeItems = response.data;
+          const similarItems = filterSimilarItems(activeItems,item1);
+          renderSimilarItems(similarItems);
+        } else {
+          console.log('No active items found');
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('Error fetching active items:', error);
+      }
+    });
+  }
+
+
+  function filterSimilarItems(items, currentItem) {
+    if (!currentItem || !currentItem.id || !currentItem.title || !currentItem.category) {
+      console.warn("Invalid currentItem passed to filterSimilarItems:", currentItem);
+      return [];
+    }
+
+    return items.filter(item => {
+      return (
+              item.id !== currentItem.id &&
+              item.title.substring(0, 1).toLowerCase() === currentItem.title.substring(0, 1).toLowerCase() &&
+              item.category === currentItem.category
+      );
+    }).slice(0, 5);
+  }
+
+
+
+  function renderSimilarItems(items) {
+    const container = $('#similar-items-container');
+    container.empty();
+
+    items.forEach(item => {
+      const html = `
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img src="/static/uploads/${item.mainImage}" class="card-img-top" alt="${item.title}">
+          <div class="card-body">
+            <h5 class="card-title">${item.title}</h5>
+            <p class="card-text">${item.miniDescription}</p>
+            <a  data-item-id="${item.id}" class="btn btn-primary detailsItem">View Details</a>
+          </div>
+        </div>
+      </div>
+    `;
+      container.append(html);
+    });
+  }
+
+
+
+  $(document).on('click', '.detailsItem', function() {
+    const itemId = $(this).data('item-id');
+    // Store the item ID in sessionStorage or pass as URL parameter
+    sessionStorage.setItem('selectedItemId', itemId);
+    window.location.href = 'ShowSelectListing.html';
+  });
+
+  $(document).on('click', '#searchButton', function() {
+    const searchQuery = $("#searchInput").val().trim(); // Get search input and trim whitespace
+
+    if (searchQuery) {
+      sessionStorage.setItem('searchItem', searchQuery); // Store search term
+      window.location.href = 'ss1.html'; // Uncomment if you want to redirect
+    } else {
+      alert("Please enter a search term."); // Prevent empty search
+    }
+  });
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const placeBidBtn = document.getElementById("placeBidBtn");
+    let currentListing = null;
+    let type;
+
+
+    document.addEventListener("click", function (event) {
+      if (event.target && event.target.classList.contains("bid-now")) {
+        const encodedListing = event.target.dataset.listing;
+         type = event.target.dataset.type;
+
+        // Check if listing exists before parsing
+        if (!encodedListing) {
+          console.error("Listing data is missing on this button.");
+          return;
+        }
+
+        try {
+          const decoded = JSON.parse(decodeURIComponent(encodedListing));
+          currentListing = decoded;
+
+          // Determine the current price
+          let currentPrice = decoded.price;
+          if (decoded.bidAmounts && decoded.bidAmounts.length > 0) {
+            const highestBid = Math.max(...decoded.bidAmounts);
+            currentPrice = highestBid;
+          }
+
+          // Fill modal
+          document.getElementById("bidTitle").textContent = `Bid for ${decoded.title}`;
+          document.getElementById("currentPrice").textContent = currentPrice;
+          document.getElementById("bidAmount").value = "";
+
+          $('#bidNowModal').modal('show');
+        } catch (err) {
+          console.error("Failed to parse listing data:", err);
+        }
+      }
+    });
+
+    placeBidBtn.addEventListener("click", function () {
+      const bidAmount = parseFloat(document.getElementById("bidAmount").value);
+
+      if (bidAmount && bidAmount > 0 && currentListing) {
+        // Check if the bid amount is higher than the current highest bid
+        const currentHighestBid = currentListing.bidAmounts && currentListing.bidAmounts.length > 0
+                ? Math.max(...currentListing.bidAmounts)
+                : currentListing.price;
+
+        if (bidAmount > currentHighestBid) {
+          alert(`Your bid of $${bidAmount} has been placed for ${currentListing.title}`);
+          $('#bidNowModal').modal('hide');
+
+          // Retrieve email from localStorage
+          const userEmail = localStorage.getItem('email');
+          if (!userEmail) {
+            alert("You need to be logged in to place a bid.");
+            return;  // Exit if the user is not logged in
+          }
+
+          // Send bid info to server via AJAX
+          $.ajax({
+            url: 'http://localhost:8080/api/v1/PlaceOrder',
+            type: 'POST',
+            data: {
+              userEmail: userEmail,  // Include the email from localStorage
+              listingId: currentListing.id,
+              bidAmount: bidAmount,
+              listingType: type  // e.g., "cinnamon", "coconut", etc.
+            },
+            success: function(response) {
+              alert(response);  // Server response (confirmation)
+              // Update UI with new bid details (optional)
+            },
+            error: function(xhr, status, error) {
+              console.error("Error placing bid:", error);
+              alert("An error occurred. Please try again.");
+            }
+          });
+        } else {
+          alert(`Your bid must be higher than the current highest bid of $${currentHighestBid}`);
+        }
+      } else {
+        alert("Please enter a valid bid amount.");
+      }
+    });
+
+  });
+
+  document.querySelector(".close").addEventListener("click", function() {
+    closeBidModal();
+  });
+
+  function closeBidModal() {
+    // Hide the modal using Bootstrap's jQuery method
+    $('#bidNowModal').modal('hide');
+
+    // Clear the input value
+    document.getElementById('bidAmount').value = '';
+
+    // Optionally clear title and price (if needed)
+    document.getElementById('bidTitle').textContent = '';
+    document.getElementById('currentPrice').textContent = '';
+  }
+
+  function showBidsModal(listingId) {
+    $('#bidsModal').modal('show');
+
+    $.ajax({
+      url: `http://localhost:8080/api/v1/PlaceOrder/${listingId}`,
+      method: "GET",
+      success: function(response) {
+        let bidsHtml = '';
+        const bids = response.data && response.data.bids ? response.data.bids : [];
+
+        if (bids.length > 0) {
+          bids.forEach(bid => {
+            bidsHtml += `
+        <tr>
+          <td>${bid.bidder}</td>
+          <td>${bid.amount} LKR</td>
+          <td>${new Date(bid.time).toLocaleString()}</td>
+        </tr>
+      `;
+          });
+        } else {
+          bidsHtml = '<tr><td colspan="3">No bids yet</td></tr>';
+        }
+
+        $('#bidsTableBody').html(bidsHtml);
+      },
+
+      error: function() {
+        $('#bidsTableBody').html('<tr><td colspan="3">Error loading bids</td></tr>');
+      }
+    });
+  }
+
+
+
+
+  // Handle the Buy Now button click
+  document.addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("buy-now")) {
+      const listingId = event.target.dataset.id;
+      const title = event.target.dataset.title;
+      const price = event.target.dataset.price;
+
+      // Set the modal details
+      document.getElementById("buyTitle").textContent = `Buy ${title}`;
+      document.getElementById("buyPrice").textContent = price;
+
+      purchaseNow(listingId,title,price)
+
+
+    }
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("aaa")
+    const decreaseBtn = document.querySelector(".decrease");
+    const increaseBtn = document.querySelector(".increase");
+    const quantityInput = document.getElementById("quantity");
+    const unitPriceSpan = document.getElementById("buyPrice");
+    const totalPriceSpan = document.getElementById("totalPrice");
+
+    function calculateTotal() {
+      const quantity = parseInt(quantityInput.value) || 1;
+      const unitPrice = parseFloat(unitPriceSpan.textContent) || 0;
+      const total = (quantity * unitPrice).toFixed(2);
+      totalPriceSpan.textContent = total;
+    }
+
+    if (decreaseBtn && increaseBtn && quantityInput) {
+      decreaseBtn.addEventListener("click", function () {
+        let currentVal = parseInt(quantityInput.value);
+        if (currentVal > 1) {
+          quantityInput.value = currentVal - 1;
+          calculateTotal();
+        }
+      });
+
+      increaseBtn.addEventListener("click", function () {
+        let currentVal = parseInt(quantityInput.value);
+        quantityInput.value = currentVal + 1;
+        calculateTotal();
+      });
+
+      quantityInput.addEventListener("input", calculateTotal);
+    }
+
+    // Recalculate on modal open
+    $('#buyNowModal').on('shown.bs.modal', function () {
+      calculateTotal();
+    });
+  });
+
+
+  function purchaseNow(itemId, listingName, price) {
+    console.log("Item ID:", itemId);
+    console.log("Listing Name:", listingName);
+    console.log("Price:", price);
+
+    Swal.fire({
+      title: `Purchase Confirmation`,
+      text: `Do you want to purchase "${listingName}" for $${price}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, buy it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $('#youBuyModal').hide();
+        document.getElementById("buyTitle").textContent = `Buy ${listingName}`;
+        document.getElementById("buyPrice").textContent = `${price}`;
+        $('#buyNowModal').modal('show');
+
+        $("#placeOrderBtn").off("click").on("click", function () {
+          const email = localStorage.getItem("email");
+          const listingType = document.getElementById("placeOrderBtn").getAttribute("data-listing-type");
+          const quantity = parseInt(document.getElementById("quantity").value);
+
+          if (!quantity || quantity <= 0) {
+            Swal.fire("Invalid Quantity", "Please enter a valid quantity.", "warning");
+            return;
+          }
+
+          const totalPrice = price * quantity;
+
+          $('#buyNowModal').modal('hide');
+          const creditCardModal = new bootstrap.Modal(document.getElementById('creditCardModalContainer'));
+          creditCardModal.show();
+
+          $("#submitCardPaymentBtn").off("click").on("click", function () {
+            console.log("Processing payment...");
+            creditCardModal.hide();
+
+            const purchaseData = {
+              listingId: itemId,
+              listingType: listingType,
+              quantity: quantity,
+              totalPrice: totalPrice
+            };
+
+            $.ajax({
+              url: `http://localhost:8080/api/v1/Purchase?email=${email}`,
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify(purchaseData),
+              success: function () {
+                console.log("Purchase placed successfully");
+
+                $.ajax({
+                  url: 'http://localhost:8080/api/v1/Purchase/latestPurchaseId',
+                  type: 'GET',
+                  success: function (latestPurchaseId) {
+                    console.log("Latest Purchase ID:", latestPurchaseId);
+
+                    loadUserDeliveryData(email, latestPurchaseId);
+
+                    document.getElementById("submitDeliveryDetails").onclick = function () {
+                      const purchaseId = document.getElementById("purchaseId").value;
+                      const addressLine1 = document.getElementById("addressLine1").value;
+                      const addressLine2 = document.getElementById("addressLine2").value;
+                      const contactNumber = document.getElementById("contactNumber").value;
+                      const postalCode = document.getElementById("postalCode").value;
+
+                      if (!purchaseId || !addressLine1 || !contactNumber || !postalCode) {
+                        Swal.fire("Missing Info", "Please fill all required delivery fields.", "warning");
+                        return;
+                      }
+
+                      $.ajax({
+                        url: 'http://localhost:8080/api/v1/Delivery',
+                        type: 'POST',
+                        data: JSON.stringify({
+                          purchaseId: purchaseId,
+                          address1: addressLine1,
+                          address2: addressLine2,
+                          contactNumber: contactNumber,
+                          postalCode: postalCode
+                        }),
+                        contentType: 'application/json',
+                        success: function () {
+                          savePaymentDetails(purchaseId, totalPrice, email, listingType, itemId);
+                          Swal.fire("Success", "Payment success !", "success");
+                          const deliveryModal = new bootstrap.Modal(document.getElementById('deliveryModal'));
+                          deliveryModal.hide();
+                        },
+                        error: function () {
+                          Swal.fire("Error", "Error saving delivery details!", "error");
+                        }
+                      });
+                    };
+                  },
+                  error: function (xhr, status, error) {
+                    console.error("Error fetching latest purchaseId:", error);
+                    Swal.fire("Error", "Error fetching latest purchase ID.", "error");
+                  }
+                });
+              },
+              error: function (xhr, status, error) {
+                console.error("Error placing the order:", error);
+                Swal.fire("Error", "❌ Error placing the order.", "error");
+              }
+            });
+          });
+        });
+      }
+    });
+  }
+
+
+
+
+  function savePaymentDetails(purchaseId, totalPrice, email,type,id) {
+    console.log("Saving payment details...");
+
+    // Create the payment data object
+    const paymentData = {
+      purchaseId: purchaseId,
+      amount: totalPrice,
+      email: email,
+      paymentStatus: "Hold",
+      paymentMethod:"card",
+      listingId: id,
+      listingType:type
+    };
+
+    // Send payment details to your server
+    $.ajax({
+      url: 'http://localhost:8080/api/v1/Payment', // replace with your actual endpoint
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(paymentData),
+      success: function (response) {
+
+      },
+      error: function (error) {
+        console.error("Error saving payment details:", error);
+
+      }
+    });
+  }
+
+  // Function to generate the next purchaseId based on the latest one
+  function generateNextPurchaseId(latestPurchaseId) {
+    const prefix = "OR";
+    let currentIdNumber = parseInt(latestPurchaseId.replace(prefix, ''));
+
+    // Increment the number
+    const newIdNumber = currentIdNumber + 1;
+
+    // Format the new purchaseId (e.g., OR001, OR002, OR003)
+    const newPurchaseId = prefix + String(newIdNumber).padStart(3, '0');
+    return newPurchaseId;
+  }
+
+  function loadUserDeliveryData(email, newPurchaseId) {
+    const token = localStorage.getItem("token");
+    $.ajax({
+      url: `http://localhost:8080/api/v1/user/getUserByEmail?email=${encodeURIComponent(email)}`,
+      type: 'GET',
+      contentType: 'application/json',
+      headers: {
+        'Authorization': 'Bearer ' + token // Add your JWT token here
+      },
+      success: function (response) {
+        console.log("API Response:", response); // Log the response to verify the structure
+
+        // Set the form fields with the response data
+        $('#addressLine1').val(response.data.addressLine1 || '');
+        $('#addressLine2').val(response.data.addressLine2 || '');
+        $('#contactNumber').val(response.data.phoneNumber || '');
+        $('#purchaseId').val(newPurchaseId);
+
+        // Show the modal only after the data has been set
+        setTimeout(function() {
+          var deliveryModal = new bootstrap.Modal(document.getElementById('deliveryModal'));
+          deliveryModal.show();
+        }, 100); // Delay to ensure data is set before showing modal
+      },
+      error: function (error) {
+        console.error("Error fetching delivery data:", error);
+        alert("Error loading delivery data.");
+      }
+    });
+  }
+
+
+
+  /*
+    document.getElementById("placeOrderBtn").onclick = function () {
+      const email = localStorage.getItem("email");
+      const listingId = itemId;
+      const listingType = this.getAttribute("data-listing-type");
+      const quantity = parseInt(document.getElementById("quantity").value);
+      const title = listingName;
+      const pricePerItem = price;
+      const totalPrice = pricePerItem * quantity;
+
+      if (quantity && quantity > 0) {
+        const orderId = "ORD_" + Date.now();
+
+        const payment = {
+          sandbox: true,
+          merchant_id: "1230118",
+          return_url: "http://localhost:8080/api/v1/payment/payment-success",
+          cancel_url: "http://localhost:8080/api/v1/payment/payment-cancel",
+          notify_url: "http://localhost:8080/api/v1/Purchase/notify",
+          order_id: orderId,
+          items: title,
+          amount: totalPrice,
+          currency: "LKR",
+          first_name: "John",
+          last_name: "Doe",
+          email: email || "default@example.com",
+          phone: "0771234567",
+          address: "Colombo",
+          city: "Colombo",
+          custom_1: listingId,
+          custom_2: listingType,
+          custom_3: quantity,
+          custom_4: email,
+          custom_5: totalPrice,
+        };
+
+        // Send payment request to your server
+        fetch('http://localhost:8080/payhere/checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payment)
+        })
+                .then(response => {
+                  if (!response.ok) {
+                    // If the response is not successful, throw an error
+                    return response.json().then(error => {
+                      throw new Error(error.message || 'Payment initiation failed.');
+                    });
+                  }
+                  return response.json(); // Otherwise, parse the response as JSON
+                })
+                .then(data => {
+                  console.log("Payment initiated:", data);
+                  // Handle the PayHere payment redirection
+                  window.location.href = data.redirectUrl; // Assuming your server returns a URL for redirection
+                })
+                .catch(error => {
+                  console.error("Payment initiation failed:", error);
+                  alert("Payment initiation failed: " + error.message);
+                });
+      }
+    }
+  */
 </script>
 </body>
 </html>
