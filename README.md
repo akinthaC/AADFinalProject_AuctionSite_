@@ -87,6 +87,11 @@
 
 ---
 
+📧 Contact
+Created by: Akintha Chandinu
+📍 Elpitiya, Galle District, Sri Lanka
+📨 Email: akinthachandinu5@gmail.com
+
 ## 🗂️ Project Structure
 
 ```bash
@@ -104,3 +109,5 @@ AgroBid/
 │   │       └── application.properties
 ├── pom.xml
 └── README.md
+
+
