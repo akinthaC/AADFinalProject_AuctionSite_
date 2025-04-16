@@ -2,6 +2,7 @@ package lk.ijse.aadfinalproject_auctionsite_.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,5 +14,6 @@ public class InquiryDTO {
     private String orderId;
     private String email;
     private String message;
-    private LocalDateTime inquiryDate;
+    private LocalDate inquiryDate;
+    private String responed;
 }

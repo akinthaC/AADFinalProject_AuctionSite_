@@ -2,9 +2,11 @@ package lk.ijse.aadfinalproject_auctionsite_.service;
 
 import lk.ijse.aadfinalproject_auctionsite_.dto.AllListingDTO;
 import lk.ijse.aadfinalproject_auctionsite_.dto.BidDTO;
+import lk.ijse.aadfinalproject_auctionsite_.dto.OrderDetailsDTO;
 import lk.ijse.aadfinalproject_auctionsite_.dto.ResponseDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PlaceOrderService {
     void savePlaceBid(BidDTO placeBid);
@@ -23,4 +25,6 @@ public interface PlaceOrderService {
     ResponseDTO getDeliveredItems(Long id);
 
     ResponseDTO getAllItems();
+
+    OrderDetailsDTO getOrderDetailsByPurchaseId(String purchaseId) throws Exception;
 }

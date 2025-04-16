@@ -12,8 +12,6 @@
     <link href="css/Farmed.css" rel="stylesheet">
     <link href="css/All.css" rel="stylesheet">
     <link href="css/CreditCard.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
 </head>
 <style>
     .timer {
@@ -94,9 +92,9 @@
     <div class="category-menu">
         <ul>
             <li><a href="index.html" >HOME</a></li>
-            <li><a href="#" class="active">Farmed</a></li>
-            <li><a href="landHome.html">Lands</a></li>
-            <li><a href="VehicleHome.html">Vehicle</a></li>
+            <li><a href="Farmed.html" >Farmed</a></li>
+            <li><a href="landHome.html" >Lands</a></li>
+            <li><a href="VehicleHome.html" class="active">Vehicles</a></li>
 
         </ul>
     </div>
@@ -119,11 +117,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="text-container">
-                        <h1>Buy & Sell Farmed Goods <!--<span id="js-rotating"> FARMED ITEMS, CARS, LANDS </span>--></h1>
+                        <h1>Buy & Sell Vehicles  <!--<span id="js-rotating"> FARMED ITEMS, CARS, LANDS </span>--></h1>
                         <p class="p-heading p-large">
-                            Join auctions for fresh produce and high-quality farm items
+                            Join auctions We have most valuable items
                         </p>
-                        <button id="Explore"  class="cta-btn">Explore Auctions</button>
+                        <button class="cta-btn">Explore Auctions</button>
                     </div>
                 </div>
             </div>
@@ -465,7 +463,7 @@
 
 
 <script src="js/jquery.min.js"></script>
-<script src="js/Farmed.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+<script src="js/VehicleListing.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
 <script src="js/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
 <script src="js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
 <script src="js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
@@ -478,15 +476,20 @@
 <script src="js/new.js"></script> <!-- Custom scripts -->
 <script src="js/AllListing.js"></script> <!-- Custom scripts -->
 <script src="js/CreditCard.js"></script>
-<script>document.getElementById("Explore").addEventListener("click", function () {
-    console.log("Explore button clicked!");
-    window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/ss.html?_ijt=oaev9etm7aj73mebg7mgd6q68l&_ij_reload=RELOAD_ON_SAVE';
 
-});
+<script>
+    // Wait until the DOM is ready
+    document.addEventListener("DOMContentLoaded", function () {
+        const links = document.querySelectorAll('.category-menu ul li a');
 
-
+        links.forEach(link => {
+            link.addEventListener('click', function () {
+                const categoryName = this.textContent.trim(); // Get link text
+                localStorage.setItem('selectedCategory', categoryName); // Save to localStorage
+            });
+        });
+    });
 </script>
-
 
 </body>
 </html>

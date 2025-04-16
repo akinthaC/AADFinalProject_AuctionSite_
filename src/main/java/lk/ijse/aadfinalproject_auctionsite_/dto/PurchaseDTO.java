@@ -20,4 +20,13 @@ public class PurchaseDTO {
     private LocalDateTime purchaseDate;
     private String status;
     private String desc;
+
+    public PurchaseDTO(String id, Long listingId, String listingType, Integer quantity, Double totalPrice, LocalDateTime purchaseDate) {
+        this.id = id;
+        this.listingId = listingId;
+        this.listingType = listingType;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+        this.purchaseDate = purchaseDate;
+    }
 }

@@ -16,6 +16,9 @@ public class HomePageCountDTO {
     private long totalOrders;
     private long totalListings;
     private long totalTasks;
+    private long totalHoldPayments;
+    private long totalPendingPayments;
+    private long totalDonePayments;
 
 
 

@@ -22,4 +22,6 @@ public interface PurchaseService {
     List<Map<String, Object>> getOrdersByDate();
 
     Long getPurchaseCount();
+
+    Purchase getPurchaseById(String purchaseId);
 }

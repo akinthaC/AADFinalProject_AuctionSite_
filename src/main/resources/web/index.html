@@ -18,7 +18,7 @@
 	<meta property="og:type" content="article" />
 
     <!-- Website Title -->
-    <title>Aria - Business HTML Landing Page Template</title>
+    <title>AgroBid</title>
     
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:500,700&display=swap&subset=latin-ext" rel="stylesheet">
@@ -28,7 +28,9 @@
     <link href="css/swiper.css" rel="stylesheet">
 	<link href="css/magnific-popup.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
-	
+	<link href="css/All.css" rel="stylesheet">
+    <link href="css/CreditCard.css" rel="stylesheet">
+
 	<!-- Favicon  -->
     <link rel="icon" href="images/favicon.png">
 </head>
@@ -132,10 +134,10 @@
         <div class="category-menu">
             <ul>
                 <li><a href="#" class="active">HOME</a></li>
-                <li><a href="FarmedItem.html">Farmed</a></li>
+                <li><a href="Farmed.html">Farmed</a></li>
                 <li><a href="#">Lands</a></li>
-                <li><a href="vehicleListing.html">Cars</a></li>
-                <li><a href="#">Other</a></li>
+                <li><a href="vehicleListing.html">Vehicle</a></li>
+
             </ul>
         </div>
 
@@ -1276,8 +1278,308 @@
         </div> <!-- end of container -->
     </div> <!-- end of copyright --> 
     <!-- end of copyright -->
-    
-    	
+
+
+
+    <div id="watchlistModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" id="closeWatchlistModal">&times;</span>
+            <h2>Watched Items</h2>
+            <div id="watchItemList">
+
+                <!-- Watched items will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+    <!-- Add to Cart Modal -->
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-modal-content">
+            <span class="cart-close">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cartItemList">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            <div class="cart-modal-footer">
+                <button id="proceedToCheckout" class="btn btn-primary">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+    <!-- Overlay to dim the background -->
+    <div id="cartOverlay" class="cart-overlay"></div>
+
+    <!-- Bid Now Modal -->
+    <div class="modal fade" id="bidNowModal" tabindex="-1" role="dialog" aria-labelledby="bidNowModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bidNowModalLabel">Place Your Bid</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="bidTitle" class="listing-title"></p>
+                    <p>Current Price: $<span id="currentPrice" class="listing-price"></span></p>
+                    <div class="form-group">
+                        <label for="bidAmount">Bid Amount:</label>
+                        <input type="number" class="form-control bid-input" id="bidAmount" placeholder="Enter your bid">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="placeBidBtn">Place Bid</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Now Modal -->
+    <div class="modal fade" id="buyNowModal" tabindex="-1" role="dialog" aria-labelledby="buyNowModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buyNowModalLabel">Place Your Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <p id="buyTitle" class="listing-title">Sample Item</p>
+                    <p>Price: $<span id="buyPrice" class="listing-price">10.00</span></p>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <div class="quantity-control" style="display: flex; gap: 10px;">
+                            <button type="button" class="quantity-btn decrease">-</button>
+                            <input type="number" class="form-control quantity-input" id="quantity" value="1" min="1" style="width: 80px;">
+                            <button type="button" class="quantity-btn increase">+</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label>Total Price:</label>
+                        <p style="font-size: 18px; font-weight: bold;">
+                            Total: $<span id="totalPrice">10.00</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="placeOrderBtn" data-listing-type="farmed">Place Order</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Modal -->
+    <!-- You Buy Modal -->
+    <div id="youBuyModal" class="modern-modal">
+        <div class="modern-modal-content">
+            <span class="close-btn" onclick="document.getElementById('youBuyModal').style.display='none'">&times;</span>
+            <h2>Your Purchased & Bid Items</h2>
+
+            <div id="modalTabs">
+                <button class="tab-btn active" onclick="loadBuyerItems('bids')">🏆 Winning Bids</button>
+                <button class="tab-btn" onclick="loadBuyerItems('pending')">⏳ Not Delivered</button>
+                <button class="tab-btn" onclick="loadBuyerItems('delivered')">✅ Delivered</button>
+            </div>
+            <br>
+            <div id="buyerItemsContent">
+                <!-- AJAX content goes here -->
+            </div>
+        </div>
+    </div>
+
+    <div id="youOrderModal" class="modern-modal">
+        <div class="modern-modal-content">
+            <span class="close-btn" onclick="document.getElementById('youOrderModal').style.display='none'">&times;</span>
+            <h2>Your Purchased & Bid Items</h2>
+
+            <div id="modalTabs1">
+                <button class="tab-btn active" onclick="loadBuyerItems1('paid')"> ⏳ Paid Orders</button>
+                <button class="tab-btn" onclick="loadBuyerItems1('nonPaid')">Non Paid Orders</button>
+                <button class="tab-btn" onclick="loadBuyerItems1('shipped')">✅ Delivered</button>
+            </div>
+            <br>
+            <div id="buyerItemsContentOrder">
+                <!-- AJAX content goes here -->
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="creditCardModalContainer">
+        <div id="creditCardModalContent">
+            <span id="closeCardModalBtn">&times;</span>
+            <div class="card-ui-container">
+
+                <!-- Card Preview -->
+                <div id="creditCardPreview">
+                    <div id="cardBrandLogo">VISA</div>
+                    <div class="card-number" id="displayCardNumber">#### #### #### ####</div>
+                    <div class="card-holder">
+                        <label>Card Holder</label>
+                        <div id="displayCardHolder">YOUR NAME</div>
+                    </div>
+                    <div class="card-expiration">
+                        <label>Expires</label>
+                        <div id="displayCardExpiration">MM/YY</div>
+                    </div>
+                </div>
+
+                <!-- Card Form -->
+                <form id="creditCardForm">
+                    <div class="form-group">
+                        <label for="inputCardNumber">Card Number</label>
+                        <input type="text" id="inputCardNumber" placeholder="#### #### #### ####">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCardHolder">Card Holder</label>
+                        <input type="text" id="inputCardHolder" placeholder="Your Name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="inputCardMonth">Exp. Month</label>
+                            <input type="text" id="inputCardMonth" placeholder="MM">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCardYear">Exp. Year</label>
+                            <input type="text" id="inputCardYear" placeholder="YY">
+                        </div>
+                    </div>
+                    <button type="submit" id="submitCardPaymentBtn">Submit</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery Details Modal -->
+    <div class="modal fade" id="deliveryModal" tabindex="-1" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deliveryModalLabel">Enter Delivery Details</h5>
+                    <span class="close-btn" onclick="document.getElementById('deliveryModal').style.display='none'">&times;</span>
+
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="purchaseId" class="form-label">Purchase ID</label>
+                        <input type="text" class="form-control" id="purchaseId" placeholder="Enter Purchase ID" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addressLine1" class="form-label">Address Line 1</label>
+                        <input type="text" class="form-control" id="addressLine1" placeholder="Enter Address Line 1" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addressLine2" class="form-label">Address Line 2</label>
+                        <input type="text" class="form-control" id="addressLine2" placeholder="Enter Address Line 2 (Optional)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="contactNumber" class="form-label">Contact Number</label>
+                        <input type="tel" class="form-control" id="contactNumber" placeholder="Enter Contact Number" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="postalCode" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="postalCode" placeholder="Enter Postal Code" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="submitDeliveryDetails">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deliveryInfoModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <h2>Delivery Details</h2>
+            <form id="deliveryInfoForm">
+                <label>User Name</label>
+                <input type="text" id="infoUserName" class="custom-input" readonly />
+
+                <label>User Mobile</label>
+                <input type="text" id="infoUserPhone" class="custom-input" readonly />
+
+                <label>Address Line 1</label>
+                <input type="text" id="infoAddress1" class="custom-input" readonly />
+
+                <label>Address Line 2</label>
+                <input type="text" id="infoAddress2" class="custom-input" readonly />
+
+                <label>Postal Code</label>
+                <input type="text" id="infoPostalCode" class="custom-input" readonly />
+
+                <div class="custom-modal-actions">
+                    <button type="button" class="custom-close-btn" onclick="closeDeliveryInfoModal()">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="shipModal" class="shipment-modal">
+        <div class="shipment-modal-content">
+            <span class="shipment-close-btn" onclick="document.getElementById('shipModal').style.display='none'">&times;</span>
+            <h2>Confirm Shipment</h2>
+
+
+            <label>Tracking Number</label>
+            <input type="text" id="shipTrackingNumber" name="trackingNumber" class="shipment-input" required />
+
+            <label>Estimated Delivery (in Days)</label>
+            <input type="number" id="shipEstDelivery" name="estDeliveryDays" class="shipment-input" required />
+
+            <label>Shipment Proof Image</label>
+            <input type="file" id="shipmentProof" name="shipmentImage" accept="image/*" class="shipment-input" required />
+
+            <div class="shipment-modal-actions">
+                <button type="button" class="shipment-close-btn" onclick="document.getElementById('shipModal').style.display='none'">Cancel</button>
+                <button type="submit" class="shipment-submit-btn" id="submitShipmentDetails">Submit</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Inquiry Modal -->
+    <div class="modal fade" id="inquiryModal" tabindex="-1" aria-labelledby="inquiryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close-btn" onclick="document.getElementById('inquiryModal').style.display='none'">&times;</span>
+
+                    <h5 class="modal-title" id="inquiryModalLabel">Send Inquiry</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="inquiryForm">
+                        <div class="mb-3">
+                            <label for="inquiryOrderId" class="form-label">Order ID</label>
+                            <input type="text" id="inquiryOrderId" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inquiryMessage" class="form-label">Message</label>
+                            <textarea id="inquiryMessage" class="form-control" rows="3" placeholder="Write a brief message..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Scripts -->
 
     <script src="js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
@@ -1291,5 +1593,7 @@
     <script src="js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
     <script src="js/scripts.js"></script> <!-- Custom scripts -->
     <script src="js/new.js"></script> <!-- Custom scripts -->
+    <script src="js/AllListing.js"></script> <!-- Custom scripts -->
+    <script src="js/CreditCard.js"></script>
 </body>
 </html>

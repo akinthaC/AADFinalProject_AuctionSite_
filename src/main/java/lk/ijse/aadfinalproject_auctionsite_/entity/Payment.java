@@ -27,7 +27,7 @@ public class Payment {
 
     private LocalDateTime paymentDate; // Date and time when payment was made
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "purchase_id", referencedColumnName = "id")
     private Purchase purchase; // Link to the purchase
 

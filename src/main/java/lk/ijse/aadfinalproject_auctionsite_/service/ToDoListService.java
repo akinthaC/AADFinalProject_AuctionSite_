@@ -11,4 +11,6 @@ public interface ToDoListService {
     Iterable<Todo> getAllTasks();
 
     Iterable<Todo> getTasksByDate(LocalDate selectedDate);
+
+    boolean markTaskAsCompleted(String taskId);
 }

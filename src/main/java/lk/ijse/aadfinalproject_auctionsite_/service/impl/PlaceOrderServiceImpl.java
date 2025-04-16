@@ -40,6 +40,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
     @Autowired
     private DeliveryServiceImpl deliveryService;
 
+    @Autowired
+    private PaymentServiceImpl paymentService;
+
     @Override
     public void savePlaceBid(BidDTO placeBid) {
         User user = userRepository.findById(String.valueOf(placeBid.getUserId()))
@@ -419,12 +422,18 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
         Long activeOrderCount;
         Long totalListings;
         Long totalAdmins;
+        long totalHoldPay;
+        long totalPendingPay;
+        long totalDonePay;
 
         activeUserCount = userRepository.countByRole("BUYER");
         activeSellerCount = userRepository.countByRole("Seller");
         Long mainAdmins = userRepository.countByRole("admin");
         Long admins = userRepository.countByRole("admins");
         activeOrderCount = purchaseService.getPurchaseCount();
+        totalHoldPay = paymentService.getCountByStatus("Hold");
+        totalPendingPay = paymentService.getCountByStatus("Pending");
+        totalDonePay = paymentService.getCountByStatus("Success");
 
         Long fCount= farmedItemRepository.count();
         Long vCount= vehicleListingRepo.count();
@@ -438,6 +447,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
         homePageCountDTO.setTotalUsers(activeUserCount);
         homePageCountDTO.setTotalOrders(activeOrderCount);
         homePageCountDTO.setTotalAdmins(totalAdmins);
+        homePageCountDTO.setTotalHoldPayments(totalHoldPay);
+        homePageCountDTO.setTotalPendingPayments(totalPendingPay);
+        homePageCountDTO.setTotalDonePayments(totalDonePay);
 
         ResponseDTO response = new ResponseDTO();
         response.setCode(200);
@@ -447,6 +459,25 @@ public class PlaceOrderServiceImpl implements PlaceOrderService {
         return response;
 
     }
+
+    @Override
+    public OrderDetailsDTO getOrderDetailsByPurchaseId(String purchaseId) throws Exception {
+        Purchase purchase = purchaseService.getPurchaseById(purchaseId);
+        Payment payment = paymentService.getPaymentByPurchaseId(purchaseId);
+        Delivery delivery = deliveryService.getDeliveryByPurchaseId(purchaseId);
+        User user = userRepository.findByEmail(purchase.getUser().getEmail());
+        System.out.println("purch"+purchase.getListingType());
+        System.out.println("purch"+payment.getPaymentMethod());
+        System.out.println("purch"+delivery);
+        System.out.println("purch"+user.getId());
+
+        return new OrderDetailsDTO(
+                new PurchaseDTO(purchase.getId(), purchase.getListingId(), purchase.getListingType(), purchase.getQuantity(), purchase.getTotalPrice(), purchase.getPurchaseDate()),
+                new PaymentDTO(payment.getAmount(), payment.getPaymentStatus(), payment.getPaymentMethod(), payment.getPaymentDate()),
+                new DeliveryDto(delivery.getId(),delivery.getAddress1(), delivery.getAddress2(),delivery.getContactNumber(), delivery.getPostalCode(), delivery.getStatus(), delivery.getDeliveryAssignedDate(), delivery.getDateCount(), delivery.getPackageImage(), delivery.getPurchase().getId(),delivery.getTrackingNumber()),
+                new UserDTO(user.getFirstName(),user.getLastName(), user.getEmail())
+        );    }
+
 
 }
 

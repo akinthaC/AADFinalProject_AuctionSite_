@@ -12,4 +12,6 @@ public interface VehicleListingRepo extends JpaRepository<VehicleListing, Long> 
     List<VehicleListing> findByStatusAndSellingOptionAndBidStartedDate(String pending, String bidding, LocalDate today);
 
     List<VehicleListing> findByStatusAndSellingOption(String active, String bidding);
+
+    List<VehicleListing> findByStatus(String active);
 }

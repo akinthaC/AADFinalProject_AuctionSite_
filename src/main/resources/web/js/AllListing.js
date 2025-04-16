@@ -83,7 +83,7 @@ function setupUserDropdown(role) {
     dropdownMenu.classList.add("user-dropdown-menu");
     dropdownMenu.style.display = "none"; // Initially hidden
 
-    let profileOption = `<div class="user-dropdown-item">👤 Profile</div>`;
+    let profileOption = `<div id="profile" class="user-dropdown-item">👤 Profile</div>`;
     let logoutOption = `<div class="user-dropdown-item logout-option">🚪 Logout</div>`;
     let cartOption = `<div class="user-dropdown-item">🛒 Add to Cart
 <span id="cartCount" style="background-color: red; color: white; font-size: 12px; font-weight: bold; padding: 2px 6px; border-radius: 12px; margin-left: 8px;">0</span></div>`;
@@ -93,9 +93,9 @@ function setupUserDropdown(role) {
     let YouAreBuyOption = `<div class="user-dropdown-item">📜 You buy/Bid Items</div>`;
     let YouAreOrdersOption = `<div class="user-dropdown-item">📜 You're Orders</div>`;
 
-    let sellerOption = `<div class="user-dropdown-item">📜 Your Listings</div>`;
-    let createListingOption = `<div class="user-dropdown-item">➕ Create Listing</div>`; // New option
-    let buyerOption = `<div class="user-dropdown-item">📢 Start Selling</div>`;
+    let sellerOption = `<div id="showListing" class="user-dropdown-item">📜 Your Listings</div>`;
+    let createListingOption = `<div id="createListing" class="user-dropdown-item">➕ Create Listing</div>`;
+    let buyerOption = `<div id="startSelling" class="user-dropdown-item">📢 Start Selling</div>`;
 
     dropdownMenu.innerHTML = profileOption + notificationsOption + cartOption + watchlistOption+YouAreBuyOption;
 
@@ -151,7 +151,123 @@ function setupUserDropdown(role) {
 
     });
 
+    dropdownMenu.querySelector(".user-dropdown-item:nth-child(6)").addEventListener("click", function () {
+        const selected = localStorage.getItem('selectedCategory');
+        console.log("Selected Category:", selected);
+
+        // Redirect to the listing page based on selected category
+        // Redirect based on category
+        if (selected === "Farmed") {
+            window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/showListning.html?_ijt=uiiintlm9oe1t9726sj4b124lj&_ij_reload=RELOAD_ON_SAVE';
+        } else if (selected === "Lands") {
+            window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/ShowListingLands.html?_ijt=uiiintlm9oe1t9726sj4b124lj&_ij_reload=RELOAD_ON_SAVE';
+        } else if (selected === "Vehicles") {
+            window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/ShowListingVehicle.html?_ijt=uiiintlm9oe1t9726sj4b124lj&_ij_reload=RELOAD_ON_SAVE';
+        } else {
+            // Fallback/default
+            window.location.href = '../FarmedItem.html';
+        }
+    });
+
+
+    dropdownMenu.querySelector(".user-dropdown-item:nth-child(7)").addEventListener("click", function () {
+        const selected = localStorage.getItem('selectedCategory');
+        console.log("Selected Category:", selected);
+
+            // Redirect to the listing page based on selected category
+            // Redirect based on category
+            if (selected === "Farmed") {
+                window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/FarmedItem.html?_ijt=4fgosg79n0nslcholq7d45ur7s&_ij_reload=RELOAD_ON_SAVE';
+            } else if (selected === "Lands") {
+                window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/LandsSell.html?_ijt=f5gjdoojgp7r1osfp9oae96185&_ij_reload=RELOAD_ON_SAVE';
+            } else if (selected === "Vehicles") {
+                window.location.href = 'http://localhost:63342/AADFinalProject_AuctionSite_/src/main/resources/web/vehicleListing.html?_ijt=3n5eubpkr4tmhvs0p3i2b13pad&_ij_reload=RELOAD_ON_SAVE';
+            } else {
+                // Fallback/default
+                window.location.href = '../FarmedItem.html';
+            }
+
+
+
+    });
+
+
+    dropdownMenu.querySelector(".user-dropdown-item:nth-child(1)").addEventListener("click", function () {
+        if (!document.querySelector("#profileModal")) {
+            document.body.insertAdjacentHTML("beforeend", `
+            <div id="profileModal" class="modal-overlay">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>👤 User Profile</h2>
+                    <div class="modal-body">
+                        <p><strong>Full Name:</strong> <span id="userFullName">Loading...</span></p>
+                        <p><strong>Type:</strong> <span id="userType">Loading...</span></p>
+                        <p><strong>Address:</strong> <span id="userAddress">Loading...</span></p>
+                        <p><strong>Ratings:</strong> <span id="userRating">⭐ 2.3</span></p>
+                    </div>
+                </div>
+            </div>
+        `);
+
+            // Show modal
+            const modal = document.querySelector("#profileModal");
+            modal.style.display = "flex";
+
+            // Close modal with close button
+            modal.querySelector(".close-btn").addEventListener("click", function () {
+                modal.style.display = "none";
+            });
+
+            // Optional: click outside modal to close
+            modal.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+
+            // Get token and email from localStorage
+            const token = localStorage.getItem("token");
+            const email = localStorage.getItem("email");
+
+            // Make sure both token and email are available
+            if (token && email) {
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/user/getUserByEmail?email=${encodeURIComponent(email)}`,
+                    method: 'GET',
+                    contentType: 'application/json',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    success: function (response) {
+                        if (response && response.data) {
+                            document.getElementById("userFullName").innerText = `${response.data.firstName || ""} ${response.data.lastName || ""}`.trim();
+                            document.getElementById("userType").innerText = response.data.role || "N/A";
+                            document.getElementById("userAddress").innerText = response.data.addressLine2 || "N/A";
+                        } else {
+                            document.getElementById("userFullName").innerText = "Error loading data";
+                            document.getElementById("userType").innerText = "N/A";
+                            document.getElementById("userAddress").innerText = "N/A";
+                        }
+                    },
+                    error: function (err) {
+                        console.error("Error fetching user profile:", err);
+                        document.getElementById("userFullName").innerText = "Error loading data";
+                        document.getElementById("userType").innerText = "N/A";
+                        document.getElementById("userAddress").innerText = "N/A";
+                    }
+                });
+            } else {
+                document.getElementById("userFullName").innerText = "User not logged in";
+            }
+        } else {
+            // If already created, just display it again
+            document.querySelector("#profileModal").style.display = "flex";
+        }
+    });
+
 }
+
+
 
 handleUserGreeting()
 
@@ -652,9 +768,6 @@ $(document).ready(function () {
     });
 });
 
-
-
-
 function markAsDelivered(item) {
     Swal.fire({
         title: 'Are you sure?',
@@ -699,7 +812,7 @@ function markAsDelivered(item) {
 
 
 
-
+/*
 // Confirm purchase (for Winning Bids)
 function confirmPurchase(itemId) {
     if (confirm("Are you sure you want to purchase this item?")) {
@@ -718,7 +831,7 @@ function confirmPurchase(itemId) {
                 console.error(err);
             });
     }
-}
+}*/
 
 
 
@@ -1077,3 +1190,251 @@ function updateWatchedCount(count) {
 }
 
 
+
+
+function savePaymentDetails(purchaseId, totalPrice, email,type,id) {
+    console.log("Saving payment details...");
+
+    // Create the payment data object
+    const paymentData = {
+        purchaseId: purchaseId,
+        amount: totalPrice,
+        email: email,
+        paymentStatus: "Hold",
+        paymentMethod:"card",
+        listingId: id,
+        listingType:type
+    };
+
+    // Send payment details to your server
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/Payment', // replace with your actual endpoint
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(paymentData),
+        success: function (response) {
+
+        },
+        error: function (error) {
+            console.error("Error saving payment details:", error);
+
+        }
+    });
+}
+
+// Function to generate the next purchaseId based on the latest one
+function generateNextPurchaseId(latestPurchaseId) {
+    const prefix = "OR";
+    let currentIdNumber = parseInt(latestPurchaseId.replace(prefix, ''));
+
+    // Increment the number
+    const newIdNumber = currentIdNumber + 1;
+
+    // Format the new purchaseId (e.g., OR001, OR002, OR003)
+    const newPurchaseId = prefix + String(newIdNumber).padStart(3, '0');
+    return newPurchaseId;
+}
+
+function loadUserDeliveryData(email, newPurchaseId) {
+    const token = localStorage.getItem("token");
+    $.ajax({
+        url: `http://localhost:8080/api/v1/user/getUserByEmail?email=${encodeURIComponent(email)}`,
+        type: 'GET',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': 'Bearer ' + token // Add your JWT token here
+        },
+        success: function (response) {
+            console.log("API Response:", response); // Log the response to verify the structure
+
+            // Set the form fields with the response data
+            $('#addressLine1').val(response.data.addressLine1 || '');
+            $('#addressLine2').val(response.data.addressLine2 || '');
+            $('#contactNumber').val(response.data.phoneNumber || '');
+            $('#purchaseId').val(newPurchaseId);
+
+            // Show the modal only after the data has been set
+            setTimeout(function() {
+                var deliveryModal = new bootstrap.Modal(document.getElementById('deliveryModal'));
+                deliveryModal.show();
+            }, 100); // Delay to ensure data is set before showing modal
+        },
+        error: function (error) {
+            console.error("Error fetching delivery data:", error);
+            alert("Error loading delivery data.");
+        }
+    });
+}
+
+
+
+document.addEventListener("click", function (event) {
+    if (event.target && event.target.classList.contains("buy-now")) {
+        const listingId = event.target.dataset.id;
+        const title = event.target.dataset.title;
+        const price = event.target.dataset.price;
+
+        // Set the modal details
+        document.getElementById("buyTitle").textContent = `Buy ${title}`;
+        document.getElementById("buyPrice").textContent = price;
+
+        purchaseNow(listingId,title,price)
+
+
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("aaa")
+    const decreaseBtn = document.querySelector(".decrease");
+    const increaseBtn = document.querySelector(".increase");
+    const quantityInput = document.getElementById("quantity");
+    const unitPriceSpan = document.getElementById("buyPrice");
+    const totalPriceSpan = document.getElementById("totalPrice");
+
+    function calculateTotal() {
+        const quantity = parseInt(quantityInput.value) || 1;
+        const unitPrice = parseFloat(unitPriceSpan.textContent) || 0;
+        const total = (quantity * unitPrice).toFixed(2);
+        totalPriceSpan.textContent = total;
+    }
+
+    if (decreaseBtn && increaseBtn && quantityInput) {
+        decreaseBtn.addEventListener("click", function () {
+            let currentVal = parseInt(quantityInput.value);
+            if (currentVal > 1) {
+                quantityInput.value = currentVal - 1;
+                calculateTotal();
+            }
+        });
+
+        increaseBtn.addEventListener("click", function () {
+            let currentVal = parseInt(quantityInput.value);
+            quantityInput.value = currentVal + 1;
+            calculateTotal();
+        });
+
+        quantityInput.addEventListener("input", calculateTotal);
+    }
+
+    // Recalculate on modal open
+    $('#buyNowModal').on('shown.bs.modal', function () {
+        calculateTotal();
+    });
+});
+
+
+function purchaseNow(itemId, listingName, price) {
+    console.log("Item ID:", itemId);
+    console.log("Listing Name:", listingName);
+    console.log("Price:", price);
+
+    Swal.fire({
+        title: `Purchase Confirmation`,
+        text: `Do you want to purchase "${listingName}" for $${price}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, buy it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $('#youBuyModal').hide();
+            document.getElementById("buyTitle").textContent = `Buy ${listingName}`;
+            document.getElementById("buyPrice").textContent = `${price}`;
+            $('#buyNowModal').modal('show');
+
+            $("#placeOrderBtn").off("click").on("click", function () {
+                const email = localStorage.getItem("email");
+                const listingType = document.getElementById("placeOrderBtn").getAttribute("data-listing-type");
+                const quantity = parseInt(document.getElementById("quantity").value);
+
+                if (!quantity || quantity <= 0) {
+                    Swal.fire("Invalid Quantity", "Please enter a valid quantity.", "warning");
+                    return;
+                }
+
+                const totalPrice = price * quantity;
+
+                $('#buyNowModal').modal('hide');
+                const creditCardModal = new bootstrap.Modal(document.getElementById('creditCardModalContainer'));
+                creditCardModal.show();
+
+                $("#submitCardPaymentBtn").off("click").on("click", function () {
+                    console.log("Processing payment...");
+                    creditCardModal.hide();
+
+                    const purchaseData = {
+                        listingId: itemId,
+                        listingType: listingType,
+                        quantity: quantity,
+                        totalPrice: totalPrice
+                    };
+
+                    $.ajax({
+                        url: `http://localhost:8080/api/v1/Purchase?email=${email}`,
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(purchaseData),
+                        success: function () {
+                            console.log("Purchase placed successfully");
+
+                            $.ajax({
+                                url: 'http://localhost:8080/api/v1/Purchase/latestPurchaseId',
+                                type: 'GET',
+                                success: function (latestPurchaseId) {
+                                    console.log("Latest Purchase ID:", latestPurchaseId);
+
+                                    loadUserDeliveryData(email, latestPurchaseId);
+
+                                    document.getElementById("submitDeliveryDetails").onclick = function () {
+                                        const purchaseId = document.getElementById("purchaseId").value;
+                                        const addressLine1 = document.getElementById("addressLine1").value;
+                                        const addressLine2 = document.getElementById("addressLine2").value;
+                                        const contactNumber = document.getElementById("contactNumber").value;
+                                        const postalCode = document.getElementById("postalCode").value;
+
+                                        if (!purchaseId || !addressLine1 || !contactNumber || !postalCode) {
+                                            Swal.fire("Missing Info", "Please fill all required delivery fields.", "warning");
+                                            return;
+                                        }
+
+                                        $.ajax({
+                                            url: 'http://localhost:8080/api/v1/Delivery',
+                                            type: 'POST',
+                                            data: JSON.stringify({
+                                                purchaseId: purchaseId,
+                                                address1: addressLine1,
+                                                address2: addressLine2,
+                                                contactNumber: contactNumber,
+                                                postalCode: postalCode
+                                            }),
+                                            contentType: 'application/json',
+                                            success: function () {
+                                                savePaymentDetails(purchaseId, totalPrice, email, listingType, itemId);
+                                                Swal.fire("Success", "Payment success !", "success");
+                                                const deliveryModal = new bootstrap.Modal(document.getElementById('deliveryModal'));
+                                                deliveryModal.hide();
+                                            },
+                                            error: function () {
+                                                Swal.fire("Error", "Error saving delivery details!", "error");
+                                            }
+                                        });
+                                    };
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error("Error fetching latest purchaseId:", error);
+                                    Swal.fire("Error", "Error fetching latest purchase ID.", "error");
+                                }
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error placing the order:", error);
+                            Swal.fire("Error", "❌ Error placing the order.", "error");
+                        }
+                    });
+                });
+            });
+        }
+    });
+}

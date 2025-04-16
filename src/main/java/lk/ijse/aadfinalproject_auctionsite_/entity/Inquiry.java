@@ -3,6 +3,7 @@ package lk.ijse.aadfinalproject_auctionsite_.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,10 +27,12 @@ public class Inquiry {
     private String message;  // Mini description / inquiry text
 
     @Column(name = "inquiry_date", nullable = false)
-    private LocalDateTime inquiryDate;
+    private LocalDate inquiryDate;
+
+    private String responed;
 
     @PrePersist
     protected void onCreate() {
-        this.inquiryDate = LocalDateTime.now();
+        this.inquiryDate = LocalDate.now();
     }
 }

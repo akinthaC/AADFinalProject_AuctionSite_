@@ -83,7 +83,7 @@ $(document).ready(function () {
 }
 
     function showAdminDashboard() {
-        window.location.href = './mainadminDashboard.html';
+        window.location.href = 'adminDashboard.html';
     }
 
     function showMainAdminDashboard() {

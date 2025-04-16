@@ -124,4 +124,21 @@ public class VehicleListingServiceImpl implements VehicleListingService {
         }
     }
 
+    @Override
+    public List<VehicleListingDTO> getActiveLandListings() {
+        List<VehicleListing> activeListings = vehicleListingRepository.findByStatus("Active");
+        return activeListings.stream()
+                .map(landListing -> modelMapper.map(landListing, VehicleListingDTO.class))  // Convert using ModelMapper
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VehicleListingDTO> getPendingAuctionItems() {
+        List<VehicleListing> pendingItems = vehicleListingRepository.findByStatus("PENDING");
+        return pendingItems.stream()
+                .map(item -> modelMapper.map(item, VehicleListingDTO.class))
+                .collect(Collectors.toList());
+
+    }
+
 }

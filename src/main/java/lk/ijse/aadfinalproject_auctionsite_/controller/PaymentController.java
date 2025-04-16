@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/Payment")
 @CrossOrigin(origins = "*")
@@ -50,5 +52,25 @@ public class PaymentController {
         }
     }
 
+    @GetMapping("/all")
+    public List<PaymentDTO> getAllPayments() {
+        return paymentService.getAllPayments();
+    }
+
+    @PostMapping("/{orderId}")
+    public ResponseEntity<String> confirmPayment(@PathVariable("orderId") String orderId) {
+        try {
+            // Call the service method to update the payment status
+            boolean success = paymentService.confirmPayment(orderId);
+
+            if (success) {
+                return ResponseEntity.ok("Payment marked as Success.");
+            } else {
+                return ResponseEntity.status(400).body("Payment update failed.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred while updating payment status.");
+        }
+    }
 
 }

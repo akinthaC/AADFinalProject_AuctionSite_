@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class ToDoListServiceImpl implements ToDoListService {
@@ -44,4 +45,19 @@ public class ToDoListServiceImpl implements ToDoListService {
         // If no date is selected, return all tasks
         return toDoListRepo.findAll();
     }
+
+    @Override
+    public boolean markTaskAsCompleted(String taskId) {
+        Optional<Todo> taskOpt = toDoListRepo.findById(Long.valueOf(taskId));
+
+        if (taskOpt.isPresent()) {
+            Todo task = taskOpt.get();
+            task.setCompleted("Yes"); // Mark as completed
+            toDoListRepo.save(task);
+            return true;
+        }
+
+        return false; // Task not found
+    }
+
 }

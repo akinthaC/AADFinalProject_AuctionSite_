@@ -18,4 +18,8 @@ public interface VehicleListingService {
     VehicleListingDTO getItemById(Long id);
 
     void deleteItem(Long id);
+
+    List<VehicleListingDTO> getActiveLandListings();
+
+    List<VehicleListingDTO> getPendingAuctionItems();
 }

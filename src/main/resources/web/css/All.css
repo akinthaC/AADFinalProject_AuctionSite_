@@ -1,0 +1,679 @@
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: none;
+    color: #333;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+/* Modal Body */
+.modal-body {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.listing-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.listing-price {
+    font-size: 1.3rem;
+    color: #007bff;
+}
+
+/* Input fields */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.bid-input, .quantity-input {
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    background-color: #007bff;
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quantity-btn:hover {
+    background-color: #0056b3;
+}
+
+.quantity-input {
+    width: 60px;
+    text-align: center;
+    margin: 0 10px;
+}
+
+/* Modal Footer */
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.modal-footer .btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Custom Button Colors */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+#countMessage {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+#notificationDot {
+    display: none;
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-left: -11px;
+    margin-right: 16px;
+    margin-bottom: 17px;
+}
+/* Style the modal background */
+.cart-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scrolling if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+/* Modal Content */
+.cart-modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+}
+
+/* Close button */
+.cart-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.cart-close:hover,
+.cart-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.cart-item-image {
+    width: 50px;   /* Adjust the size as needed */
+    height: auto;
+    border-radius: 5px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-table th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.cart-item button {
+    padding: 8px 15px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.cart-item button:hover {
+    background-color: #45a049;
+}
+
+#watchlistModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scrolling if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+}
+
+/* Modal inner box */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 36px;
+    border: 1px solid #888;
+    width: 132%;
+    max-width: 692px;
+    border-radius: 10px;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+
+.watched-item-img img {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.watched-item-details {
+    flex-grow: 1;
+}
+
+.watched-item-actions button {
+    margin-right: 10px;
+    padding: 6px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+.watched-item-actions button:hover {
+    background-color: #0056b3;
+}
+.modal-content {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.btn-modern {
+    background: #6c757d;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 10px;
+    color: #000000d1;
+    transition: 0.3s;
+}
+
+.modal-glass p {
+    color: #000000c2;
+    margin-bottom: 15px;
+}
+.modal-glass h2 {
+    font-size: 22px;
+    color: #000000cc;
+}
+
+
+.modern-modal {
+    display: none;
+    position: fixed;
+    z-index: 1900;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modern-modal-content {
+    background: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 960px;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+#modalTabs {
+    margin-top: 10px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #eee;
+    margin-right: 5px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.tab-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-tab-content {
+    margin-top: 20px;
+}
+
+.item-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.item-price, .item-quantity, .payment-status {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.item-image-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buyer-item-card {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 15px; /* Space between image and text */
+}
+
+.item-image-container {
+    width: 100px;
+    height: 100px;
+}
+
+.item-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.btn-purchase{
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #34ce47;
+    margin-right: 5px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+
+}
+/* Style for Mark as Delivered button */
+.btn-deliver {
+    background-color: #0f75c7; /* Green */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.btn-deliver:hover {
+    background-color: #45a049;
+}
+
+/* Style for Inquiry button */
+.btn-inquiry {
+    background-color: #2196F3; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-inquiry:hover {
+    background-color: #0b7dda;
+}
+
+/* Style for Default Action button */
+.btn-default {
+    background-color: #f1f1f1; /* Light Gray */
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-default:hover {
+    background-color: #ddd;
+}
+
+.custom-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+
+.custom-modal-content {
+    background: #fff;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.custom-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.custom-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-close-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.shipment-modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.shipment-modal-content {
+    background: #fff;
+    margin: 15% auto;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.shipment-input {
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.shipment-close-btn {
+    background: #ccc;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.shipment-submit-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.shipment-modal-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#inquiryModal .modal-dialog {
+    max-width: 500px;  /* You can change to 400px, 600px, etc. */
+    margin: 1.75rem auto;
+    z-index: 2080; /* Bootstrap default is 1050, so this brings it to front */
+    position: relative;
+}
+
+#inquiryModal .modal-content {
+    border-radius: 20px;
+    padding: 20px;
+    border: none;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    background: #fefefe;
+    transition: all 0.3s ease-in-out;
+}
+#inquiryModal .modal-header {
+    border-bottom: none;
+    background-color: #f1f1f1;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding-bottom: 0;
+}
+
+#inquiryModal .modal-title {
+    font-weight: bold;
+    color: #333;
+}
+
+#inquiryModal .modal-body {
+    padding-top: 0;
+}
+
+#inquiryModal input[type="text"],
+#inquiryModal textarea {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    padding: 10px 12px;
+    font-size: 16px;
+    background: #fafafa;
+}
+
+#inquiryModal input[type="text"]:focus,
+#inquiryModal textarea:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+    background-color: #fff;
+}
+
+#inquiryModal button[type="submit"] {
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#inquiryModal button[type="submit"]:hover {
+    background-color: #0b5ed7;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 450px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    animation: fadeIn 0.4s ease;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.modal-body p {
+    font-size: 16px;
+    margin: 12px 0;
+    color: #e0e0e0;
+}
+
+.modal-body span {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+    color: #ff4d4d;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+strong {
+    color: #889fa8;
+}

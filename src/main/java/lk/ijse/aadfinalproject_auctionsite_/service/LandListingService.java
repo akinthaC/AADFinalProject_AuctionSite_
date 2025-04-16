@@ -16,4 +16,8 @@ public interface LandListingService {
     boolean saveLandListing(LandListingDTO landListingDTO);
 
     void deleteItem(Long id);
+
+    List<LandListingDTO> getActiveLandListings();
+
+    List<LandListingDTO> getPendingAuctionItems();
 }

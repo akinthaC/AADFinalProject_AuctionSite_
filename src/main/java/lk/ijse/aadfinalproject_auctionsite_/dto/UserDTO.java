@@ -23,4 +23,10 @@ public class UserDTO {
     private Double latitude;
     private Double longitude;
     private String status;
+
+    public UserDTO(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }

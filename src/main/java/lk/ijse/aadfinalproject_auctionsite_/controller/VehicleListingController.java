@@ -174,4 +174,28 @@ public class VehicleListingController {
         return "Item deleted successfully";
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<ResponseDTO> getActiveFarmedListings() {
+        try {
+            // Fetch active listings
+            List<VehicleListingDTO> activeFarmedListings = vehicleListingService.getActiveLandListings();
+            return ResponseEntity.ok(new ResponseDTO(VarList.Created, "Fetched Active Listings", activeFarmedListings));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<ResponseDTO> getPendingFarmedListings() {
+        try {
+            // Fetch active listings
+            List<VehicleListingDTO> pendingFarmedListings = vehicleListingService.getPendingAuctionItems();
+            return ResponseEntity.ok(new ResponseDTO(VarList.Created, "Fetched Pending Listings", pendingFarmedListings));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
+
 }

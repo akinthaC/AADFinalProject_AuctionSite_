@@ -14,4 +14,6 @@ public interface DeliveryService {
     void save(Delivery delivery);
 
     void updateById(String orderId);
+
+    Delivery getDeliveryByPurchaseId(String purchaseId);
 }

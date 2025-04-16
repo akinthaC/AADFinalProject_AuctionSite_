@@ -119,4 +119,20 @@ public class LandListingServiceImpl implements LandListingService {
             throw new RuntimeException("Item not found with ID: " + id);
         }
     }
+
+    @Override
+    public List<LandListingDTO> getActiveLandListings() {
+        List<LandListing> activeListings = landListingRepo.findByStatus("Active");
+        return activeListings.stream()
+                .map(landListing -> modelMapper.map(landListing, LandListingDTO.class))  // Convert using ModelMapper
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LandListingDTO> getPendingAuctionItems() {
+        List<LandListing> pendingItems = landListingRepo.findByStatus("PENDING");
+        return pendingItems.stream()
+                .map(item -> modelMapper.map(item, LandListingDTO.class))
+                .collect(Collectors.toList());
+    }
 }

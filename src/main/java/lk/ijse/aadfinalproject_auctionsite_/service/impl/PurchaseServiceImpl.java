@@ -85,5 +85,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         return purchaseRepo.count();
     }
 
+    @Override
+    public Purchase getPurchaseById(String purchaseId) {
+        return purchaseRepo.findById(purchaseId).orElse(null);
+    }
+
 
 }

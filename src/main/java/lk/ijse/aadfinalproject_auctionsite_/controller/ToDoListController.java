@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/ToDo")
@@ -39,6 +41,16 @@ public class ToDoListController {
             return new ResponseEntity<>(tasks, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error fetching tasks.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{taskId}")
+    public ResponseEntity<String> updateTaskStatus(@PathVariable String taskId) {
+        boolean updated = toDoListService.markTaskAsCompleted(taskId);
+        if (updated) {
+            return ResponseEntity.ok("Task marked as completed");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found");
         }
     }
 }

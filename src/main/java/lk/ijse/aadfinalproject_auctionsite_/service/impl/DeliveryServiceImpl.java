@@ -62,4 +62,9 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setStatus("Delivered");
         deliveryRepository.save(delivery);
     }
+
+    @Override
+    public Delivery getDeliveryByPurchaseId(String purchaseId) {
+        return deliveryRepository.findByPurchaseId(purchaseId);
+    }
 }
