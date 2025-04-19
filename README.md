@@ -1,5 +1,6 @@
 
-  <img src="https://your-logo-url.com/logo.png" alt="AgroBid Logo" width="200"/>
+  <img src="![image-removebg-preview (3)](https://github.com/user-attachments/assets/39e230b2-1fef-4c10-bf86-81b285e1df82)
+" alt="AgroBid Logo" width="200"/>
 </p>
 
 <h1 align="center">🌾 AgroBid – Smart Agricultural Auction Platform</h1>
