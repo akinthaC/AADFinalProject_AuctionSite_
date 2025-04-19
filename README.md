@@ -129,7 +129,7 @@
 
 ## 📹 Demo Video
 
-🎬 [Spring Boot Project – IJSE – GDSE69 – Panadura – Akintha Chandinu – 2nd Semester Final Project][(https://youtu.be/zaBu7nqFTRg)
+🎬 [Spring Boot Project – IJSE – GDSE69 – Panadura – Akintha Chandinu – 2nd Semester Final Project](https://youtu.be/zaBu7nqFTRg)
 
 
 ---
